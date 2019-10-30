@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ControlSignIn">
+  <center>
+    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+      <children>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Name" />
+            <TextField fx:id="name" prefWidth="200.0" />
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="LastName" />
+            <TextField fx:id="lastName" prefWidth="200.0" />
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Email" />
+            <TextField fx:id="email" prefWidth="200.0" />
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Id" />
+            <TextField fx:id="id" prefWidth="200.0" />
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Password" />
+            <TextField fx:id="password" prefWidth="200.0" />
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Button fx:id="Client" mnemonicParsing="false" onAction="#signInClient" text="Sign In as Client" />
+            <Button fx:id="Employee" mnemonicParsing="false" onAction="#signInEmployee" text="Sign in as Employee" />
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </center>
+  <top>
+    <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="BOTTOM_CENTER" />
+  </top>
+</BorderPane>
