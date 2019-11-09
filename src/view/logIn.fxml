@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ControlLogIn">
+<BorderPane id="BorderPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ControlLogIn">
   <center>
     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
       <children>
@@ -19,11 +19,17 @@
         </HBox>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
           <children>
-            <Label text="Password" />
+            <Label text="Contrasena" />
             <PasswordField fx:id="password" prefWidth="200.0" />
           </children>
         </HBox>
-        <Button mnemonicParsing="false" onAction="#logIn" text="Log In" />
+        <CheckBox fx:id="keep" mnemonicParsing="false" text="Mantener abierta" />
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+          <children>
+            <Button fx:id="logIn" mnemonicParsing="false" onAction="#logIn" text="Inciar Sesion" />
+            <Button fx:id="signIn" mnemonicParsing="false" onAction="#loadSignIn" text="Registrarse" />
+          </children>
+        </VBox>
       </children>
     </VBox>
   </center>

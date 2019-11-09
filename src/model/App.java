@@ -1,10 +1,26 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import model.Vehicle.VehicleType;
+
 public class App {
 
+	//Constant
+	public final static String FILE_PATH_USER="dat/user.al";
+	public final static String FILE_PATH_PARKING="dat/parking.al";
+	public final static String FILE_PATH_ACTUAL="dat/actual.txt";
+	
 	//Attribute
 	private String name;
 	private ArrayList<User> users;
@@ -16,6 +32,18 @@ public class App {
 		this.name="ParqueApp";
 		this.users=new ArrayList<User>();
 		this.parkings=new ArrayList<Parking>();
+		load();
+		loadActualUser();
+//		Parking p1=new Parking("Parqueadero Premier", "Calle 5, Autopista Sur ##68-70, Cali, Valle del Cauca, Colombia","premierlimonar@gmail.com", "7:00am-8:00pm",2500, 1000, 500);
+//		p1.addSlots("C",VehicleType.Car, 15);
+//		p1.addSlots("M",VehicleType.Motorcycle, 10);
+//		p1.addSlots("B",VehicleType.Bicycle, 5);
+//		Parking p2=new Parking("Parqueadero Javeriana", "Calle 18 #118-250, Cali, Valle del Cauca, Colombia","javerianos.cali@hotmail.com", "24/7 lunes-viernes",1000, 700, 200);
+//		p2.addSlots("C",VehicleType.Car, 14);
+//		p2.addSlots("M",VehicleType.Motorcycle, 11);
+//		p2.addSlots("B",VehicleType.Bicycle, 9);
+//		parkings.add(p1);
+//		parkings.add(p2);
 	}
 	
 	public User logIn(String email, String password){
@@ -47,12 +75,18 @@ public class App {
 		return user;
 	}
 	
+	public void logOut(){
+		this.actualUser=null;
+		File actual=new File(FILE_PATH_ACTUAL);
+		actual.delete();
+	}
+	
 	//Add
-	public boolean addClient(String name, String lastName, String email, String id, String password){
+	public boolean addClient(String name, String email, String password){
 		boolean possible=true;
 		if(!userExist(email)){
 			if(validPassword(password)){
-				users.add(new Client(name, lastName, email, id, password));
+				users.add(new Client(name, email, password));
 			}
 			else{
 				try{throw new InvalidPasswordException();}
@@ -66,11 +100,11 @@ public class App {
 		return possible;
 	}
 	
-	public boolean addEmployee(String name, String lastName, String email, String id, String password){
+	public boolean addEmployee(String name, String email, String password){
 		boolean possible=true;
 		if(!userExist(email)){
 			if(validPassword(password)){//Email
-				users.add(new Employee(name, lastName, email, id, password));
+				users.add(new Owner(name, email, password));
 			}
 			else{
 				try{throw new InvalidPasswordException();}
@@ -84,15 +118,11 @@ public class App {
 		return possible;
 	}
 	
-	public boolean addParking(Employee owner, String address, String city, String department, String country, double pricePerHour){
-		boolean exist=userExist(owner.getEmail());
-		if(!exist){
-			String realAddress=address+", "+city+", "+department+", "+country;
-			Parking parking=new Parking(owner, realAddress, pricePerHour);
-			owner.addParking(parking);
-			parkings.add(parking);
-		}//Exception?
-		return !exist;
+	public void addParking(Owner owner,String name,String email, String info,String address, String city, String department, String country, double priceCar, double priceMotorcycle, double priceBicycle){
+		String realAddress=address+", "+city+", "+department+", "+country;
+		Parking parking=new Parking(name, realAddress, email, info, priceCar, priceMotorcycle, priceBicycle);
+		owner.addParking(parking);
+		parkings.add(parking);
 	}
 	
 	//Supplier
@@ -128,6 +158,96 @@ public class App {
 			valid=false;
 		}
 		return valid;
+	}
+	
+	//Save
+	public boolean saveUsers(){//[File]
+		boolean possible=true;
+		try {
+			FileOutputStream file=new FileOutputStream(FILE_PATH_USER);
+			ObjectOutputStream creator=new ObjectOutputStream(file);
+			creator.writeObject(users);
+			creator.close();
+		}
+		catch (IOException e) {possible=false;}
+		return possible;
+	}
+	
+	public boolean saveParkings(){//[File]
+		boolean possible=true;
+		try {
+			FileOutputStream file=new FileOutputStream(FILE_PATH_PARKING);
+			ObjectOutputStream creator=new ObjectOutputStream(file);
+			creator.writeObject(parkings);
+			creator.close();
+		}
+		catch (IOException e) {possible=false;}
+		return possible;
+	}
+	
+	public boolean saveActualUser(){//[File]
+		boolean possible=true;
+		try {
+			File actual=new File(FILE_PATH_ACTUAL);
+			String text=actualUser.getEmail()+"\n"+actualUser.getPassword();
+			PrintWriter writer=new PrintWriter(actual);
+			writer.append(text);
+			writer.close();
+			System.out.println(users);
+		}
+		catch (IOException e) {possible=false;}
+		catch (NullPointerException e) {possible=false;}
+		return possible;
+	}
+	
+	//Load
+	public boolean load(){//[File]
+		boolean possible=true;
+		try{
+			FileInputStream fileU=new FileInputStream(FILE_PATH_USER);
+			ObjectInputStream creatorU=new ObjectInputStream(fileU);
+			this.users=(ArrayList<User>)creatorU.readObject();
+			creatorU.close();
+			
+			FileInputStream fileP=new FileInputStream(FILE_PATH_PARKING);
+			ObjectInputStream creatorP=new ObjectInputStream(fileP);
+			this.parkings=(ArrayList<Parking>)creatorP.readObject();
+			creatorP.close();
+			
+		}
+		catch (IOException e) {saveUsers();saveParkings();} 
+		catch (ClassNotFoundException e) {possible=false;}
+		return possible;
+	}
+	
+	public boolean loadActualUser(){//[File]
+		boolean possible=true;
+		try{
+			File actual=new File(FILE_PATH_ACTUAL);
+			actual.createNewFile();
+			FileReader fileReader=new FileReader(actual);
+			BufferedReader reader=new BufferedReader(fileReader);
+			String actualLine;
+			String text[]=new String[2];
+			int pos=0;
+			while((actualLine=reader.readLine())!=null){
+				text[pos]=actualLine;
+				pos++;
+			}
+			reader.close();
+			logIn(text[0], text[1]);
+		}
+		catch (IOException e) {possible=false;}
+		catch (NullPointerException e) {possible=false;} 
+		return possible;
+	}
+
+	public ArrayList<Parking> getParkings() {
+		return parkings;
+	}
+	
+	public User getActualUser(){
+		return actualUser;
 	}
 	
 }

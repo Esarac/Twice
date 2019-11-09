@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.App;
@@ -21,13 +22,11 @@ public class ControlSignIn extends ControlGlobal implements Initializable{
 	@FXML
 	private TextField name;
 	@FXML
-	private TextField lastName;
-	@FXML
 	private TextField email;
 	@FXML
-	private TextField id;
+	private PasswordField password;
 	@FXML
-	private TextField password;
+	private PasswordField passwordTest;
 	@FXML
 	private Button Client;
 	@FXML
@@ -35,17 +34,19 @@ public class ControlSignIn extends ControlGlobal implements Initializable{
 	
 	//OnAction
 	public void signInClient(ActionEvent e){
-		
-		boolean possible=app.addClient(name.getText(), lastName.getText(), email.getText(), id.getText(), password.getText());
-		if(possible)loadStart(e);
-		
+		if(password.getText().equals(passwordTest.getText())){
+			boolean possible=app.addClient(name.getText(), email.getText(), password.getText());
+			app.saveUsers();
+			if(possible)load("LogIn");
+		}
 	}
 	
 	public void signInEmployee(ActionEvent e){
-		
-		boolean possible=app.addEmployee(name.getText(), lastName.getText(), email.getText(), id.getText(), password.getText());
-		if(possible)loadStart(e);
-		
+		if(password.getText().equals(passwordTest.getText())){
+			boolean possible=app.addEmployee(name.getText(), email.getText(), password.getText());
+			app.saveUsers();
+			if(possible)load("LogIn");
+		}
 	}
 	
 	@Override
@@ -54,25 +55,6 @@ public class ControlSignIn extends ControlGlobal implements Initializable{
 
 	public void setApp(App app){
 		this.app=app;
-	}
-	
-	public void loadStart(ActionEvent e){
-		
-		try {
-			FXMLLoader loader=new FXMLLoader(getClass().getResource("/view/start.fxml"));//FXML
-			Parent root = (Parent) loader.load();
-			root.getStylesheets().add("/view/application.css");//CSS
-			
-			ControlStart nextController=loader.getController();
-			nextController.setApp(app);
-			
-			Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			stage.setScene(new Scene(root));
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
 	}
 	
 }

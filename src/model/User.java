@@ -1,23 +1,29 @@
 package model;
 
-public abstract class User implements Comparable<User>{
+import java.io.Serializable;
+
+public abstract class User implements Comparable<User>, Serializable{
 
 	private String name;
-	private String lastName;
 	private String email;
-	private String id;
 	private String password;
 	
-	public User(String name, String lastName, String email, String id, String password){
+	public User(String name, String email, String password){
 		this.name=name;
-		this.lastName=lastName;
 		this.email=email;
-		this.id=id;
 		this.password=password;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public String getEmail() {
 		return email;
+	}
+	
+	public String getPassword() {
+		return password;
 	}
 	
 	public boolean correctPassword(String password){
@@ -25,7 +31,7 @@ public abstract class User implements Comparable<User>{
 	}
 	
 	public int compareTo(User user){
-		return id.compareTo(user.id);
+		return email.compareTo(user.email);
 	}
 	
 	

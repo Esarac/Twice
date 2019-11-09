@@ -11,47 +11,38 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.App;
 
 public class ControlLogIn extends ControlGlobal implements Initializable{
-
+	
 	//Node
 	@FXML
 	private TextField email;
 	@FXML
 	private PasswordField password;
 	@FXML
+	private CheckBox keep;
+	@FXML
 	private Button logIn;
+	@FXML
+	private Button signIn;
 	
 	public void logIn(ActionEvent e){
 		if( app.logIn(email.getText(), password.getText()) != null){
-			System.out.println("Loged In succesfully");
-			load(e);
+			if(keep.isSelected()) app.saveActualUser();
+			load("Menu");
 		}
-		else{
-			System.out.println("Incorrect email or password");
-		}
-		
 	}
 	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-	}
-
-	public void load(ActionEvent e){//Correct
+	public void loadSignIn(ActionEvent e){
 		
 		try {
-			FXMLLoader loader=new FXMLLoader(getClass().getResource("/view/parking.fxml"));//FXML
-			Parent root = (Parent) loader.load();
-			root.getStylesheets().add("/view/application.css");//CSS
-			
-			ControlParking nextController=loader.getController();
-			nextController.setApp(app);
-			
-			Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			stage.setScene(new Scene(root));
+			load("SignIn");
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -59,5 +50,9 @@ public class ControlLogIn extends ControlGlobal implements Initializable{
 		
 	}
 	
-
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+	}
+	
 }

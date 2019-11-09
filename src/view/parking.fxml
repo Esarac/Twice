@@ -2,12 +2,61 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.web.*?>
 
-<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ControlParking">
+<BorderPane id="BorderPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ControlParking">
+  <bottom>
+    <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <children>
+        <Button mnemonicParsing="false" onAction="#back" text="Atras" />
+        <Button fx:id="park" mnemonicParsing="false" onAction="#park" text="Parquear" />
+      </children>
+    </HBox>
+  </bottom>
   <center>
-    <WebView fx:id="map" prefHeight="200.0" prefWidth="200.0" />
+    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+      <children>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Nombre:" />
+            <Label fx:id="name" text="name" />
+          </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Direccion:" />
+            <Label fx:id="address" text="address" />
+          </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Email:" />
+            <Label fx:id="email" text="email" />
+          </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Precio:" />
+            <Label fx:id="price" text="price" />
+          </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Cupos:" />
+            <Label fx:id="cupos" text="cupos" />
+          </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Label text="Informacion:" />
+            <Label fx:id="info" text="info" />
+          </children>
+        </HBox>
+        <WebView fx:id="map" prefHeight="300.0" prefWidth="600.0" VBox.vgrow="ALWAYS" />
+      </children>
+    </VBox>
   </center>
 </BorderPane>

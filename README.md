@@ -1,2 +1,0 @@
-# ParqueApp
- Personal Project
