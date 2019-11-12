@@ -24,16 +24,15 @@ public class App {
 	//Attribute
 	private String name;
 	private ArrayList<User> users;
-	private ArrayList<Parking> parkings;
 	private User actualUser;
 	
 	//Constructor
 	public App(){
 		this.name="ParqueApp";
 		this.users=new ArrayList<User>();
-		this.parkings=new ArrayList<Parking>();
-		load();
+		loadUsers();
 		loadActualUser();
+		
 //		Parking p1=new Parking("Parqueadero Premier", "Calle 5, Autopista Sur ##68-70, Cali, Valle del Cauca, Colombia","premierlimonar@gmail.com", "7:00am-8:00pm",2500, 1000, 500);
 //		p1.addSlots("C",VehicleType.Car, 15);
 //		p1.addSlots("M",VehicleType.Motorcycle, 10);
@@ -100,7 +99,7 @@ public class App {
 		return possible;
 	}
 	
-	public boolean addEmployee(String name, String email, String password){
+	public boolean addOwner(String name, String email, String password){
 		boolean possible=true;
 		if(!userExist(email)){
 			if(validPassword(password)){//Email
@@ -116,13 +115,6 @@ public class App {
 			catch(AlreadyExistException e){possible=false;}
 		}
 		return possible;
-	}
-	
-	public void addParking(Owner owner,String name,String email, String info,String address, String city, String department, String country, double priceCar, double priceMotorcycle, double priceBicycle){
-		String realAddress=address+", "+city+", "+department+", "+country;
-		Parking parking=new Parking(name, realAddress, email, info, priceCar, priceMotorcycle, priceBicycle);
-		owner.addParking(parking);
-		parkings.add(parking);
 	}
 	
 	//Supplier
@@ -173,18 +165,6 @@ public class App {
 		return possible;
 	}
 	
-	public boolean saveParkings(){//[File]
-		boolean possible=true;
-		try {
-			FileOutputStream file=new FileOutputStream(FILE_PATH_PARKING);
-			ObjectOutputStream creator=new ObjectOutputStream(file);
-			creator.writeObject(parkings);
-			creator.close();
-		}
-		catch (IOException e) {possible=false;}
-		return possible;
-	}
-	
 	public boolean saveActualUser(){//[File]
 		boolean possible=true;
 		try {
@@ -201,21 +181,15 @@ public class App {
 	}
 	
 	//Load
-	public boolean load(){//[File]
+	public boolean loadUsers(){//[File]
 		boolean possible=true;
 		try{
 			FileInputStream fileU=new FileInputStream(FILE_PATH_USER);
 			ObjectInputStream creatorU=new ObjectInputStream(fileU);
 			this.users=(ArrayList<User>)creatorU.readObject();
 			creatorU.close();
-			
-			FileInputStream fileP=new FileInputStream(FILE_PATH_PARKING);
-			ObjectInputStream creatorP=new ObjectInputStream(fileP);
-			this.parkings=(ArrayList<Parking>)creatorP.readObject();
-			creatorP.close();
-			
 		}
-		catch (IOException e) {saveUsers();saveParkings();} 
+		catch (IOException e) {saveUsers();} 
 		catch (ClassNotFoundException e) {possible=false;}
 		return possible;
 	}
@@ -243,6 +217,26 @@ public class App {
 	}
 
 	public ArrayList<Parking> getParkings() {
+		ArrayList<Parking> parkings=new ArrayList<Parking>();
+		
+		for(int i=0; i<users.size(); i++){
+			if(users.get(i) instanceof Owner){
+				Owner owner=(Owner)users.get(i);
+				parkings.addAll(owner.getParkings());
+			}
+		}
+		
+		return parkings;
+	}
+	
+	public ArrayList<Parking> getOwnerParkings() {
+		ArrayList<Parking> parkings=null;
+		
+		if(actualUser instanceof Owner){
+			Owner owner=(Owner)actualUser;
+			parkings=owner.getParkings();
+		}
+		
 		return parkings;
 	}
 	

@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Client;
+import model.Owner;
 import model.Parking;
 
 public class ControlMenu extends ControlGlobal implements Initializable, Generator{
@@ -59,13 +61,25 @@ public class ControlMenu extends ControlGlobal implements Initializable, Generat
 	}
 	
 	public void generate(){
-		for(int i=0; i<app.getParkings().size(); i++){
-			Parking parking=app.getParkings().get(i);
-			Button park=new Button(parking.getName()+"-"+parking.getAddress());
-			park.setOnAction((event)->{
-				loadParking(event, parking);
-			});
-			menu.getChildren().add(park);
+		if(app.getActualUser() instanceof Client){
+			for(int i=0; i<app.getParkings().size(); i++){
+				Parking parking=app.getParkings().get(i);
+				Button park=new Button(parking.getName()+"-"+parking.getAddress());
+				park.setOnAction((event)->{
+					loadParking(event, parking);
+				});
+				menu.getChildren().add(park);
+			}
+		}
+		else if(app.getActualUser() instanceof Owner){
+			for(int i=0; i<app.getOwnerParkings().size(); i++){
+				Parking parking=app.getOwnerParkings().get(i);
+				Button park=new Button(parking.getName()+"-"+parking.getAddress());
+				park.setOnAction((event)->{
+					loadParking(event, parking);
+				});
+				menu.getChildren().add(park);
+			}
 		}
 	}
 	

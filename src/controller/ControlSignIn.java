@@ -43,7 +43,7 @@ public class ControlSignIn extends ControlGlobal implements Initializable{
 	
 	public void signInEmployee(ActionEvent e){
 		if(password.getText().equals(passwordTest.getText())){
-			boolean possible=app.addEmployee(name.getText(), email.getText(), password.getText());
+			boolean possible=app.addOwner(name.getText(), email.getText(), password.getText());
 			app.saveUsers();
 			if(possible)load("LogIn");
 		}

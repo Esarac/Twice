@@ -74,7 +74,7 @@ public class ControlParking extends ControlGlobal implements Initializable, Gene
 			alerta.setTitle("Costo:");
 			alerta.setHeaderText("$"+parking.removeCar((Client) app.getActualUser()));
 			alerta.show();
-			app.saveParkings();
+			app.saveUsers();
 			load("Menu");
 		}
 		else{

@@ -47,7 +47,7 @@ public class ControlSlots extends ControlGlobal implements Initializable, Genera
 			slotButton.setOnAction((event)->{
 				if(cars.getValue()!=null){
 					boolean possible=slot.addVehicle(cars.getValue());
-					if(possible)back(); app.saveParkings();
+					if(possible)back(); app.saveUsers();
 				}
 			});
 			box.getChildren().add(slotButton);
