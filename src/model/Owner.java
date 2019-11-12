@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import model.Vehicle.VehicleType;
+
 public class Owner extends User{
 
 	private ArrayList<Parking> parkings;
@@ -11,9 +13,12 @@ public class Owner extends User{
 		this.parkings=new ArrayList<Parking>();
 	}
 
-	public void addParking(Owner owner,String name,String email, String info,String address, String city, String department, String country, double priceCar, double priceMotorcycle, double priceBicycle){
+	public void addParking(String name,String email, String info,String address, String city, String department, String country, double priceCar, double priceMotorcycle, double priceBicycle, int slotsCar, int slotsMotorcycle, int slotsBicycle){
 		String realAddress=address+", "+city+", "+department+", "+country;
 		Parking parking=new Parking(name, realAddress, email, info, priceCar, priceMotorcycle, priceBicycle);
+		parking.addSlots("C", VehicleType.Car, slotsCar);
+		parking.addSlots("M", VehicleType.Motorcycle, slotsMotorcycle);
+		parking.addSlots("B", VehicleType.Bicycle, slotsBicycle);
 		parkings.add(parking);
 	}
 	

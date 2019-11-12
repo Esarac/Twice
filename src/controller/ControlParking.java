@@ -52,7 +52,12 @@ public class ControlParking extends ControlGlobal implements Initializable, Gene
 	}
 	
 	public void generate(){
-		if( parking.myCarIsHere((Client) app.getActualUser()) )park.setText("Sacar Vehiculo");
+		if(app.getActualUser() instanceof Client){
+			if( parking.myCarIsHere((Client) app.getActualUser()) )park.setText("Sacar Vehiculo");
+		}
+		else if(app.getActualUser() instanceof Owner){
+			park.setVisible(false);
+		}
 		name.setText(parking.getName());
 		address.setText(parking.getAddress());
 		email.setText(parking.getEmail());

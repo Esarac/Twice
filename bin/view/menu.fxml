@@ -17,7 +17,7 @@
   <left>
     <VBox prefHeight="200.0" prefWidth="100.0">
       <children>
-        <Button mnemonicParsing="false" onAction="#loadVehicles" text="Vehiculos" />
+        <Button fx:id="adding" mnemonicParsing="false" onAction="#loadAdding" text="Vehiculos" />
       </children>
     </VBox>
   </left>

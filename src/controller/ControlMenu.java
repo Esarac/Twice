@@ -21,6 +21,8 @@ public class ControlMenu extends ControlGlobal implements Initializable, Generat
 
 	@FXML
 	private VBox menu;
+	@FXML
+	private Button adding;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
@@ -47,10 +49,13 @@ public class ControlMenu extends ControlGlobal implements Initializable, Generat
 		
 	}
 	
-	public void loadVehicles(ActionEvent e){//Correct
-		
-		load("Vehicles");
-		
+	public void loadAdding(ActionEvent e){//Correct
+		if(app.getActualUser() instanceof Client){
+			load("Vehicles");
+		}
+		else if(app.getActualUser() instanceof Owner){
+			load("ParkingCreator");
+		}
 	}
 	
 	public void logOut(ActionEvent e){
@@ -70,6 +75,7 @@ public class ControlMenu extends ControlGlobal implements Initializable, Generat
 				});
 				menu.getChildren().add(park);
 			}
+			adding.setText("Vehiculos");
 		}
 		else if(app.getActualUser() instanceof Owner){
 			for(int i=0; i<app.getOwnerParkings().size(); i++){
@@ -80,6 +86,7 @@ public class ControlMenu extends ControlGlobal implements Initializable, Generat
 				});
 				menu.getChildren().add(park);
 			}
+			adding.setText("Añadir");
 		}
 	}
 	

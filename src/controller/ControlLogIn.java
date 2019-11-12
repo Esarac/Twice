@@ -40,14 +40,7 @@ public class ControlLogIn extends ControlGlobal implements Initializable{
 	}
 	
 	public void loadSignIn(ActionEvent e){
-		
-		try {
-			load("SignIn");
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
+		load("SignIn");
 	}
 	
 	@Override
