@@ -2,23 +2,15 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-import model.App;
 
-public class ControlLogIn extends ControlGlobal implements Initializable{
+public class ControlLogIn extends ControlGlobal implements Initializable, Generator {
 	
 	//Node
 	@FXML
@@ -32,20 +24,28 @@ public class ControlLogIn extends ControlGlobal implements Initializable{
 	@FXML
 	private Button signIn;
 	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+	}
+	
 	public void logIn(ActionEvent e){
-		if( app.logIn(email.getText(), password.getText()) != null){
+		if(app.logIn(email.getText(), password.getText()) != null){
 			if(keep.isSelected()) app.saveActualUser();
 			load("Menu");
 		}
 	}
 	
 	public void loadSignIn(ActionEvent e){
+		
 		load("SignIn");
 	}
-	
+
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	public void generate() {
 		
+		if(app.getActualUser() != null) {
+			load("Menu");
+		}
 	}
-	
 }
