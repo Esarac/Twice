@@ -15,7 +15,6 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		
 		try {
-			
 			App app = new App("Twice");
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn.fxml"));//FXML
 			Parent root = (Parent) loader.load();//FXML
