@@ -7,19 +7,14 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import model.Client;
 import model.Parking;
 import model.Slot;
 import model.Vehicle;
-import model.Vehicle.VehicleFuel;
-import model.Vehicle.VehicleType;
 
 public class ControlSlots extends ControlGlobal implements Initializable, Generator{
 

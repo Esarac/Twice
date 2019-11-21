@@ -7,6 +7,8 @@ import model.Vehicle.VehicleType;
 
 public class Parking implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private String address;//Address, City, Department, Country
 	private String email;

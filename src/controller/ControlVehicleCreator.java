@@ -20,11 +20,11 @@ public class ControlVehicleCreator extends ControlGlobal implements Initializabl
 	ObservableList<VehicleFuel> fuelList=FXCollections.observableArrayList(VehicleFuel.Gasoline, VehicleFuel.Diesel, VehicleFuel.Non, VehicleFuel.Gas, VehicleFuel.Extra, VehicleFuel.Electric, VehicleFuel.Hybrid);
 	
 	@FXML
-	private ChoiceBox type;
+	private ChoiceBox<VehicleType> type;
 	@FXML
 	private TextField plate;
 	@FXML
-	private ChoiceBox fuel;
+	private ChoiceBox<VehicleFuel> fuel;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

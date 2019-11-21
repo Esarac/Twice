@@ -21,6 +21,8 @@ public abstract class ControlGlobal {
 	
 	public void load(String dir){
 		try {
+			
+			System.out.println("/view/"+dir+".fxml");//Test
 			FXMLLoader loader=new FXMLLoader(getClass().getResource("/view/"+dir+".fxml"));//FXML
 			Parent root = (Parent) loader.load();
 			root.getStylesheets().add("/view/application.css");//CSS

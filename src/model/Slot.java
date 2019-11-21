@@ -1,13 +1,13 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import model.Vehicle.VehicleType;
 
 public class Slot implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	private String id;
 	private Vehicle vehicle;
 	private VehicleType type;

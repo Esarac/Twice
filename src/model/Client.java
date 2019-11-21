@@ -7,6 +7,8 @@ import model.Vehicle.VehicleType;
 
 public class Client extends User{
 	
+	private static final long serialVersionUID = 1L;
+	
 	private ArrayList<Vehicle> vehicles;
 	
 	public Client(String name, String email, String password){

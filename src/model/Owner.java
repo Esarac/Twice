@@ -6,6 +6,8 @@ import model.Vehicle.VehicleType;
 
 public class Owner extends User{
 
+	private static final long serialVersionUID = 1L;
+	
 	private ArrayList<Parking> parkings;
 	
 	public Owner(String name, String email, String password) {

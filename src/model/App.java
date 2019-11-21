@@ -11,8 +11,8 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import model.Vehicle.VehicleType;
+import exception.AlreadyExistException;
+import exception.InvalidPasswordException;
 
 public class App {
 
@@ -27,8 +27,8 @@ public class App {
 	private User actualUser;
 	
 	//Constructor
-	public App(){
-		this.name="ParqueApp";
+	public App(String name){
+		this.name=name;
 		this.users=new ArrayList<User>();
 		loadUsers();
 		loadActualUser();
@@ -130,7 +130,7 @@ public class App {
 	
 	public boolean validPassword(String password){
 		boolean valid=true;
-		if((8<password.length())&&(password.length()<20)){
+		if((8<=password.length())&&(password.length()<=20)){
 			boolean number=false;
 			boolean capital=false;
 			
@@ -156,6 +156,8 @@ public class App {
 	public boolean saveUsers(){//[File]
 		boolean possible=true;
 		try {
+			File dir=new File("dat//");
+			dir.mkdir();
 			FileOutputStream file=new FileOutputStream(FILE_PATH_USER);
 			ObjectOutputStream creator=new ObjectOutputStream(file);
 			creator.writeObject(users);
@@ -168,6 +170,8 @@ public class App {
 	public boolean saveActualUser(){//[File]
 		boolean possible=true;
 		try {
+			File dir=new File("dat//");
+			dir.mkdir();
 			File actual=new File(FILE_PATH_ACTUAL);
 			String text=actualUser.getEmail()+"\n"+actualUser.getPassword();
 			PrintWriter writer=new PrintWriter(actual);
@@ -211,11 +215,15 @@ public class App {
 			reader.close();
 			logIn(text[0], text[1]);
 		}
-		catch (IOException e) {possible=false;}
+		catch (IOException e) {saveActualUser();}
 		catch (NullPointerException e) {possible=false;} 
 		return possible;
 	}
 
+	public String getName(){
+		return name;
+	}
+	
 	public ArrayList<Parking> getParkings() {
 		ArrayList<Parking> parkings=new ArrayList<Parking>();
 		
