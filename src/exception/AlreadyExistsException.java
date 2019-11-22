@@ -1,5 +1,14 @@
 package exception;
 
-public class AlreadyExistsException {
+public class AlreadyExistsException extends Exception{
 
+	//Constructor
+	public AlreadyExistsException(){
+		super("");
+	}
+	
+	public AlreadyExistsException(String message){
+		super(message);
+	}
+	
 }

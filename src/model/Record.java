@@ -14,4 +14,9 @@ public abstract class Record {
 	private Calendar departureDate;
 	private double price;
 	
+	//Constructor
+	public Record(Calendar entryDate) {
+		this.entryDate=entryDate;
+	}
+	
 }

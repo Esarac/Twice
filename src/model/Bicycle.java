@@ -9,5 +9,11 @@ public class Bicycle extends Vehicle implements TwoWheels {
 	
 	//Attributes
 	private String color;
+	
+	//Constructor
+	public Bicycle(String name, String color) {
+		super(name);
+		this.color=color;
+	}
 
 }
