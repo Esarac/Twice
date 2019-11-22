@@ -1,40 +1,18 @@
 package model;
 
-import java.io.Serializable;
+/**
+* <b>Description:</b> The abstract class User in the package model.<br>
+* @author VoodLyc & Esarac.
+*/
 
-public abstract class User implements Comparable<User>, Serializable{
+public abstract class User implements FileLoader, Encryptor{
 
-	private static final long serialVersionUID = 1L;
-	
+	//Attributes
 	private String name;
 	private String email;
 	private String password;
-	
-	public User(String name, String email, String password){
-		this.name=name;
-		this.email=email;
-		this.password=password;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	
-	public boolean correctPassword(String password){
-		return this.password.equals(password);
-	}
-	
-	public int compareTo(User user){
-		return email.compareTo(user.email);
-	}
-	
+	//Suppliers
+	private User left;
+	private User right;
 	
 }

@@ -1,39 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane id="BorderPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ControlLogIn">
-  <center>
-    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-      <children>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-          <children>
-            <Label text="Email" />
-            <TextField fx:id="email" prefWidth="200.0" promptText="" />
-          </children>
-        </HBox>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-          <children>
-            <Label text="Contrasena" />
-            <PasswordField fx:id="password" prefWidth="200.0" />
-          </children>
-        </HBox>
-        <CheckBox fx:id="keep" mnemonicParsing="false" text="Mantener abierta" />
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-          <children>
-            <Button fx:id="logIn" mnemonicParsing="false" onAction="#logIn" text="Inciar Sesion" />
-            <Button fx:id="signIn" mnemonicParsing="false" onAction="#loadSignIn" text="Registrarse" />
-          </children>
-        </VBox>
-      </children>
-    </VBox>
-  </center>
-  <top>
-    <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="BOTTOM_CENTER" />
-  </top>
-</BorderPane>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
+	<!-- TODO Add Nodes -->
+</AnchorPane>
+
