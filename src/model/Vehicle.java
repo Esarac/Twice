@@ -10,7 +10,7 @@ import java.util.Comparator;
 * @author VoodLyc & Esarac.
 */
 
-public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle>, Serializable{
+public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle>, Serializable {
 	
 	//Attribute
 	private String name;

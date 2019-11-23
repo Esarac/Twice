@@ -162,6 +162,57 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return report;
 	}
 	
+	public int slotsSize() {
+		
+		int size;
+		
+		if(firstSlot == null) {
+			
+			size = 0;
+		}
+		else {
+			
+			size = firstSlot.size();
+		}
+		
+		return size;
+	}
+	
+	public <T extends Vehicle> void addSlot(int amount) {
+		
+		if(amount > 0 && firstSlot == null) {
+			
+			firstSlot = new Slot<T>("1", System.currentTimeMillis());
+			
+			for(int i = 1; i <= (amount - 1); i++) {
+				
+				firstSlot.addSlot(new Slot<T>((i+1) + "", System.currentTimeMillis()));
+			}
+		}
+		else {
+			
+			int prev = slotsSize();
+			
+			for(int i = prev; i < (amount + prev); i++) {
+				
+				firstSlot.addSlot(new Slot<T>(i + "", System.currentTimeMillis()));
+			}
+		}
+	}
+	
+	public Slot<?> getSlot(int index) {
+		
+		Slot<?> slot = null;
+		
+		if(firstSlot != null) {
+			
+			slot = firstSlot.getSlot(index);
+		}
+		
+		return slot;
+		
+	}
+	
 	//Getters
 	
 	/**
