@@ -2,12 +2,15 @@ package testTwice;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import model.Client;
 import model.Car.CarType;
 import model.MotorVehicle.VehicleFuel;
 import model.Motorcycle.MotorcycleType;
+import model.Vehicle;
 
 class TestClient {
 
@@ -17,6 +20,26 @@ class TestClient {
 	//Scenes
 	private void setUpSceneEmptyClient() {
 		client=new Client("Esteban", "acosta57esteban@gmail.com", "Minecraft3");
+	}
+	
+	private void setUpSceneNormalClient() {
+		client=new Client("Esteban", "acosta57esteban@gmail.com", "Minecraft3");
+		client.addBicycle("rOlo", "Verde");
+		client.addCar("Rojo", "ICT567", VehicleFuel.GASOLINE, CarType.STANDARD, 1);
+		client.addMotorcycle("Grizelda", "ABC12C", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 50);
+	}
+	
+	//Tests
+	@Test
+	void testAddVehicle(){
+		setUpSceneEmptyClient();
+		assertTrue(client.addVehicle("test/testFiles/Car.txt"));
+		assertTrue(client.addVehicle("test/testFiles/Motorcycle.txt"));
+		assertTrue(client.addVehicle("test/testFiles/Bicycle.txt"));
+		assertFalse(client.addVehicle("test/testFiles/VehicleError.txt"));
+		assertEquals(client.getVehicles().get(0).getName(),"Bmw");
+		assertEquals(client.getVehicles().get(1).getName(),"Yamaha");
+		assertEquals(client.getVehicles().get(2).getName(),"Bmx");
 	}
 	
 	@Test
@@ -46,21 +69,37 @@ class TestClient {
 	
 	@Test
 	void testSearchVehicles() {
-		
+		setUpSceneNormalClient();
+		ArrayList<Vehicle> vehicles=client.searchVehicles("Grizelda");
+		assertEquals(vehicles.get(0).getName(), "Grizelda");
+		vehicles=client.searchVehicles("Ro");
+		assertEquals(vehicles.get(0).getName(), "Rojo");
+		assertEquals(vehicles.get(1).getName(), "rOlo");
+		vehicles=client.searchVehicles("Paro");
+		assertEquals(vehicles.size(), 0);
 	}
 	
 	@Test
 	void testSearchVehicle() {
-		
+		setUpSceneNormalClient();
+		assertNotNull(client.searchVehicle("rOlo"));
+		assertNull(client.searchVehicle("Paro"));
 	}
 	
 	@Test
 	void testSearchMotorVehicles() {
-		
+		setUpSceneNormalClient();
+		assertNotNull(client.searchMotorVehicle("ICT567"));
+		assertNull(client.searchMotorVehicle("rOlo"));
 	}
 	
 	@Test
 	void testSortVehiclesByName() {
+		setUpSceneNormalClient();
+		client.sortVehiclesByName();
+		assertEquals(client.getVehicles().get(0).getName(), "Grizelda");
+		assertEquals(client.getVehicles().get(1).getName(), "Rojo");
+		assertEquals(client.getVehicles().get(2).getName(), "rOlo");
 		
 	}
 	
@@ -71,12 +110,20 @@ class TestClient {
 	
 	@Test
 	void testSortVehiclesByPlate() {
-		
+		setUpSceneNormalClient();
+		client.sortVehiclesByName();
+		assertEquals(client.getVehicles().get(0).getName(), "Grizelda");
+		assertEquals(client.getVehicles().get(1).getName(), "Rojo");
+		assertEquals(client.getVehicles().get(2).getName(), "rOlo");
 	}
 	
 	@Test
 	void testLoad() {
-		
+		setUpSceneEmptyClient();
+		assertNotNull(client.load("test/testFiles/Car.txt"));
+		assertNotNull(client.load("test/testFiles/Motorcycle.txt"));
+		assertNotNull(client.load("test/testFiles/Bicycle.txt"));
+		assertNull(client.load("test/testFiles/VehicleError.txt"));
 	}
 	
 }

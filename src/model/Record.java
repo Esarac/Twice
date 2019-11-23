@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Calendar;
 * @author VoodLyc & Esarac.
 */
 
-public abstract class Record {
+public abstract class Record implements Serializable{
 
 	//Attributes
 	private Calendar entryDate;
@@ -17,6 +18,15 @@ public abstract class Record {
 	//Constructor
 	public Record(Calendar entryDate) {
 		this.entryDate=entryDate;
+	}
+	
+	//Get
+	public double getPrice(){
+		return price;
+	}
+	
+	public Calendar getEntryDate() {
+		return entryDate;
 	}
 	
 }

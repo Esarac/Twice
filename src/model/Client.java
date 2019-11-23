@@ -29,6 +29,31 @@ public class Client extends User implements FileLoader<Vehicle>{
 	}
 
 	//Add
+	public boolean addVehicle(String path){
+		boolean possible=true;
+		Vehicle vehicle=load(path);
+		if(vehicle!=null){
+			
+			if((searchVehicle(vehicle.getName())!=null)){//Name
+				possible=false;
+			}
+			if(vehicle instanceof MotorVehicle){//Plate
+				if(searchMotorVehicle(((MotorVehicle)vehicle).getPlate())!=null){
+					possible=false;
+				}
+			}
+			
+			if(possible){
+				vehicles.add(vehicle);
+			}
+		}
+		else{
+			possible=false;
+		}
+		
+		return possible;
+	}
+	
 	public boolean addCar(String name, String plate, VehicleFuel fuel, CarType type, int polarized){
 		boolean possible=true;
 		if((searchVehicle(name)==null) && (searchMotorVehicle(plate)==null)){
@@ -82,6 +107,33 @@ public class Client extends User implements FileLoader<Vehicle>{
 		return possible;
 	}
 	
+	//Delete
+	public boolean deleteVehicle(String name){
+		boolean possible=false;
+		
+		boolean found=false;
+		int start=0;
+		int end=vehicles.size()-1;
+		while((start<=end)&&!found) {
+			int middle=(start+end)/2;
+			if(vehicles.get(middle).getName().compareTo(name)==0){
+				found=true;
+				if(vehicles.get(middle).unpaidBills().size()==0){
+					vehicles.remove(middle);
+					possible=true;
+				}
+			}
+			else if(vehicles.get(middle).getName().compareTo(name)<0){
+				start=middle+1;
+			}
+			else{
+				end=middle-1;
+			}
+		}
+		
+		return found;
+	}
+	
 	//Search
 	public ArrayList<Vehicle> searchVehicles(String name){
 		sortVehiclesByName();
@@ -94,15 +146,15 @@ public class Client extends User implements FileLoader<Vehicle>{
 			int middle=(start+end)/2;
 			
 			String shortedName;
-			try{shortedName=vehicles.get(middle).getName().substring(0,name.length()-1);}
+			try{shortedName=vehicles.get(middle).getName().substring(0,name.length());}
 			catch(IndexOutOfBoundsException e){shortedName=vehicles.get(middle).getName();}
 			
-			if(shortedName.compareTo(name)==0){//Found
+			if(shortedName.compareToIgnoreCase(name)==0){//Found
 				//Left
 				boolean runLeft=true;
 				for(int i=middle; (i>=0) && runLeft; i++){
 					try{
-						if(name.equals(vehicles.get(i).getName().substring(0,name.length()-1))){
+						if(name.equalsIgnoreCase(vehicles.get(i).getName().substring(0,name.length()))){
 							vehicleList.add(vehicles.get(i));
 						}
 						else {
@@ -116,7 +168,7 @@ public class Client extends User implements FileLoader<Vehicle>{
 				boolean runRight=true;
 				for(int i=middle+1; (i<vehicles.size()) && runRight; i++){
 					try{
-						if(name.equals(vehicles.get(i).getName().substring(0,name.length()-1))){
+						if(name.equalsIgnoreCase(vehicles.get(i).getName().substring(0,name.length()))){
 							vehicleList.add(vehicles.get(i));
 						}
 						else {
@@ -128,7 +180,7 @@ public class Client extends User implements FileLoader<Vehicle>{
 				//...
 				found=true;
 			}//...
-			else if(shortedName.compareTo(name)<0){
+			else if(shortedName.compareToIgnoreCase(name)<0){
 				start=middle+1;
 			}
 			else{
@@ -228,7 +280,6 @@ public class Client extends User implements FileLoader<Vehicle>{
 	//Reader
 	public String read(String path) throws IOException{
 		String text="";
-		
 		File file=new File(path);
 		if(file.exists()){
 			file.createNewFile();
@@ -254,18 +305,25 @@ public class Client extends User implements FileLoader<Vehicle>{
 		Vehicle vehicle=null;
 		try{
 			String[] data=read(path).split("\n");
-			if(data[0].equals("Car")){
-				addCar(data[1], data[2], VehicleFuel.valueOf(data[3]), CarType.valueOf(data[4]), Integer.parseInt(data[5]));
+			if(data[0].equals("CAR")){
+				vehicle=new Car(data[1], data[2], VehicleFuel.valueOf(data[3]), CarType.valueOf(data[4]), Integer.parseInt(data[5]));
 			}
-			else if(data[0].equals("Motorcycle")){
-				addMotorcycle(data[1], data[2], VehicleFuel.valueOf(data[3]), MotorcycleType.valueOf(data[4]), Integer.parseInt(data[5]));
+			else if(data[0].equals("MOTORCYCLE")){
+				vehicle=new Motorcycle(data[1], data[2], VehicleFuel.valueOf(data[3]), MotorcycleType.valueOf(data[4]), Integer.parseInt(data[5]));
 			}
-			else if(data[0].equals("Bicycle")){
-				addBicycle(data[1], data[2]);
+			else if(data[0].equals("BICYCLE")){
+				vehicle=new Bicycle(data[1], data[2]);
 			}
 		}
-		catch (IOException | IndexOutOfBoundsException | IllegalArgumentException e){}
+		catch (IOException | IndexOutOfBoundsException | IllegalArgumentException | NullPointerException | InvalidPlateException e){
+			vehicle=null;
+		}
 		return vehicle;
+	}
+	
+	//Get
+	public ArrayList<Vehicle> getVehicles(){
+		return vehicles;
 	}
 	
 }

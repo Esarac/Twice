@@ -50,9 +50,27 @@ public class Owner extends User implements FileLoader<Parking>{
 	 * @param pricePerHour The parking price per hour.
 	 */
 	
-	public void addParking(String name, String address, String city, String department, String country, String email, String information, double[] pricePerHour) {
+	public boolean addParking(String name, String address, String city, String department, String country, String email, String information, double[] pricePerHour) {
 		
-		parkings.add(new Parking(name, address, city, department, country, email, information, pricePerHour));
+		boolean added = true;
+		boolean running = true;
+		
+		for(int i = 0; i < parkings.size() && running; i++) {
+			
+			if(parkings.get(i).getName().equals(name)) {
+				
+				added = false;
+				running = false;
+				
+			}
+		}
+		
+		if(added) {
+			
+			parkings.add(new Parking(name, address, city, department, country, email, information, pricePerHour));
+		}
+		
+		return added;
 	}
 	
 	/**
@@ -63,13 +81,29 @@ public class Owner extends User implements FileLoader<Parking>{
 	
 	public boolean addParking(String path) {
 		
-		boolean added = false;
+		boolean added = true;
 		Parking parking = load(path);
 		
 		if(parking != null) {
 			
+			boolean running = true;
+			
+			for(int i = 0; i < parkings.size() && running; i++) {
+				
+				if(parkings.get(i).getName().equals(parking.getName())) {
+					
+					added = false;
+				}
+			}
+		}
+		else {
+			
+			added = false;
+		}
+		
+		if(added) {
+			
 			parkings.add(parking);
-			added = true;
 		}
 		
 		return added;
@@ -150,26 +184,37 @@ public class Owner extends User implements FileLoader<Parking>{
 	
 	//Search
 	
+	/**
+	 * <b>Description:</b> This method allows searching for parking that exactly or partially match the name.<br>
+	 * @param name The parking name.
+	 * @return The parkings that exactly or partially matches the name.
+	 */
+	
 	public ArrayList<Parking> searchParkings(String name) {
 		
+		sortParkingsByName();
 		boolean found = false;
 		int start = 0;
 		int end = parkings.size() - 1;
-		Parking parking = new Parking(name, "", "", "", "", "", "", null);
-		ArrayList<Parking> parkings = new ArrayList<Parking>();
+		ArrayList<Parking> parkingsSearched = new ArrayList<Parking>();
+		String shortName;
+		String value;
 		
-		while(start <= end && !found) {
+		while((start <= end) && !found) {
 			
 			int middle = ((start + end) / 2);
 			
-			if(parkings.get(middle).compareTo(parking) == 0) {
+			value = parkings.get(middle).getName();
+			shortName = value.length() > name.length() ? value.substring(0, name.length()) : value;
+			
+			if(shortName.compareToIgnoreCase(name) == 0) {
 				
-				parkings.add(parkings.get(middle));
-				searchRight(middle, parking, parkings);
-				searchLeft(middle, parking, parkings);
+				parkingsSearched.add(parkings.get(middle));
+				searchRight(middle, name, parkingsSearched);
+				searchLeft(middle, name, parkingsSearched);
 				found = true;
 			}
-			else if(parkings.get(middle).compareTo(parking) > 0) {
+			else if(value.compareToIgnoreCase(name) > 0) {
 				
 				end = middle - 1;
 			}
@@ -179,39 +224,65 @@ public class Owner extends User implements FileLoader<Parking>{
 			}
 		}
 		
-		return parkings;
+		return parkingsSearched;
 	}
 	
-	public void searchRight(int index, Parking parking, ArrayList<Parking> parkings) {
+	/**
+	 *<b>Description:</b> This method allows searching in the right from the index indicated.<br>
+	 *<b>Post:</b> The parking that exactly or partially matches the name was added.<br>
+	 * @param index The actual position.
+	 * @param name The parking name.
+	 * @param parkingsSearched The current list of parkings.
+	 */
+	
+	public void searchRight(int index, String name, ArrayList<Parking> parkingsSearched) {
 		
 		boolean is = true;
+		String value;
+		String shortName;
 		
 		for(int i = index + 1; i < parkings.size() && is; i++) {
 			
-			if(parkings.get(i).compareTo(parking) != 0) {
+			value = parkings.get(i).getName();
+			shortName = (value.length() > name.length()) ? value.substring(0, name.length()): value;
+			
+			if(!shortName.equalsIgnoreCase(name)) {
 				
 				is = false;
 			}
 			else{
 				
-				parkings.add(parkings.get(i));
+				parkingsSearched.add(parkings.get(i));
 			}
 		}
 	}
 	
-	public void searchLeft(int index, Parking parking, ArrayList<Parking> parkings) {
+	/**
+	 *<b>Description:</b> This method allows searching in the left from the index indicated.<br>
+	 *<b>Post:</b> The parking that exactly or partially matches the name was added.<br>
+	 * @param index The actual position.
+	 * @param name The parking name.
+	 * @param parkingsSearched The current list of parkings.
+	 */
+	
+	public void searchLeft(int index, String name, ArrayList<Parking> parkingsSearched) {
 		
 		boolean is = true;
+		String value;
+		String shortName;
 		
 		for(int i = index - 1; i >= 0 && is; i--) {
 			
-			if(parkings.get(i).compareTo(parking) != 0) {
+			value = parkings.get(i).getName();
+			shortName = (value.length() > name.length()) ? value.substring(0, name.length()): value;
+			
+			if(!shortName.equalsIgnoreCase(name)) {
 				
 				is = false;
 			}
 			else{
 				
-				parkings.add(parkings.get(i));
+				parkingsSearched.add(parkings.get(i));
 			}
 		}
 	}
@@ -260,7 +331,7 @@ public class Owner extends User implements FileLoader<Parking>{
 	@Override
 	public Parking load(String path) {//[FILE]
 		
-		Parking parking = null;
+		Parking parking;
 		
 		try {
 			
@@ -275,6 +346,7 @@ public class Owner extends User implements FileLoader<Parking>{
 		}
 		catch(IOException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
 			
+			parking = null;
 		}
 		
 		return parking;

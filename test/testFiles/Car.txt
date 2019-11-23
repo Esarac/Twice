@@ -1,0 +1,12 @@
+*VehicleType
+CAR
+*Name
+Bmw
+*Plate
+CTX528
+*Fuel
+ELECTRIC
+*Type
+SUV
+*Polarized
+3

@@ -2,8 +2,12 @@ package model;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
 /**
@@ -14,6 +18,7 @@ import java.io.PrintWriter;
 public class App implements FileLoader<User>{
 	
 	//Constant
+	public static final String APP_PATH="dat/Users.twc";
 	public static final String ACTUAL_USER_PATH="dat/ActualUser.twc";
 	
 	//Attributes
@@ -23,6 +28,7 @@ public class App implements FileLoader<User>{
 	//Constructor
 	public App(String name){
 		this.name=name;
+		loadUsers();
 	}
 	
 	//Add
@@ -99,6 +105,19 @@ public class App implements FileLoader<User>{
 	}
 
 	//Load
+	public boolean loadUsers() {//[FILE]
+		boolean possible=true;
+		try{
+			FileInputStream file=new FileInputStream(APP_PATH);
+			ObjectInputStream creator=new ObjectInputStream(file);
+			this.rootUser=(User)creator.readObject();
+			creator.close();
+		}
+		catch (IOException e) {saveUsers();} 
+		catch (ClassNotFoundException e) {possible=false;}
+		return possible;
+	}
+	
 	public User load(String path) {//[FILE]
 		User actualUser=null;
 		try{
@@ -110,6 +129,20 @@ public class App implements FileLoader<User>{
 	}
 	
 	//Save
+	public boolean saveUsers() {//[FILE]
+		boolean possible=true;
+		try {
+			File dir=new File("dat//");
+			dir.mkdir();
+			FileOutputStream file=new FileOutputStream(APP_PATH);
+			ObjectOutputStream creator=new ObjectOutputStream(file);
+			creator.writeObject(rootUser);
+			creator.close();
+		}
+		catch (IOException e) {possible=false;}
+		return possible;
+	}
+	
 	public boolean saveActualUser(User actualUser){//[FILE]
 		boolean possible=true;
 		try {

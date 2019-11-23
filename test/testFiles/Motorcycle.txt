@@ -1,0 +1,12 @@
+*VehicleType
+MOTORCYCLE
+*Name
+Yamaha
+*Plate
+API12C
+*Fuel
+GASOLINE
+*Type
+STANDARD
+*Cylindered
+1200

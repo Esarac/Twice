@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Comparator;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Comparator;
 * @author VoodLyc & Esarac.
 */
 
-public class Parking implements Comparable<Parking>, Comparator<Parking> {
+public class Parking implements Comparable<Parking>, Comparator<Parking>, Serializable {
 
 	//Attributes
 	private String name;
@@ -119,6 +121,45 @@ public class Parking implements Comparable<Parking>, Comparator<Parking> {
 		}
 		
 		return result;
+	}
+	
+	//Add
+	
+	/**
+	 * <b>Description:</b> This method allows adding a report.<br>
+	 * <b>Post:</b> The report was added.<br>
+	 * @param clientEmail The client email.
+	 * @param carPlate The car license plate.
+	 */
+	
+	public void addReport(String clientEmail, String carPlate) {
+		
+		if(rootReport != null) {
+			
+			rootReport.addReport(new Report(Calendar.getInstance(), clientEmail, carPlate));
+		}
+		else {
+			
+			rootReport = new Report(Calendar.getInstance(), clientEmail, carPlate);
+		}
+	}
+	
+	/**
+	 * <b>Description:</b> This method allows searching the reports that match the email.<br>
+	 * @param email The report email.
+	 * @return The reports if could be found, null in otherwise.
+	 */
+	
+	public Report searchReport(String email) {
+		
+		Report report = null;
+		
+		if(rootReport != null) {
+			
+			report = rootReport.searchReports(email);
+		}
+		
+		return report;
 	}
 	
 	//Getters

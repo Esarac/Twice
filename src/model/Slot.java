@@ -1,11 +1,13 @@
 package model;
 
+import java.io.Serializable;
+
 /**
 * <b>Description:</b> The class Slot in the package model.<br>
 * @author VoodLyc & Esarac.
 */
 
-public class Slot<T extends Vehicle> {
+public class Slot<T extends Vehicle> implements Serializable {
 	
 	//Attributes
 	private String id;
@@ -14,6 +16,8 @@ public class Slot<T extends Vehicle> {
 	//Suppliers
 	private Slot<T> prev;
 	private Slot<T> next;
+	
+	//Constructor
 	
 	/**
 	 * <b>Description:</b> Creates a new instance of Slot.<br>
@@ -26,5 +30,14 @@ public class Slot<T extends Vehicle> {
 		this.id = id;
 		this.initTime = initTime;
 		this.actualVehicle = actualVehicle;
+	}
+	
+	//Methods
+	
+	//Add
+	
+	public void addSlot(Slot<?> slot) {
+		
+		
 	}
 }

@@ -69,6 +69,26 @@ class TestOwner {
 		
 		owner.setParkings(parkings);
 	}
+	
+	private void setUpScenario4() {
+		
+		owner = new Owner("","","P2349kef230");
+		
+		ArrayList<Parking> parkings = new ArrayList<Parking>();
+		
+		parkings.add(new Parking("Nayeon","","","","", "", "", null));
+		parkings.add(new Parking("Momo","","","","", "", "", null));
+		parkings.add(new Parking("Da-hyun","","","","", "", "", null));
+		parkings.add(new Parking("Minatozaki","","","","", "", "", null));
+		parkings.add(new Parking("Jihyo","","","","", "", "", null));
+		parkings.add(new Parking("Chae-young","","","","", "", "", null));
+		parkings.add(new Parking("Jeongyeon","","","","", "", "", null));
+		parkings.add(new Parking("Tzuyu","","","","", "", "", null));
+		parkings.add(new Parking("Mina","","","","", "", "", null));
+		parkings.add(new Parking("Minatozaki Sana","","","","", "", "", null));
+		
+		owner.setParkings(parkings);
+	}
 
 	@Test
 	void testSortParkingsByName() {
@@ -128,6 +148,51 @@ class TestOwner {
 		assertEquals(2200, parkings.get(4).calculateAverage());
 		assertEquals(2400, parkings.get(5).calculateAverage());
 		assertEquals(5000, parkings.get(6).calculateAverage());
+	}
+	
+	@Test
+	void testSearchParking() {
+		
+		setUpScenario4();
+		
+		ArrayList<Parking> parkings = owner.searchParkings("Mina");
+		
+		assertEquals("Mina", parkings.get(0).getName());
+		assertEquals("Minatozaki", parkings.get(1).getName());
+		assertEquals("Minatozaki Sana", parkings.get(2).getName());
+		assertEquals(3, parkings.size());
+		
+		parkings = owner.searchParkings("M");
+		
+		assertEquals("Mina", parkings.get(0).getName());
+		assertEquals("Minatozaki", parkings.get(1).getName());
+		assertEquals("Minatozaki Sana", parkings.get(2).getName());
+		assertEquals("Momo", parkings.get(3).getName());
+		assertEquals(4, parkings.size());
+		
+		parkings = owner.searchParkings("J");
+		
+		assertEquals("Jeongyeon", parkings.get(0).getName());
+		assertEquals("Jihyo", parkings.get(1).getName());
+		assertEquals(2, parkings.size());
+		
+		parkings = owner.searchParkings("csdwdef");
+		
+		assertEquals(0, parkings.size());
+		
+		parkings = owner.searchParkings("mINa");
+		
+		assertEquals("Mina", parkings.get(0).getName());
+		assertEquals("Minatozaki", parkings.get(1).getName());
+		assertEquals("Minatozaki Sana", parkings.get(2).getName());
+		assertEquals(3, parkings.size());
+		
+		parkings = owner.searchParkings("j");
+		
+		assertEquals("Jeongyeon", parkings.get(0).getName());
+		assertEquals("Jihyo", parkings.get(1).getName());
+		assertEquals(2, parkings.size());
+		
 	}
 
 }

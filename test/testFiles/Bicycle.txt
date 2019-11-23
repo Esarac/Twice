@@ -1,0 +1,6 @@
+*VehicleType
+BICYCLE
+*Name
+Bmx
+*Color
+Red

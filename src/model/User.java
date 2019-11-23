@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import exception.AlreadyExistsException;
 
 /**
@@ -7,7 +9,7 @@ import exception.AlreadyExistsException;
 * @author VoodLyc & Esarac.
 */
 
-public abstract class User implements Encryptor, Comparable<User>{
+public abstract class User implements Encryptor, Comparable<User>, Serializable{
 
 	//Attributes
 	private String name;

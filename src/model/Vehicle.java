@@ -1,5 +1,8 @@
 package model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 
 /**
@@ -7,7 +10,7 @@ import java.util.Comparator;
 * @author VoodLyc & Esarac.
 */
 
-public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle>{
+public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle>, Serializable{
 	
 	//Attribute
 	private String name;
@@ -16,6 +19,28 @@ public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle
 	//Constructor
 	public Vehicle(String name){
 		this.name=name;
+	}
+	
+	//Add
+	public void addBill(Calendar entryDate, String parkingName, String parkingAddress){
+		Bill bill=new Bill(entryDate, parkingName, parkingAddress);
+		bill.setNext(firstBill);
+		firstBill=bill;
+	}
+	
+	//Search
+	public ArrayList<Bill> unpaidBills(){
+		ArrayList<Bill> unpaid=new ArrayList<Bill>();
+		
+		Bill actual=firstBill;
+		while(actual!=null){
+			if(!actual.isPayed()){
+				unpaid.add(actual);
+			}
+			actual=actual.getNext();
+		}
+		
+		return unpaid;
 	}
 	
 	//Calculate
@@ -41,6 +66,10 @@ public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle
 	//Get
 	public String getName() {
 		return name;
+	}
+	
+	public Bill getFirstBill() {
+		return firstBill;
 	}
 	
 }
