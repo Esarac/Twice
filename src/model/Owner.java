@@ -38,7 +38,6 @@ public class Owner extends User implements FileLoader<Parking>{
 	
 	/**
 	 * <b>Description:</b> This method allows adding a parking.<br>
-	 * <b>Pre:</b> No one parameter can be null.<br>
 	 * <b>Post:</b> The parking was added.<br>
 	 * @param name The parking name.
 	 * @param address The parking address.
@@ -53,24 +52,30 @@ public class Owner extends User implements FileLoader<Parking>{
 	public boolean addParking(String name, String address, String city, String department, String country, String email, String information, double[] pricePerHour) {
 		
 		boolean added = true;
-		boolean running = true;
 		
-		for(int i = 0; i < parkings.size() && running; i++) {
-			
-			if(parkings.get(i).getName().equals(name)) {
-				
-				added = false;
-				running = false;
-				
-			}
-		}
-		
-		if(added) {
+		if(!checkAlreadyExist(name)) {
 			
 			parkings.add(new Parking(name, address, city, department, country, email, information, pricePerHour));
 		}
 		
 		return added;
+	}
+	
+	public boolean checkAlreadyExist(String name) {
+		
+		boolean running = true;
+		boolean exists = false;
+		
+		for(int i = 0; i < parkings.size() && running; i++) {
+			
+			if(parkings.get(i).getName().equals(name)) {
+				
+				exists = false;
+				running = false;
+			}
+		}
+		
+		return exists;
 	}
 	
 	/**
@@ -86,100 +91,41 @@ public class Owner extends User implements FileLoader<Parking>{
 		
 		if(parking != null) {
 			
-			boolean running = true;
-			
-			for(int i = 0; i < parkings.size() && running; i++) {
+			if(!checkAlreadyExist(parking.getName())) {
 				
-				if(parkings.get(i).getName().equals(parking.getName())) {
-					
-					added = false;
-				}
+				parkings.add(parking);
 			}
-		}
-		else {
-			
-			added = false;
-		}
-		
-		if(added) {
-			
-			parkings.add(parking);
 		}
 		
 		return added;
 	}
 	
-	//Sort
-	
-	/**
-	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the name.<br>
-	 *<b>Post:</b> The parkings are sorted by name from minor to major.<br>
-	 */
-	
-	//Insertion sort
-	public void sortParkingsByName() {
+	//Delete
+	public boolean deleteParking(String name){
+		sortParkingsByName();
+		boolean possible=false;
 		
-		for(int i = 1; i < parkings.size(); i++){
-			for(int j = i - 1; j >= 0 && parkings.get(j).compareTo(parkings.get(j+1)) > 0; j--){
-				
-				Parking one = parkings.get(j);
-				Parking two = parkings.get(j+1);
-				
-				parkings.set(j, two);
-				parkings.set(j+1, one);
-			}
-		}
-	}
-	
-	/**
-	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the country.<br>
-	 *<b>Post:</b> The parkings are sorted by country from minor to major.<br>
-	 */
-	
-	//Selection sort
-	public void sortParkingsByCountry() {
-		
-		for(int i = 0; i < parkings.size() -1; i++){
-			
-			Parking minor = parkings.get(i);
-			int minorPos = i;
-			
-			for(int j = i + 1; j < parkings.size(); j++){
-				
-				Parking actual = parkings.get(j);
-				
-				if(actual.compare(actual, minor) < 0){
-					
-					minor = actual;					
-					minorPos = j;
+		boolean found=false;
+		int start=0;
+		int end=parkings.size()-1;
+		while((start<=end)&&!found) {
+			int middle=(start+end)/2;
+			if(parkings.get(middle).getName().compareTo(name)==0){
+				found=true;
+				if(parkings.get(middle).isEmpty()){
+					parkings.remove(middle);
+					possible=true;
 				}
 			}
-			
-			Parking tmp = parkings.get(i);
-			parkings.set(i, minor);
-			parkings.set(minorPos, tmp);
-		}
-	}
-	
-	/**
-	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the price.<br>
-	 *<b>Post:</b> The parkings are sorted by price from minor to major.<br>
-	 */
-	
-	//Bubble sort
-	public void sortParkingsByPrice() {
-		
-		for(int i = parkings.size(); i > 0; i--){	
-			for(int j = 0; j < i - 1; j++){
-				
-				if(parkings.get(j).compareByAverage(parkings.get(j+1)) > 0){
-					
-					Parking tmp = parkings.get(j);
-					parkings.set(j, parkings.get(j+1));
-					parkings.set(j+1, tmp);
-				}
+			else if(parkings.get(middle).getName().compareTo(name)<0){
+				start=middle+1;
+			}
+			else{
+				end=middle-1;
 			}
 		}
+		
+		return possible;
 	}
 	
 	//Search
@@ -205,7 +151,7 @@ public class Owner extends User implements FileLoader<Parking>{
 			int middle = ((start + end) / 2);
 			
 			value = parkings.get(middle).getName();
-			shortName = value.length() > name.length() ? value.substring(0, name.length()) : value;
+			shortName = (value.length() > name.length()) ? value.substring(0, name.length()) : value;
 			
 			if(shortName.compareToIgnoreCase(name) == 0) {
 				
@@ -244,7 +190,7 @@ public class Owner extends User implements FileLoader<Parking>{
 		for(int i = index + 1; i < parkings.size() && is; i++) {
 			
 			value = parkings.get(i).getName();
-			shortName = (value.length() > name.length()) ? value.substring(0, name.length()): value;
+			shortName = (value.length() > name.length()) ? value.substring(0, name.length()) : value;
 			
 			if(!shortName.equalsIgnoreCase(name)) {
 				
@@ -274,7 +220,7 @@ public class Owner extends User implements FileLoader<Parking>{
 		for(int i = index - 1; i >= 0 && is; i--) {
 			
 			value = parkings.get(i).getName();
-			shortName = (value.length() > name.length()) ? value.substring(0, name.length()): value;
+			shortName = (value.length() > name.length()) ? value.substring(0, name.length()) : value;
 			
 			if(!shortName.equalsIgnoreCase(name)) {
 				
@@ -283,6 +229,76 @@ public class Owner extends User implements FileLoader<Parking>{
 			else{
 				
 				parkingsSearched.add(parkings.get(i));
+			}
+		}
+	}
+	
+	//Sort
+	
+	/**
+	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the name.<br>
+	 *<b>Post:</b> The parkings are sorted by name from minor to major.<br>
+	 */
+	
+	public void sortParkingsByName() {//Insertion
+		
+		for(int i = 1; i < parkings.size(); i++){
+			for(int j = i - 1; j >= 0 && parkings.get(j).compareTo(parkings.get(j+1)) > 0; j--){
+				
+				Parking one = parkings.get(j);
+				Parking two = parkings.get(j+1);
+				
+				parkings.set(j, two);
+				parkings.set(j+1, one);
+			}
+		}
+	}
+	
+	/**
+	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the country.<br>
+	 *<b>Post:</b> The parkings are sorted by country from minor to major.<br>
+	 */
+	
+	public void sortParkingsByCountry() {//Selection
+		
+		for(int i = 0; i < parkings.size() -1; i++){
+			
+			Parking minor = parkings.get(i);
+			int minorPos = i;
+			
+			for(int j = i + 1; j < parkings.size(); j++){
+				
+				Parking actual = parkings.get(j);
+				
+				if(actual.compare(actual, minor) < 0){
+					
+					minor = actual;					
+					minorPos = j;
+				}
+			}
+			
+			Parking tmp = parkings.get(i);
+			parkings.set(i, minor);
+			parkings.set(minorPos, tmp);
+		}
+	}
+	
+	/**
+	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the price.<br>
+	 *<b>Post:</b> The parkings are sorted by price from minor to major.<br>
+	 */
+	
+	public void sortParkingsByPrice() {//Bubble
+		
+		for(int i = parkings.size(); i > 0; i--){	
+			for(int j = 0; j < i - 1; j++){
+				
+				if(parkings.get(j).compareByAverage(parkings.get(j+1)) > 0){
+					
+					Parking tmp = parkings.get(j);
+					parkings.set(j, parkings.get(j+1));
+					parkings.set(j+1, tmp);
+				}
 			}
 		}
 	}
@@ -325,7 +341,6 @@ public class Owner extends User implements FileLoader<Parking>{
 	 * <b>Description:</b> This method allows creating a Parking form a file.<br>
 	 * @param path The file path.
 	 * @return A parking with the attributes given if the file exists and is a valid file, null in otherwise.
-	 * @throws IOException If an I/O error occurs.
 	 */
 	
 	@Override

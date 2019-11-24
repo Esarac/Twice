@@ -31,6 +31,7 @@ public class Report extends Record implements Comparable<Report>{
 		super(entryDate);
 		this.clientEmail = clientEmail;
 		this.carPlate = carPlate;
+		
 	}
 	
 	//Add

@@ -20,9 +20,17 @@ import model.Motorcycle.MotorcycleType;
 public class Client extends User implements FileLoader<Vehicle>{
 
 	//Attributes
-	private ArrayList<Vehicle> vehicles; 
+	private ArrayList<Vehicle> vehicles;
 	
 	//Constructor
+	
+	/**
+	 * <b>Description:</b> Creates a new instance of Client.<br>
+	 * @param name The client name.
+	 * @param email The client email.
+	 * @param password The client password - password must be a minimum of eight (8) characters in length and contain at least one (1) character from two (2) of the following categories: uppercase letter (A-Z) and digit (0-9).
+	 */
+	
 	public Client(String name, String email, String password){
 		super(name, email, password);
 		this.vehicles=new ArrayList<Vehicle>();
@@ -109,6 +117,7 @@ public class Client extends User implements FileLoader<Vehicle>{
 	
 	//Delete
 	public boolean deleteVehicle(String name){
+		sortVehiclesByName();
 		boolean possible=false;
 		
 		boolean found=false;
@@ -131,7 +140,7 @@ public class Client extends User implements FileLoader<Vehicle>{
 			}
 		}
 		
-		return found;
+		return possible;
 	}
 	
 	//Search

@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 
 public class App implements FileLoader<User>{
 	
-	//Constant
+	//Constants
 	public static final String APP_PATH="dat/Users.twc";
 	public static final String ACTUAL_USER_PATH="dat/ActualUser.twc";
 	
@@ -26,12 +26,27 @@ public class App implements FileLoader<User>{
 	private User rootUser;
 	
 	//Constructor
+	
+	/**
+	 * <b>Description:</b> Creates a new instance of App.<br>
+	 * @param name The app name.
+	 */
+	
 	public App(String name){
 		this.name=name;
 		loadUsers();
 	}
 	
 	//Add
+	
+	/**
+	 * <b>Description:</b> This method allows adding a client.<br>
+	 * @param name The client name.
+	 * @param email The client email.
+	 * @param password The client password - password must be a minimum of eight (8) characters in length and contain at least one (1) character from two (2) of the following categories: uppercase letter (A-Z) and digit (0-9).
+	 * @return True if the client could be added, false in otherwise.
+	 */
+	
 	public boolean addClient(String name, String email, String password){
 		boolean possible=true;
 		Client user=new Client(name, email, password);
@@ -43,6 +58,14 @@ public class App implements FileLoader<User>{
 		}
 		return possible;
 	}
+	
+	/**
+	 * <b>Description:</b> This method allows adding a owner.<br>
+	 * @param name The owner name.
+	 * @param email The owner email.
+	 * @param password The owner password - password must be a minimum of eight (8) characters in length and contain at least one (1) character from two (2) of the following categories: uppercase letter (A-Z) and digit (0-9).
+	 * @return True if the owner could be added, false in otherwise.
+	 */
 	
 	public boolean addOwner(String name, String email, String password){
 		boolean possible=true;
@@ -57,6 +80,15 @@ public class App implements FileLoader<User>{
 	}
 	
 	//LogIn
+	
+	/**
+	 * <b>Description:</b> This method allows logging a user.<br>
+	 * @param email The user email.
+	 * @param password The user password.
+	 * @param keepLoged The keepLoged status, if is true, the user will keep logging.
+	 * @return The user who logged in.
+	 */
+	
 	public User logIn(String email, String password, boolean keepLoged){
 		User actualUser=searchUser(email);
 		if(!password.equals(actualUser.decrypt())){
@@ -68,12 +100,24 @@ public class App implements FileLoader<User>{
 		return actualUser;
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows loading the user logged from a file.<br>
+	 * @return The user logged.
+	 */
+	
 	public User automaticLogIn(){
 		User actualUser=load(ACTUAL_USER_PATH);
 		return actualUser;
 	}
 	
 	//Search
+	
+	/**
+	 * <b>Description:</b> This method allows searching for user by the email.<br>
+	 * @param email The user email.
+	 * @return The user if could be found, null in otherwise.
+	 */
+	
 	public User searchUser(String email){
 		User user=null;
 		if(rootUser!=null){
@@ -83,6 +127,14 @@ public class App implements FileLoader<User>{
 	}
 	
 	//Read
+	
+	/**
+	 * <b>Description:</b> This method allows reading a file.<br>
+	 * @param path The file path.
+	 * @return The file content if the file exists, null in otherwise.
+	 * @throws IOException If an I/O error occurs.
+	 */
+	
 	public String read(String path) throws IOException{//[FILE]
 		String text="";
 		
@@ -105,6 +157,13 @@ public class App implements FileLoader<User>{
 	}
 
 	//Load
+	
+	/**
+	 * <b>Description:</b> This method allows loading the user from a serialized file.<br>
+	 * <b>Post:</b> The users were loaded.<br>
+	 * @return True if the users could be load, false in otherwise.
+	 */
+	
 	public boolean loadUsers() {//[FILE]
 		boolean possible=true;
 		try{
@@ -118,6 +177,12 @@ public class App implements FileLoader<User>{
 		return possible;
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows creating a User form a file.<br>
+	 * @param path The file path.
+	 * @return A user with the attributes given if the file exists and is a valid file, null in otherwise.
+	 */
+	
 	public User load(String path) {//[FILE]
 		User actualUser=null;
 		try{
@@ -129,6 +194,12 @@ public class App implements FileLoader<User>{
 	}
 	
 	//Save
+	
+	/**
+	 * <b>Description:</b> This method allows saving the users in a serialized file.<br>
+	 * @return True if the users could be saved, false in otherwise.
+	 */
+	
 	public boolean saveUsers() {//[FILE]
 		boolean possible=true;
 		try {
@@ -142,6 +213,12 @@ public class App implements FileLoader<User>{
 		catch (IOException e) {possible=false;}
 		return possible;
 	}
+	
+	/**
+	 * <b>Description:</b> This method allows saving the logged user in a file.<br>
+	 * @param actualUser The user logged.
+	 * @return True if the user could be saved, false in otherwise.
+	 */
 	
 	public boolean saveActualUser(User actualUser){//[FILE]
 		boolean possible=true;
@@ -159,6 +236,12 @@ public class App implements FileLoader<User>{
 	}
 	
 	//Get
+	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute rootUser.<br>
+	 * @return The attribute rootUser.
+	 */
+	
 	public User getRootUser() {
 		return rootUser;
 	}

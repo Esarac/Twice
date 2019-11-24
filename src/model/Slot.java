@@ -7,16 +7,16 @@ import java.io.Serializable;
 * @author VoodLyc & Esarac.
 */
 
-public class Slot<T extends Vehicle> implements Serializable {
+public class Slot implements Serializable {
 	
 	//Attributes
 	private String id;
 	private long initTime;
-	private T actualVehicle;
+	private Vehicle actualVehicle;
+	private Class<? extends Vehicle> type;//[BAD]
 	//Suppliers
-	private Slot<?> prev;
-	private Slot<?> next;
-	
+	private Slot prev;
+	private Slot next;
 	//Constructor
 	
 	/**
@@ -25,17 +25,17 @@ public class Slot<T extends Vehicle> implements Serializable {
 	 * @param initTime The time (In milliseconds) when the vehicle enters the parking.
 	 * @param actualVehicle The vehicle in the parking.
 	 */
-	public Slot(String id, long initTime) {
+	public Slot(String id, Class<? extends Vehicle> type) {
 		
 		this.id = id;
-		this.initTime = initTime;
+		this.type = type;
+		
 	}
 	
 	//Methods
 	
 	//Add
-	
-	public void addSlot(Slot<?> slot) {
+	public void addSlot(Slot slot) {
 		
 		if(next == null) {
 			
@@ -48,45 +48,14 @@ public class Slot<T extends Vehicle> implements Serializable {
 		}
 	}
 	
-	public int size() {
-		
-		int size;
-		
-		if(next == null) {
-			
-			size = 1;
-		}
-		else {
-			
-			size = 1 + next.size();
-		}
-		
-		return size;
-	}
-	
-	public Slot<?> getSlot(int index) {
-		
-		Slot<?> slot;
-		
-		if(index == 0) {
-			
-			slot = this;
-		}
-		else {
-			
-			slot = next.getSlot(index - 1);
-		}
-		
-		return slot;
-	}
-	
-	
-	public boolean addVehicle(Vehicle vehicle) {
+
+	public <T extends Vehicle> boolean addVehicle(T vehicle) {//[BAD]
 		
 		boolean added = true;
 		
 		try {
-			actualVehicle = (T) vehicle;
+			
+			actualVehicle =  type.cast(vehicle);
 		}
 		catch(ClassCastException e) {
 			
@@ -94,6 +63,21 @@ public class Slot<T extends Vehicle> implements Serializable {
 		}
 		
 		return added;
+
+	}
+	
+	public Slot getSlot(int index) {
+		
+		Slot slot;
+		
+		if(index == 0) {
+			slot = this;
+		}
+		else {
+			slot = next.getSlot(index - 1);
+		}
+		
+		return slot;
 	}
 	
 	//Getters
@@ -103,8 +87,12 @@ public class Slot<T extends Vehicle> implements Serializable {
 	 * @return The attribute actualVehicle.
 	 */
 	
-	public T getActualVehicle() {
+	public Vehicle getActualVehicle() {
 		return actualVehicle;
+	}
+	
+	public boolean isEmpty(){
+		return actualVehicle==null;
 	}
 	
 	/**
@@ -116,14 +104,22 @@ public class Slot<T extends Vehicle> implements Serializable {
 		return id;
 	}
 	
+	public Class<? extends Vehicle> getType(){
+		return type;
+	}
+	
+	public Slot getNext(){
+		return next;
+	}
+	
 	//Setters
 	
 	/**
 	 * <b>Description:</b> Sets the value of prev.<br>
 	 * @param slot the new prev. 
 	 */
-
-	public void setPrev(Slot<?> slot) {
+	
+	public void setPrev(Slot slot) {
 		
 		this.prev = slot;
 	}

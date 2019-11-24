@@ -12,11 +12,17 @@ import java.util.Comparator;
 
 public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle>, Serializable {
 	
-	//Attribute
+	//Attributes
 	private String name;
 	private Bill firstBill;
 	
 	//Constructor
+	
+	/**
+	 * <b>Description:</b> Creates a new instance of Vehicle.<br>
+	 * @param name The vehicle name
+	 */
+	
 	public Vehicle(String name){
 		this.name=name;
 	}
