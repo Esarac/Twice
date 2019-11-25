@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import exception.AlreadyExistsException;
+import exception.InvalidEmailException;
+import exception.InvalidPasswordException;
 import exception.InvalidPlateException;
 import model.Car.CarType;
 import model.MotorVehicle.VehicleFuel;
@@ -18,7 +20,7 @@ import model.Motorcycle.MotorcycleType;
 * @author VoodLyc & Esarac.
 */
 
-public class Client extends User implements FileLoader<Vehicle>{
+public class Client extends User implements FileLoader<Vehicle>{//[TEST]
 
 	//Attributes
 	private ArrayList<Vehicle> vehicles;
@@ -32,7 +34,7 @@ public class Client extends User implements FileLoader<Vehicle>{
 	 * @param password The client password - password must be a minimum of eight (8) characters in length and contain at least one (1) character from two (2) of the following categories: uppercase letter (A-Z) and digit (0-9).
 	 */
 	
-	public Client(String name, String email, String password){
+	public Client(String name, String email, String password)throws InvalidEmailException, InvalidPasswordException{
 		super(name, email, password);
 		this.vehicles=new ArrayList<Vehicle>();
 	}
@@ -126,14 +128,14 @@ public class Client extends User implements FileLoader<Vehicle>{
 		int end=vehicles.size()-1;
 		while((start<=end)&&!found) {
 			int middle=(start+end)/2;
-			if(vehicles.get(middle).getName().compareTo(name)==0){
+			if(vehicles.get(middle).getName().compareToIgnoreCase(name)==0){
 				found=true;
 				if(vehicles.get(middle).unpaidBills().size()==0){
 					vehicles.remove(middle);
 					possible=true;
 				}
 			}
-			else if(vehicles.get(middle).getName().compareTo(name)<0){
+			else if(vehicles.get(middle).getName().compareToIgnoreCase(name)<0){
 				start=middle+1;
 			}
 			else{
@@ -158,11 +160,10 @@ public class Client extends User implements FileLoader<Vehicle>{
 			String shortedName;
 			try{shortedName=vehicles.get(middle).getName().substring(0,name.length());}
 			catch(IndexOutOfBoundsException e){shortedName=vehicles.get(middle).getName();}
-			
 			if(shortedName.compareToIgnoreCase(name)==0){//Found
 				//Left
 				boolean runLeft=true;
-				for(int i=middle; (i>=0) && runLeft; i++){
+				for(int i=middle; (i>=0) && runLeft; i--){
 					try{
 						if(name.equalsIgnoreCase(vehicles.get(i).getName().substring(0,name.length()))){
 							vehicleList.add(vehicles.get(i));
@@ -210,11 +211,11 @@ public class Client extends User implements FileLoader<Vehicle>{
 		int end=vehicles.size()-1;
 		while((start<=end)&&!found) {
 			int middle=(start+end)/2;
-			if(vehicles.get(middle).getName().compareTo(name)==0){
+			if(vehicles.get(middle).getName().compareToIgnoreCase(name)==0){
 				vehicle=vehicles.get(middle);
 				found=true;
 			}
-			else if(vehicles.get(middle).getName().compareTo(name)<0){
+			else if(vehicles.get(middle).getName().compareToIgnoreCase(name)<0){
 				start=middle+1;
 			}
 			else{
@@ -259,9 +260,9 @@ public class Client extends User implements FileLoader<Vehicle>{
 	
 	public void sortVehiclesByUses(){//Insertion
 		for(int i=1; i<vehicles.size(); i++){
-			for(int j=i; (j>0)&&(vehicles.get(j-1).compare(vehicles.get(j-1), vehicles.get(j))>0); j--){
+			for(int j=i; (j>0)&&(vehicles.get(j-1).compare(vehicles.get(j-1), vehicles.get(j))<0); j--){
 				Vehicle actual=vehicles.get(j);
-				vehicles.set(j, vehicles.get(j+1));
+				vehicles.set(j, vehicles.get(j-1));
 				vehicles.set(j-1, actual);
 			}
 		}

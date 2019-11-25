@@ -10,12 +10,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
+import exception.AlreadyExistsException;
+import exception.InvalidEmailException;
+import exception.InvalidPasswordException;
+
 /**
 * <b>Description:</b> The class App in the package model.<br>
 * @author VoodLyc & Esarac.
 */
 
-public class App implements FileLoader<User>{
+public class App implements FileLoader<User>{//[TEST]
 	
 	//Constants
 	public static final String APP_PATH="dat/Users.twc";
@@ -47,16 +51,16 @@ public class App implements FileLoader<User>{
 	 * @return True if the client could be added, false in otherwise.
 	 */
 	
-	public boolean addClient(String name, String email, String password){
-		boolean possible=true;
+	public void addClient(String name, String email, String password) throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException {
+		
 		Client user=new Client(name, email, password);
 		if(rootUser!=null){
-			possible=rootUser.addUser(user);
+			rootUser.addUser(user);
 		}
 		else {
 			rootUser=user;
 		}
-		return possible;
+		
 	}
 	
 	/**
@@ -67,16 +71,16 @@ public class App implements FileLoader<User>{
 	 * @return True if the owner could be added, false in otherwise.
 	 */
 	
-	public boolean addOwner(String name, String email, String password){
-		boolean possible=true;
+	public void addOwner(String name, String email, String password) throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException{
+		
 		Owner user=new Owner(name, email, password);
 		if(rootUser!=null){
-			possible=rootUser.addUser(user);
+			rootUser.addUser(user);
 		}
 		else {
 			rootUser=user;
 		}
-		return possible;
+		
 	}
 	
 	//LogIn
@@ -91,11 +95,13 @@ public class App implements FileLoader<User>{
 	
 	public User logIn(String email, String password, boolean keepLoged){
 		User actualUser=searchUser(email);
-		if(!password.equals(actualUser.decrypt())){
-			actualUser=null;
-		}
-		if(keepLoged){
-			saveActualUser(actualUser);
+		if(actualUser!=null){
+			if(!password.equals(actualUser.decrypt(actualUser.getPassword()))){
+				actualUser=null;
+			}
+			if(keepLoged){
+				saveActualUser(actualUser);
+			}
 		}
 		return actualUser;
 	}
@@ -187,9 +193,9 @@ public class App implements FileLoader<User>{
 		User actualUser=null;
 		try{
 			String[] data=read(path).split("\n");
-			logIn(data[0], data[1], false);
+			actualUser=logIn(data[0], searchUser(data[0]).decrypt(data[1]), false);
 		}
-		catch (IOException | IndexOutOfBoundsException e){}
+		catch (IOException | IndexOutOfBoundsException | NullPointerException e){}
 		return actualUser;
 	}
 	

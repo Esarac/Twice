@@ -10,7 +10,7 @@ import java.util.Comparator;
 * @author VoodLyc & Esarac.
 */
 
-public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle>, Serializable {
+public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle>, Serializable {//[TEST]
 	
 	//Attributes
 	private String name;
@@ -62,11 +62,11 @@ public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle
 	
 	//Compare
 	public int compareTo(Vehicle vehicle){
-		return name.compareTo(vehicle.name);
+		return name.compareToIgnoreCase(vehicle.name);
 	}
 	
 	public int compare(Vehicle vehicle1, Vehicle vehicle2){
-		return vehicle1.billsSize()-vehicle1.billsSize();
+		return vehicle1.billsSize()-vehicle2.billsSize();
 	}
 	
 	//Get
@@ -77,4 +77,9 @@ public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle
 	public Bill getFirstBill() {
 		return firstBill;
 	}
+	
+	public String toString() {
+		return name + ": "+this.getClass().getName();
+	}
+	
 }

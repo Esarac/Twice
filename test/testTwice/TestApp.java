@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import exception.AlreadyExistsException;
+import exception.InvalidEmailException;
+import exception.InvalidPasswordException;
 import model.App;
 
 class TestApp {
@@ -12,50 +15,56 @@ class TestApp {
 	private App app;
 	
 	//Scenes
-	private void setUpSceneEmptyApp(){
+	private void setUpSceneEmptyApp() {
 		app=new App("Twice");
 	}
 	
-	private void setUpSceneNormalApp(){
+	private void setUpSceneNormalApp()throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException{
 		app=new App("Twice");
-		app.addClient("Johan","j.sebas036@gmail.com","Minecraft3");
-		app.addClient("Esteban","acosta57esteban@gmail.com","Minecraft3");
-		app.addClient("Mateo","mxyz1111@gmail.com","Minecraft3");
+		app.addClient("Sana","nosananolife@gmail.com","Password6");
+		app.addClient("Nayeon","prettynayeon@gmail.com","Password6");
+		app.addClient("Jihyo","godjihyo@gmail.com","Password6");
 	}
 	
 	//Tests
 	@Test
-	void testAddClient(){
+	void testAddClient()throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException{
 		setUpSceneEmptyApp();
-		app.addClient("Esteban","acosta57esteban@gmail.com","Minecraft3");
-		app.addClient("Johan","j.sebas036@gmail.com","Minecraft3");
-		assertEquals(app.getRootUser().getEmail(), "acosta57esteban@gmail.com");
-		assertEquals(app.getRootUser().getRight().getEmail(), "j.sebas036@gmail.com");
+		app.addClient("Jeongyeon","girlpower@gmail.com","Password6");
+		app.addClient("Chaeyoung","sweetstrawberry@gmail.com","Password6");
+		assertEquals(app.getRootUser().getEmail(), "girlpower@gmail.com");
+		assertEquals(app.getRootUser().getRight().getEmail(), "sweetstrawberry@gmail.com");
 	}
 	
 	@Test
-	void testAddOwner(){
+	void testAddOwner()throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException{
 		setUpSceneEmptyApp();
-		app.addOwner("Esteban","acosta57esteban@gmail.com","Minecraft3");
-		app.addOwner("Johan","j.sebas036@gmail.com","Minecraft3");
-		assertEquals(app.getRootUser().getEmail(), "acosta57esteban@gmail.com");
-		assertEquals(app.getRootUser().getRight().getEmail(), "j.sebas036@gmail.com");
+		app.addOwner("Dahyun","eagledance@gmail.com","Password6");
+		app.addOwner("Momo","momo.dancemachine@gmail.com","Password6");
+		assertEquals(app.getRootUser().getEmail(), "eagledance@gmail.com");
+		assertEquals(app.getRootUser().getRight().getEmail(), "momo.dancemachine@gmail.com");
 	}
 	
 	@Test
-	void testLogIn(){
+	void testLogIn()throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException{
 		setUpSceneNormalApp();
-		assertNotNull(app.logIn("acosta57esteban@gmail.com","Minecraft3",false));
-		assertNotNull(app.logIn("j.sebas036@gmail.com","Minecraft3",false));
-		assertNull(app.logIn("acosta57esteban@gmail.com","Esteban2",false));
+		assertNotNull(app.logIn("prettynayeon@gmail.com","Password6",false));
+		assertNull(app.logIn("prettynayeon@gmail.com","Password3",false));
+		assertNull(app.logIn("minaballerina@gmail.com","Password6",false));
 	}
 
 	@Test
-	void testSearchUser() {
+	void testSearchUser() throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException{
 		setUpSceneNormalApp();
-		assertNotNull(app.searchUser("acosta57esteban@gmail.com"));
-		assertNotNull(app.searchUser("mxyz1111@gmail.com"));
-		assertNull(app.searchUser("juan.ossa1@yahoo.com"));
+		assertEquals(app.searchUser("nosananolife@gmail.com").getEmail(),"nosananolife@gmail.com");
+		assertEquals(app.searchUser("prettynayeon@gmail.com").getEmail(),"prettynayeon@gmail.com");
+		assertNull(app.searchUser("tzuyoda@gmail.com"));
+	}
+	
+	@Test
+	void testLoad() throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException{
+		setUpSceneNormalApp();
+		assertEquals(app.load("test/testFiles/ActualUser.txt").getEmail(), "prettynayeon@gmail.com");
 	}
 	
 }

@@ -7,7 +7,7 @@ import java.util.Calendar;
 * @author VoodLyc & Esarac.
 */
 
-public class Report extends Record implements Comparable<Report>{
+public class Report extends Record implements Comparable<Report>{//[TEST]
 
 	//Attributes
 	private String clientEmail;
@@ -122,8 +122,24 @@ public class Report extends Record implements Comparable<Report>{
 	}
 	
 	//Get
+	public String getClientEmail() {
+		return clientEmail;
+	}
+	
+	public String getVehiclePlate() {
+		return vehiclePlate;
+	}
+	
+	public Report getLeft(){
+		return left;
+	}
+	
 	public Report getNext() {
 		return next;
+	}
+	
+	public Report getRight(){
+		return right;
 	}
 	
 }

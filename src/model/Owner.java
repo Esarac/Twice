@@ -6,6 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import exception.InvalidEmailException;
+import exception.InvalidPasswordException;
+
 /**
 * <b>Description:</b> The class Owner in the package model.<br>
 * @author VoodLyc & Esarac.
@@ -25,7 +28,7 @@ public class Owner extends User implements FileLoader<Parking>{
 	 * @param password The owner password - password must be a minimum of eight (8) characters in length and contain at least one (1) character from two (2) of the following categories: uppercase letter (A-Z) and digit (0-9).
 	 */
 	
-	public Owner(String name, String email, String password) {
+	public Owner(String name, String email, String password) throws InvalidEmailException, InvalidPasswordException{
 		
 		super(name, email, password);
 		this.parkings = new ArrayList<Parking>();

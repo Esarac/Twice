@@ -65,7 +65,19 @@ public class Slot implements Serializable {
 	
 	//Delete
 	public double removeVehicle(double[] pricePerHour) {
+		double price=calculatePrice(pricePerHour);
 		
+		actualVehicle.getFirstBill().setDepartureDate(new GregorianCalendar());
+		actualVehicle.getFirstBill().setPrice(price);
+		
+		this.initTime=0;
+		this.actualVehicle = null;
+		
+		return price;
+	}
+	
+	//Calculate
+	public double calculatePrice(double[] pricePerHour){
 		long end = System.nanoTime();
 		double delta = (end - initTime) * 2.7778e-13;
 		double price = 0;
@@ -81,11 +93,8 @@ public class Slot implements Serializable {
 		else if(actualVehicle instanceof Bicycle ) {
 			
 			price = pricePerHour[2] * delta;
+			
 		}
-		
-		actualVehicle.getFirstBill().setDepartureDate(new GregorianCalendar());
-		actualVehicle.getFirstBill().setPrice(price);
-		actualVehicle = null;
 		
 		return price;
 	}

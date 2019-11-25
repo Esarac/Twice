@@ -7,7 +7,7 @@ import exception.InvalidPlateException;
 * @author VoodLyc & Esarac.
 */
 
-public abstract class MotorVehicle extends Vehicle{
+public abstract class MotorVehicle extends Vehicle{//[TEST]
 
 	//Constants
 	public enum VehicleFuel{GASOLINE, DIESEL, GAS, EXTRA, ELECTRIC, HYBRID}

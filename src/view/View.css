@@ -1,0 +1,64 @@
+.choice-box {
+  -fx-background-color: black;
+  -fx-mark-color: lightgoldenrodyellow;
+  
+}
+
+.choice-box > .label { 
+	-fx-text-fill: white;
+	-fx-font: bold 9pt "Arial";
+}
+
+.choice-box .context-menu { 
+	
+	-fx-background-color: black;
+	-fx-font: bold 9pt "Arial";
+}
+
+.choice-box .menu-item:focused { 
+	
+	-fx-background-color: lightgoldenrodyellow;
+}
+
+.choice-box .menu-item > .label { 
+	
+	-fx-text-fill: white;
+	-fx-font: bold 9pt "Arial";
+}
+
+.choice-box .menu-item:focused > .label { 
+	
+	-fx-text-fill: black;
+}
+
+.dialog {
+	
+	-fx-background-color: #dcdcdc;
+	-fx-border-color: black;
+	-fx-border-radius: 3;
+}
+
+.dialog > *.buttonbar > *.container {
+	
+	-fx-background-color: #dcdcdc;
+}
+
+.dialog > *.content.label {
+	
+	-fx-text-fill:black;
+	-fx-font: bold 12pt "Arial";
+}
+
+.dialog *.button {
+	
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 11pt "Arial";
+	-fx-text-fill: black;
+	-fx-border-color: black;
+	-fx-border-radius: 3;
+}
+
+.dialog:header *.header-panel {
+	
+	-fx-background-color: #dcdcdc;
+}

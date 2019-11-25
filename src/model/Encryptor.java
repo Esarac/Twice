@@ -8,6 +8,6 @@ package model;
 public interface Encryptor {
 
 	String encrypt(String text);
-	String decrypt();
+	String decrypt(String text);
 	
 }

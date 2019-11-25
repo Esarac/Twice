@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import exception.InvalidEmailException;
+import exception.InvalidPasswordException;
 import model.Owner;
 import model.Parking;
 
@@ -13,7 +15,7 @@ class TestOwner {
 	
 	private Owner owner;
 	
-	private void setUpScenario1() {
+	private void setUpScenario1() throws InvalidEmailException, InvalidPasswordException {
 		
 		owner = new Owner("","","P2349kef230");
 		
@@ -33,7 +35,7 @@ class TestOwner {
 		owner.setParkings(parkings);
 	}
 	
-	public void setUpScenario2() {
+	public void setUpScenario2()throws InvalidEmailException, InvalidPasswordException {
 		
 		owner = new Owner("","","P2349kef230");
 		
@@ -53,7 +55,7 @@ class TestOwner {
 		owner.setParkings(parkings);
 	}
 	
-	public void setUpScenario3() {
+	public void setUpScenario3() throws InvalidEmailException, InvalidPasswordException{
 		
 		owner = new Owner("","","P2349kef230");
 		
@@ -70,7 +72,7 @@ class TestOwner {
 		owner.setParkings(parkings);
 	}
 	
-	private void setUpScenario4() {
+	private void setUpScenario4() throws InvalidEmailException, InvalidPasswordException{
 		
 		owner = new Owner("","","P2349kef230");
 		
@@ -91,7 +93,7 @@ class TestOwner {
 	}
 
 	@Test
-	void testSortParkingsByName() {
+	void testSortParkingsByName() throws InvalidEmailException, InvalidPasswordException{
 		
 		setUpScenario1();
 		
@@ -112,7 +114,7 @@ class TestOwner {
 	}
 	
 	@Test
-	void testSortParkingsByCountry() {
+	void testSortParkingsByCountry() throws InvalidEmailException, InvalidPasswordException{
 		
 		setUpScenario2();
 		
@@ -133,7 +135,7 @@ class TestOwner {
 	}
 	
 	@Test
-	void testSortParkingsByPrice() {
+	void testSortParkingsByPrice() throws InvalidEmailException, InvalidPasswordException{
 		
 		setUpScenario3();
 		
@@ -151,7 +153,7 @@ class TestOwner {
 	}
 	
 	@Test
-	void testSearchParking() {
+	void testSearchParking() throws InvalidEmailException, InvalidPasswordException{
 		
 		setUpScenario4();
 		

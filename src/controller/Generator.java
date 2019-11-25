@@ -1,5 +1,7 @@
 package controller;
 
-public class Generator {
+public interface Generator {
 
+	public void generate();
+	
 }

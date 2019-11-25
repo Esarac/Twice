@@ -3,9 +3,12 @@ package testTwice;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.Test;
 
+import exception.InvalidEmailException;
+import exception.InvalidPasswordException;
 import model.Client;
 import model.Car.CarType;
 import model.MotorVehicle.VehicleFuel;
@@ -18,20 +21,22 @@ class TestClient {
 	private Client client;
 	
 	//Scenes
-	private void setUpSceneEmptyClient() {
-		client=new Client("Esteban", "acosta57esteban@gmail.com", "Minecraft3");
+	private void setUpSceneEmptyClient() throws InvalidEmailException, InvalidPasswordException{
+		client=new Client("Nayeon", "acosta57esteban@gmail.com", "Minecraft3");
 	}
 	
-	private void setUpSceneNormalClient() {
-		client=new Client("Esteban", "acosta57esteban@gmail.com", "Minecraft3");
-		client.addBicycle("rOlo", "Verde");
-		client.addCar("Rojo", "ICT567", VehicleFuel.GASOLINE, CarType.STANDARD, 1);
-		client.addMotorcycle("Grizelda", "ABC12C", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 50);
+	private void setUpSceneNormalClient() throws InvalidEmailException, InvalidPasswordException{
+		client=new Client("Nayeon", "acosta57esteban@gmail.com", "Minecraft3");
+		client.addMotorcycle("Tzuyu", "ABC12C", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 50);
+		client.addBicycle("Jihyo", "Verde");
+		client.addBicycle("jihYWP", "Roja");
+		client.getVehicles().get(2).addBill(new GregorianCalendar(),"Sana", "Calle 15 #121-25, Japon");
+		client.addCar("Mina", "ICT567", VehicleFuel.GASOLINE, CarType.STANDARD, 1);
 	}
 	
 	//Tests
 	@Test
-	void testAddVehicle(){
+	void testAddVehicle() throws InvalidEmailException, InvalidPasswordException{
 		setUpSceneEmptyClient();
 		assertTrue(client.addVehicle("test/testFiles/Car.txt"));
 		assertTrue(client.addVehicle("test/testFiles/Motorcycle.txt"));
@@ -43,82 +48,94 @@ class TestClient {
 	}
 	
 	@Test
-	void testAddCar() {
+	void testAddCar() throws InvalidEmailException, InvalidPasswordException {
 		setUpSceneEmptyClient();
-		assertTrue(client.addCar("Rojo", "ICT567", VehicleFuel.GASOLINE, CarType.STANDARD, 1));
-		assertFalse(client.addCar("Gris", "ICT567", VehicleFuel.GASOLINE, CarType.STANDARD, 1));
-		assertFalse(client.addCar("Rojo", "LMT123", VehicleFuel.GASOLINE, CarType.STANDARD, 1));
-		assertFalse(client.addCar("Amado", "holaNinos1223", VehicleFuel.GASOLINE, CarType.STANDARD, 1));
+		assertTrue(client.addCar("Jeongyeon", "ICT567", VehicleFuel.GASOLINE, CarType.STANDARD, 1));
+		assertFalse(client.addCar("Jeongyeon", "ICT567", VehicleFuel.GASOLINE, CarType.STANDARD, 1));
+		assertFalse(client.addCar("Chaeyoung", "holaNinos1223", VehicleFuel.GASOLINE, CarType.STANDARD, 1));
+		assertEquals(client.getVehicles().get(0).getName(),"Jeongyeon");
 	}
 
 	@Test
-	void testAddMotorcycle() {
+	void testAddMotorcycle() throws InvalidEmailException, InvalidPasswordException {
 		setUpSceneEmptyClient();
-		assertTrue(client.addMotorcycle("Rojo", "ICT567", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 1));
-		assertFalse(client.addMotorcycle("Gris", "ICT567", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 1));
-		assertFalse(client.addMotorcycle("Rojo", "LMT123", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 1));
-		assertFalse(client.addMotorcycle("Amado", "holaNinos1223", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 1));
+		assertTrue(client.addMotorcycle("Jeongyeon", "ICT567", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 1));
+		assertFalse(client.addMotorcycle("Jeongyeon", "ICT567", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 1));
+		assertFalse(client.addMotorcycle("Chaeyoung", "holaNinos1223", VehicleFuel.GASOLINE, MotorcycleType.STANDARD, 1));
+		assertEquals(client.getVehicles().get(0).getName(),"Jeongyeon");
 	}
 	
 	@Test
-	void testAddBicycle() {
+	void testAddBicycle() throws InvalidEmailException, InvalidPasswordException{
 		setUpSceneEmptyClient();
-		assertTrue(client.addBicycle("Amado", "Rojo"));
-		assertFalse(client.addBicycle("Amado", "Verde"));
+		assertTrue(client.addBicycle("Jeongyeon", "Rojo"));
+		assertFalse(client.addBicycle("Jeongyeon", "Rojo"));
+		assertEquals(client.getVehicles().get(0).getName(),"Jeongyeon");
 	}
 	
 	@Test
-	void testSearchVehicles() {
+	void testDeleteVehicle() throws InvalidEmailException, InvalidPasswordException {
 		setUpSceneNormalClient();
-		ArrayList<Vehicle> vehicles=client.searchVehicles("Grizelda");
-		assertEquals(vehicles.get(0).getName(), "Grizelda");
-		vehicles=client.searchVehicles("Ro");
-		assertEquals(vehicles.get(0).getName(), "Rojo");
-		assertEquals(vehicles.get(1).getName(), "rOlo");
-		vehicles=client.searchVehicles("Paro");
-		assertEquals(vehicles.size(), 0);
+		assertTrue(client.deleteVehicle("mina"));
+		assertFalse(client.deleteVehicle("dahyun"));
+		assertFalse(client.deleteVehicle("JihYWP"));
+		assertEquals(client.getVehicles().size(), 3);
 	}
 	
 	@Test
-	void testSearchVehicle() {
+	void testSearchVehicles() throws InvalidEmailException, InvalidPasswordException{
 		setUpSceneNormalClient();
-		assertNotNull(client.searchVehicle("rOlo"));
-		assertNull(client.searchVehicle("Paro"));
+		ArrayList<Vehicle> vehicles=client.searchVehicles("jih");
+		assertEquals(vehicles.get(0).getName(), "jihYWP");
+		assertEquals(vehicles.get(1).getName(), "Jihyo");
 	}
 	
 	@Test
-	void testSearchMotorVehicles() {
+	void testSearchVehicle() throws InvalidEmailException, InvalidPasswordException{
+		setUpSceneNormalClient();
+		assertNotNull(client.searchVehicle("Jihyo"));
+		assertNull(client.searchVehicle("Sana"));
+	}
+	
+	@Test
+	void testSearchMotorVehicles() throws InvalidEmailException, InvalidPasswordException{
 		setUpSceneNormalClient();
 		assertNotNull(client.searchMotorVehicle("ICT567"));
-		assertNull(client.searchMotorVehicle("rOlo"));
+		assertNull(client.searchMotorVehicle("Jihyo"));
 	}
 	
 	@Test
-	void testSortVehiclesByName() {
+	void testSortVehiclesByName() throws InvalidEmailException, InvalidPasswordException{
 		setUpSceneNormalClient();
 		client.sortVehiclesByName();
-		assertEquals(client.getVehicles().get(0).getName(), "Grizelda");
-		assertEquals(client.getVehicles().get(1).getName(), "Rojo");
-		assertEquals(client.getVehicles().get(2).getName(), "rOlo");
-		
+		assertEquals(client.getVehicles().get(0).getName(), "Jihyo");
+		assertEquals(client.getVehicles().get(1).getName(), "jihYWP");
+		assertEquals(client.getVehicles().get(2).getName(), "Mina");
+		assertEquals(client.getVehicles().get(3).getName(), "Tzuyu");
 	}
 	
 	@Test
-	void testSortVehiclesByUses() {
-		
-	}
-	
-	@Test
-	void testSortVehiclesByPlate() {
+	void testSortVehiclesByUses() throws InvalidEmailException, InvalidPasswordException{
 		setUpSceneNormalClient();
-		client.sortVehiclesByName();
-		assertEquals(client.getVehicles().get(0).getName(), "Grizelda");
-		assertEquals(client.getVehicles().get(1).getName(), "Rojo");
-		assertEquals(client.getVehicles().get(2).getName(), "rOlo");
+		client.sortVehiclesByUses();
+		assertEquals(client.getVehicles().get(0).getName(), "jihYWP");
+		assertEquals(client.getVehicles().get(1).getName(), "Jihyo");
+		assertEquals(client.getVehicles().get(2).getName(), "Tzuyu");
+		assertEquals(client.getVehicles().get(3).getName(), "Mina");
 	}
 	
 	@Test
-	void testLoad() {
+	void testSortVehiclesByPlate() throws InvalidEmailException, InvalidPasswordException{
+		setUpSceneNormalClient();
+		client.sortVehiclesByPlate();
+		assertEquals(client.getVehicles().get(0).getName(), "jihYWP");
+		assertEquals(client.getVehicles().get(1).getName(), "Jihyo");
+		assertEquals(client.getVehicles().get(2).getName(), "Mina");
+		assertEquals(client.getVehicles().get(3).getName(), "Tzuyu");
+	}
+	
+	@Test
+	void testLoad() throws InvalidEmailException, InvalidPasswordException{
 		setUpSceneEmptyClient();
 		assertNotNull(client.load("test/testFiles/Car.txt"));
 		assertNotNull(client.load("test/testFiles/Motorcycle.txt"));

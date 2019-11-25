@@ -54,7 +54,11 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	//Add
 	public void addSlot(int amount, Class<? extends Vehicle> type) {
 		Slot first=null;
-		int slotNumber=firstSlot.getId();
+		int slotNumber=1;
+		if(firstSlot!=null){
+			slotNumber=firstSlot.getId();
+		}
+		
 		
 		for(int i=0; i<amount; i++){
 			slotNumber++;
@@ -105,7 +109,7 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	public boolean insertVehicle(Vehicle vehicle, Client client, int slotId){
 		boolean possible=false;
 		
-		if(!ownerVehicleHere(client)){
+		if(searchSlotOwnerVehicle(client)==null){
 			boolean found=false;
 			Slot actual=firstSlot;
 			while(actual!=null && !found){
@@ -137,29 +141,15 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	public boolean removeVehicle(Client client) {
 		boolean possible=false;
 		
-		Slot actual=firstSlot;
-		while((actual!=null) && !possible){
-			
-			if(!actual.isEmpty()){
-				
-				for(int i=0; (i<client.getVehicles().size()) && !possible; i++){
-					if(client.getVehicles().get(i).equals(actual.getActualVehicle())){
-						//Removed
-						possible=true;
-						
-						double price=actual.removeVehicle(pricePerHour);
-						Report report=searchLastReport(client.getEmail());
-						report.setPrice(price);
-						report.setDepartureDate(new GregorianCalendar());
-						//...
-					}
-				}
-				
-			}
-			
-			actual=actual.getNext();
-			
-		}
+		Slot actual=searchSlotOwnerVehicle(client);
+		//Removed
+		possible=true;
+		
+		double price=actual.removeVehicle(pricePerHour);
+		Report report=searchLastReport(client.getEmail());
+		report.setPrice(price);
+		report.setDepartureDate(new GregorianCalendar());
+		//...
 		
 		return possible;
 	}
@@ -193,17 +183,19 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return prev;
 	}
 	
-	public boolean ownerVehicleHere(Client client){
-		boolean isHere=false;
+	public Slot searchSlotOwnerVehicle(Client client){
+		boolean found=false;
+		Slot slot=null;
 		
 		Slot actual=firstSlot;
-		while((actual!=null) && !isHere){
+		while((actual!=null) && !found){
 			
 			if(!actual.isEmpty()){
 				
 				for(Vehicle vehicle: client.getVehicles()){
 					if(vehicle.equals(actual.getActualVehicle())){
-						isHere=true;
+						found=true;
+						slot=actual;
 					}
 				}
 				
@@ -213,7 +205,7 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 			
 		}
 		
-		return isHere;
+		return slot;
 	}
 	
 	//Calculate
