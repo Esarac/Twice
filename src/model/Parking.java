@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 
 /**
 * <b>Description:</b> The class Parking in the package model.<br>
@@ -52,26 +53,34 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	//Methods
 	//Add
 	public void addSlot(int amount, Class<? extends Vehicle> type) {
+		Slot first=null;
+		int slotNumber=firstSlot.getId();
 		
-		if(amount > 0 && firstSlot == null) {
+		for(int i=0; i<amount; i++){
+			slotNumber++;
 			
-			firstSlot = new Slot("1", type);
-			
-			for(int i = 1; i < amount; i++) {
+			if(first!=null){
 				
-				firstSlot.addSlot(new Slot((i+1) + "", type));
+				Slot actual=new Slot(slotNumber, type);
+				actual.setNext(first);//A->F
+				first.setPrev(actual);//A<-F
+				first=actual;
 				
 			}
-		}
-		else {
-			
-			int prev = slotsSize();
-			
-			for(int i = (prev + 1); i < (amount + (prev + 1)); i++) {
+			else {
 				
-				firstSlot.addSlot(new Slot(i + "", type));
+				first=new Slot(slotNumber, type);
+				
+				if(firstSlot!=null){
+					first.setNext(firstSlot);//F->FS
+					firstSlot.setPrev(first);//F<-FS
+				}
+				
 			}
+			
 		}
+		
+		this.firstSlot=first;
 	}
 	
 	/**
@@ -93,6 +102,68 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		}
 	}
 	
+	public boolean insertVehicle(Vehicle vehicle, Client client, int slotId){
+		boolean possible=false;
+		
+		if(!ownerVehicleHere(client)){
+			boolean found=false;
+			Slot actual=firstSlot;
+			while(actual!=null && !found){
+				if(actual.getId()==slotId){
+					//Insertion
+					found=true;
+					possible=actual.insertVehicle(vehicle, name, getCompleteAddress());
+					if(possible){
+						if(vehicle instanceof MotorVehicle){
+							addReport(client.getEmail(), ((MotorVehicle)vehicle).getPlate() );
+						}
+						else{
+							addReport(client.getEmail(), null);
+						}
+					}
+					//...
+				}
+				else{
+					actual=actual.getNext();
+				}
+			}
+		}
+		
+		return possible;
+	}
+	
+	//Delete
+	
+	public boolean removeVehicle(Client client) {
+		boolean possible=false;
+		
+		Slot actual=firstSlot;
+		while((actual!=null) && !possible){
+			
+			if(!actual.isEmpty()){
+				
+				for(int i=0; (i<client.getVehicles().size()) && !possible; i++){
+					if(client.getVehicles().get(i).equals(actual.getActualVehicle())){
+						//Removed
+						possible=true;
+						
+						double price=actual.removeVehicle(pricePerHour);
+						Report report=searchLastReport(client.getEmail());
+						report.setPrice(price);
+						report.setDepartureDate(new GregorianCalendar());
+						//...
+					}
+				}
+				
+			}
+			
+			actual=actual.getNext();
+			
+		}
+		
+		return possible;
+	}
+	
 	//Search
 	/**
 	 * <b>Description:</b> This method allows searching the reports that match the email.<br>
@@ -110,6 +181,39 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		}
 		
 		return report;
+	}
+	
+	public Report searchLastReport(String email){
+		Report prev=null;
+		Report actual = searchReport(email);
+		while(actual!=null){
+			prev=actual;
+			actual=prev.getNext();
+		}
+		return prev;
+	}
+	
+	public boolean ownerVehicleHere(Client client){
+		boolean isHere=false;
+		
+		Slot actual=firstSlot;
+		while((actual!=null) && !isHere){
+			
+			if(!actual.isEmpty()){
+				
+				for(Vehicle vehicle: client.getVehicles()){
+					if(vehicle.equals(actual.getActualVehicle())){
+						isHere=true;
+					}
+				}
+				
+			}
+			
+			actual=actual.getNext();
+			
+		}
+		
+		return isHere;
 	}
 	
 	//Calculate
@@ -274,12 +378,10 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	}
 	
 	public Slot getSlot(int index) {
+		Slot slot = firstSlot;
 		
-		Slot slot = null;
-		
-		if(firstSlot != null) {
-			
-			slot = firstSlot.getSlot(index);
+		for(int i=0; (i<index) && (slot!=null); i++){
+			slot=slot.getNext();
 		}
 		
 		return slot;

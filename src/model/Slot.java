@@ -1,6 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.GregorianCalendar;
+
+import exception.SlotMismatchException;
 
 /**
 * <b>Description:</b> The class Slot in the package model.<br>
@@ -10,10 +13,10 @@ import java.io.Serializable;
 public class Slot implements Serializable {
 	
 	//Attributes
-	private String id;
+	private int id;
 	private long initTime;
 	private Vehicle actualVehicle;
-	private Class<? extends Vehicle> type;//[BAD]
+	private Class<? extends Vehicle> type;
 	//Suppliers
 	private Slot prev;
 	private Slot next;
@@ -25,7 +28,7 @@ public class Slot implements Serializable {
 	 * @param initTime The time (In milliseconds) when the vehicle enters the parking.
 	 * @param actualVehicle The vehicle in the parking.
 	 */
-	public Slot(String id, Class<? extends Vehicle> type) {
+	public Slot(int id, Class<? extends Vehicle> type) {
 		
 		this.id = id;
 		this.type = type;
@@ -35,49 +38,56 @@ public class Slot implements Serializable {
 	//Methods
 	
 	//Add
-	public void addSlot(Slot slot) {
-		
-		if(next == null) {
-			
-			next = slot;
-			slot.setPrev(this);
-		}
-		else {
-			
-			next.addSlot(slot);
-		}
-	}
-	
-
-	public <T extends Vehicle> boolean addVehicle(T vehicle) {//[BAD]
+	public boolean insertVehicle(Vehicle vehicle, String parkingName, String parkingAddress) {
 		
 		boolean added = true;
 		
-		try {
-			
-			actualVehicle =  type.cast(vehicle);
-		}
-		catch(ClassCastException e) {
-			
-			added = false;
+		if(actualVehicle == null) {
+			if(type.isAssignableFrom(vehicle.getClass())) {
+				actualVehicle =  vehicle;
+				actualVehicle.addBill(new GregorianCalendar(), parkingName, parkingAddress);
+				initTime = System.nanoTime();
+			}
+			else {
+				try {
+					
+					throw new SlotMismatchException();
+					
+				} catch (SlotMismatchException e) {
+					
+					added = false;
+				}
+			}
 		}
 		
 		return added;
-
 	}
 	
-	public Slot getSlot(int index) {
+	//Delete
+	public double removeVehicle(double[] pricePerHour) {
 		
-		Slot slot;
+		long end = System.nanoTime();
+		double delta = (end - initTime) * 2.7778e-13;
+		double price = 0;
 		
-		if(index == 0) {
-			slot = this;
+		if(actualVehicle instanceof Car) {
+			
+			price = pricePerHour[0] * delta;
 		}
-		else {
-			slot = next.getSlot(index - 1);
+		else if(actualVehicle instanceof Motorcycle) {
+			
+			price = pricePerHour[1] * delta;
+		}
+		else if(actualVehicle instanceof Bicycle ) {
+			
+			price = pricePerHour[2] * delta;
 		}
 		
-		return slot;
+		actualVehicle.getFirstBill().setDepartureDate(new GregorianCalendar());
+		actualVehicle.getFirstBill().setPrice(price);
+		actualVehicle = null;
+		
+		return price;
 	}
 	
 	//Getters
@@ -100,7 +110,7 @@ public class Slot implements Serializable {
 	 * @return The attribute id.
 	 */
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	
@@ -123,4 +133,9 @@ public class Slot implements Serializable {
 		
 		this.prev = slot;
 	}
+	
+	public void setNext(Slot next){
+		this.next=next;
+	}
+	
 }

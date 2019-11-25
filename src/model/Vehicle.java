@@ -77,5 +77,4 @@ public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle
 	public Bill getFirstBill() {
 		return firstBill;
 	}
-	
 }

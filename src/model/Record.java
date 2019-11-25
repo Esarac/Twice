@@ -26,16 +26,16 @@ public abstract class Record implements Serializable{
 		this.entryDate=entryDate;
 	}
 	
-	//Getters
-	
-	/**
-	 * <b>Description:</b> Gets the value of the attribute price.<br>
-	 * @return The attribute price.
-	 */
-	
-	public double getPrice(){
-		return price;
+	//Setters
+	public void setDepartureDate(Calendar departureDate) {
+		this.departureDate=departureDate;
 	}
+	
+	public void setPrice(double price) {
+		this.price=price;
+	}
+	
+	//Getters
 	
 	/**
 	 * <b>Description:</b> Gets the value of the attribute entryDate.<br>
@@ -44,6 +44,15 @@ public abstract class Record implements Serializable{
 	
 	public Calendar getEntryDate() {
 		return entryDate;
+	}
+	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute price.<br>
+	 * @return The attribute price.
+	 */
+	
+	public double getPrice(){
+		return price;
 	}
 	
 }

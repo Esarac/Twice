@@ -11,7 +11,7 @@ public class Report extends Record implements Comparable<Report>{
 
 	//Attributes
 	private String clientEmail;
-	private String carPlate;
+	private String vehiclePlate;
 	//Suppliers
 	private Report left;
 	private Report next;
@@ -26,11 +26,11 @@ public class Report extends Record implements Comparable<Report>{
 	 * @param carPlate The car license plate.
 	 */
 	
-	public Report(Calendar entryDate, String clientEmail, String carPlate) {
+	public Report(Calendar entryDate, String clientEmail, String vehiclePlate) {
 		
 		super(entryDate);
 		this.clientEmail = clientEmail;
-		this.carPlate = carPlate;
+		this.vehiclePlate = vehiclePlate;
 		
 	}
 	
@@ -119,6 +119,11 @@ public class Report extends Record implements Comparable<Report>{
 	public int compareTo(Report report){
 		int delta=clientEmail.compareTo(report.clientEmail);
 		return delta;
+	}
+	
+	//Get
+	public Report getNext() {
+		return next;
 	}
 	
 }
