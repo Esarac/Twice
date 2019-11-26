@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 
+import exception.FullSlotException;
+import exception.SlotMismatchException;
+
 /**
 * <b>Description:</b> The class Parking in the package model.<br>
 * @author VoodLyc & Esarac.
@@ -52,9 +55,16 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	
 	//Methods
 	//Add
+	
+	/**
+	 * <b>Description:</b> This method allows adding slots.<br>
+	 * @param amount The number of slots to be added.
+	 * @param type The slots type.
+	 */
+	
 	public void addSlot(int amount, Class<? extends Vehicle> type) {
 		Slot first=null;
-		int slotNumber=1;
+		int slotNumber=0;
 		if(firstSlot!=null){
 			slotNumber=firstSlot.getId();
 		}
@@ -106,8 +116,16 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		}
 	}
 	
-	public boolean insertVehicle(Vehicle vehicle, Client client, int slotId){
-		boolean possible=false;
+	/**
+	 * <b>Description:</b> This method allows inserting a vehicle in the slot given.<br>
+	 * @param vehicle The vehicle who will be add.
+	 * @param client The client that try to add the vehicle.
+	 * @param slotId The slot id.
+	 * @throws SlotMismatchException If the vehicle does not match with the slot type.
+	 * @throws FullSlotException If the slot already have a vehicle.
+	 */
+	
+	public void insertVehicle(Vehicle vehicle, Client client, int slotId) throws SlotMismatchException, FullSlotException{
 		
 		if(searchSlotOwnerVehicle(client)==null){
 			boolean found=false;
@@ -116,14 +134,12 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 				if(actual.getId()==slotId){
 					//Insertion
 					found=true;
-					possible=actual.insertVehicle(vehicle, name, getCompleteAddress());
-					if(possible){
-						if(vehicle instanceof MotorVehicle){
-							addReport(client.getEmail(), ((MotorVehicle)vehicle).getPlate() );
-						}
-						else{
-							addReport(client.getEmail(), null);
-						}
+					actual.insertVehicle(vehicle, name, getCompleteAddress());
+					if(vehicle instanceof MotorVehicle){
+						addReport(client.getEmail(), ((MotorVehicle)vehicle).getPlate() );
+					}
+					else{
+						addReport(client.getEmail(), null);
 					}
 					//...
 				}
@@ -133,23 +149,30 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 			}
 		}
 		
-		return possible;
 	}
 	
 	//Delete
+	
+	/**
+	 * <b>Description:</b> This method allows deleting a vehicle.<br>
+	 * @param client The client who want to deleted a vehicle.
+	 * @return True if the vehicle could be deleted, false in otherwise.
+	 */
 	
 	public boolean removeVehicle(Client client) {
 		boolean possible=false;
 		
 		Slot actual=searchSlotOwnerVehicle(client);
-		//Removed
-		possible=true;
-		
-		double price=actual.removeVehicle(pricePerHour);
-		Report report=searchLastReport(client.getEmail());
-		report.setPrice(price);
-		report.setDepartureDate(new GregorianCalendar());
-		//...
+		if(actual!=null){
+			//Removed
+			possible=true;
+			
+			double price=actual.removeVehicle(pricePerHour);
+			Report report=searchLastReport(client.getEmail());
+			report.setPrice(price);
+			report.setDepartureDate(new GregorianCalendar());
+			//...
+		}
 		
 		return possible;
 	}
@@ -173,6 +196,12 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return report;
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows searching the last report.<br>
+	 * @param email The client email
+	 * @return The report if could be found, false in otherwise.
+	 */
+	
 	public Report searchLastReport(String email){
 		Report prev=null;
 		Report actual = searchReport(email);
@@ -182,6 +211,12 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		}
 		return prev;
 	}
+	
+	/**
+	 * <b>Description:</b> This method allows searching the slot where the owner has a vehicle.<br>
+	 * @param client The client that has the vehicle.
+	 * @return The slot if could be found, null in otherwise.
+	 */
 	
 	public Slot searchSlotOwnerVehicle(Client client){
 		boolean found=false;
@@ -209,6 +244,12 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	}
 	
 	//Calculate
+	
+	/**
+	 * <b>Description:</b> This method allows checking if the parking is empty.<br>
+	 * @return True if the parking is empty, false in otherwise.
+	 */
+	
 	public boolean isEmpty(){
 		boolean empty=true;
 		
@@ -221,19 +262,10 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return empty;
 	}
 	
-	public int slotsSize() {
-		int size=0;
-		
-		Slot actual=firstSlot;
-		while(actual != null) {
-			
-			size++;
-			actual=actual.getNext();
-			
-		}
-		
-		return size;
-	}
+	/**
+	 * <b>Description:</b> This method allows calculating the price average.<br>
+	 * @return the price average.
+	 */
 	
 	public double calculateAverage() {
 		
@@ -250,13 +282,19 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return average;
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows counting the number of empty slots of specific type.<br>
+	 * @param type The slot type.
+	 * @return The number of empty slots of that type.
+	 */
+	
 	public int emptySlotsQuantity(Class<? extends Vehicle> type){
 		int size=0;
 		
 		Slot actual=firstSlot;
 		while(actual != null) {
 			
-			if((type.equals(actual.getType())) && (actual.isEmpty())){
+			if((actual.getType().isAssignableFrom(type)) && (actual.isEmpty())){
 				size++;
 			}
 			actual=actual.getNext();
@@ -265,6 +303,11 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		
 		return size;
 	}
+	
+	/**
+	 * <b>Description:</b> This method allows generation a google maps url with the parking address.<br>
+	 * @return the google maps url.
+	 */
 	
 	public String generateMapUrl(){
 		String webAddress="https://www.google.com/maps/place/";
@@ -293,7 +336,7 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	@Override
 	public int compareTo(Parking parking) {
 		
-		return name.compareTo(parking.getName());
+		return name.compareToIgnoreCase(parking.getName());
 		
 	}
 	
@@ -304,10 +347,19 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	 */
 	
 	@Override
-	public int compare(Parking parking, Parking parking1) {
+	public int compare(Parking parking1, Parking parking2) {
+		int delta=parking1.country.compareToIgnoreCase(parking2.country);
+		if(delta==0) {
+			delta=parking1.department.compareToIgnoreCase(parking2.department);
+			if(delta==0){
+				delta=parking1.city.compareToIgnoreCase(parking2.city);
+				if(delta==0) {
+					delta=parking1.address.compareToIgnoreCase(parking2.address);
+				}
+			}
+		}
 		
-		return parking.getCountry().compareTo(parking1.getCountry());
-		
+		return delta;
 	}
 	
 	/**
@@ -317,26 +369,11 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	 */
 	
 	public int compareByAverage(Parking parking) {
-		
-		int result = 0;
-		
-		double average = ((pricePerHour[0] + pricePerHour[1] + pricePerHour[2]) / 3);
-		double[] price = parking.getPricePerHour();
-		double average2 = ((price[0] + price[1] + price[2]) / 3);
-		
-		if(average > average2) {
-			
-			result = 1;
-		}
-		else if(average < average2) {
-			
-			result = -1;
-		}
-		
-		return result;
+		double delta=(calculateAverage()-parking.calculateAverage())*1000;
+		return (int)delta;
 	}
 	
-	//Getters
+	//Getter
 	
 	/**
 	 * <b>Description:</b> Gets the value of the attribute name.<br>
@@ -360,6 +397,10 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return address+", "+city+", "+department+", "+country;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+	
 	/**
 	 * <b>Description:</b> Gets the value of the attribute pricePerHour.<br>
 	 * @return The attribute pricePerHour.
@@ -369,15 +410,16 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return pricePerHour;
 	}
 	
-	public Slot getSlot(int index) {
-		Slot slot = firstSlot;
-		
-		for(int i=0; (i<index) && (slot!=null); i++){
-			slot=slot.getNext();
-		}
-		
-		return slot;
-		
+	public Slot getFirstSlot() {
+		return firstSlot;
+	}
+	
+	public Report getRootReport() {
+		return rootReport;
+	}
+	
+	public String toString() {
+		return name;
 	}
 	
 }

@@ -1,8 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-import exception.AlreadyExistsException;
+import exception.AlreadyExistException;
 import exception.InvalidEmailException;
 import exception.InvalidPasswordException;
 
@@ -43,7 +44,14 @@ public abstract class User implements Encryptor, Comparable<User>, Serializable{
 	}
 	
 	//Add
-	public void addUser(User user) throws AlreadyExistsException {
+	
+	/**
+	 * <b>Description:</b> This method allows adding a user.<br>
+	 * @param user The user who will be added.
+	 * @throws AlreadyExistException If already exist a user with that email.
+	 */
+	
+	public void addUser(User user) throws AlreadyExistException {
 		
 		if(user.compareTo(this) < 0) {
 			
@@ -68,11 +76,18 @@ public abstract class User implements Encryptor, Comparable<User>, Serializable{
 			}
 		}
 		else {
-				throw new AlreadyExistsException();
+				throw new AlreadyExistException();
 		}
 	}
 	
 	//Search
+	
+	/**
+	 * <b>Description:</b> This method allows searching a user by the email.<br>
+	 * @param email The user email.
+	 * @return The user if could be found, null in otherwise.
+	 */
+	
 	public User searchUser(String email){
 		User user=null;
 		if(email.compareTo(this.email)<0){
@@ -92,6 +107,13 @@ public abstract class User implements Encryptor, Comparable<User>, Serializable{
 	}
 	
 	//Calculate
+	
+	/**
+	 * <b>Description:</b> This method allows verifying if the password has a minimum of eight (8) characters in length and contain at least one (1) character from two (2) of the following categories: uppercase letter (A-Z) and digit (0-9). .<br>
+	 * @param password The password
+	 * @return True if the password has a minimum of eight (8) characters in length and contain at least one (1) character from two (2) of the following categories: uppercase letter (A-Z) and digit (0-9), false in otherwise.
+	 */
+	
 	public boolean verifyPassword(String password){
 		boolean possible=true;
 		if((8<=password.length())&&(password.length()<=20)){
@@ -116,6 +138,12 @@ public abstract class User implements Encryptor, Comparable<User>, Serializable{
 		return possible;
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows verifying the email.<br>
+	 * @param email The email.
+	 * @return True if the string has a @ character, false in otherwise.
+	 */
+	
 	public boolean verifyEmail(String email){
 		boolean found=false;
 		
@@ -129,6 +157,11 @@ public abstract class User implements Encryptor, Comparable<User>, Serializable{
 	}
 	
 	//Encrypt
+	
+	/**
+	 * <b>Description:</b> This method allows encrypting a password.<br>
+	 */
+	
 	public String encrypt(String text){
 		String encryptedText="";
 		for(int i=(text.length()-1); i>=0; i--){
@@ -142,6 +175,10 @@ public abstract class User implements Encryptor, Comparable<User>, Serializable{
 		return encryptedText;
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows decrypting a password.<br>
+	 */
+	
 	public String decrypt(String text){
 		String decryptedText="";
 		for(int i=text.length(); i>0; i-=3){
@@ -152,22 +189,67 @@ public abstract class User implements Encryptor, Comparable<User>, Serializable{
 	}
 	
 	//Compare
+	
+	/**
+	 * <b>Description:</b> This method allows comparing a user with other by the email.<br>
+	 * @return The difference.
+	 */
+	
 	public int compareTo(User user) {
 		return email.compareTo(user.email);
 	}
 
 	//Get
+	
+	/**
+	 * <b>Description:</b> This method allows getting all the parkings in the app.<br>
+	 * @param parkings All the parkings.
+	 */
+	
+	public void getAllParkings(ArrayList<Parking> parkings) {
+		if(this instanceof Owner) {
+			parkings.addAll(((Owner)this).getParkings());
+		}
+		
+		if(left!=null){
+			left.getAllParkings(parkings);
+		}
+		if(right!=null) {
+			right.getAllParkings(parkings);
+		}
+	}
+	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute email.<br>
+	 * @return The attribute email.
+	 */
+	
 	public String getEmail() {
 		return email;
 	}
+	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute password.<br>
+	 * @return The attribute password.
+	 */
 
 	public String getPassword() {
 		return password;
 	}
+	
+	/**
+	 * <b>Description:</b> Gets the value of left.<br>
+	 * @return The left.
+	 */
 
 	public User getLeft() {
 		return left;
 	}
+	
+	/**
+	 * <b>Description:</b> Gets the value of right.<br>
+	 * @return The right.
+	 */
 
 	public User getRight() {
 		return right;

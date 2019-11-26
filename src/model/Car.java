@@ -1,7 +1,6 @@
 package model;
 
 import exception.InvalidPlateException;
-import model.MotorVehicle.VehicleFuel;
 
 /**
 * <b>Description:</b> The class Car in the package model.<br>

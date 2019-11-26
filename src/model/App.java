@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
-import exception.AlreadyExistsException;
+import exception.AlreadyExistException;
 import exception.InvalidEmailException;
 import exception.InvalidPasswordException;
 
@@ -22,7 +23,7 @@ import exception.InvalidPasswordException;
 public class App implements FileLoader<User>{//[TEST]
 	
 	//Constants
-	public static final String APP_PATH="dat/Users.twc";
+	public static final String USERS_PATH="dat/Users.twc";
 	public static final String ACTUAL_USER_PATH="dat/ActualUser.twc";
 	
 	//Attributes
@@ -41,6 +42,14 @@ public class App implements FileLoader<User>{//[TEST]
 		loadUsers();
 	}
 	
+	/**
+	 * <b>Description:</b> Creates a new instance of App.<br>
+	 */
+	
+	public App(){
+		this.name="Test";
+	}
+	
 	//Add
 	
 	/**
@@ -51,7 +60,7 @@ public class App implements FileLoader<User>{//[TEST]
 	 * @return True if the client could be added, false in otherwise.
 	 */
 	
-	public void addClient(String name, String email, String password) throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException {
+	public void addClient(String name, String email, String password) throws InvalidEmailException, InvalidPasswordException, AlreadyExistException {
 		
 		Client user=new Client(name, email, password);
 		if(rootUser!=null){
@@ -71,7 +80,7 @@ public class App implements FileLoader<User>{//[TEST]
 	 * @return True if the owner could be added, false in otherwise.
 	 */
 	
-	public void addOwner(String name, String email, String password) throws InvalidEmailException, InvalidPasswordException, AlreadyExistsException{
+	public void addOwner(String name, String email, String password) throws InvalidEmailException, InvalidPasswordException, AlreadyExistException{
 		
 		Owner user=new Owner(name, email, password);
 		if(rootUser!=null){
@@ -132,6 +141,82 @@ public class App implements FileLoader<User>{//[TEST]
 		return user;
 	}
 	
+	//Sort
+	
+	/**
+	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the name.<br>
+	 *<b>Post:</b> The parkings are sorted by name from minor to major.<br>
+	 */
+	
+	public ArrayList<Parking> sortParkingsByName(){//Insertion
+		ArrayList<Parking> parkings=getAllParkings();
+		
+		for(int i = 1; i < parkings.size(); i++){
+			for(int j = i - 1; j >= 0 && parkings.get(j).compareTo(parkings.get(j+1)) > 0; j--){
+				
+				Parking one = parkings.get(j);
+				Parking two = parkings.get(j+1);
+				
+				parkings.set(j, two);
+				parkings.set(j+1, one);
+			}
+		}
+		
+		return parkings;
+	}
+	
+	/**
+	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the country.<br>
+	 *<b>Post:</b> The parkings are sorted by country from minor to major.<br>
+	 */
+	
+	public ArrayList<Parking> sortParkingsByAddress() {//Selection
+		ArrayList<Parking> parkings=getAllParkings();
+		
+		for(int i = 0; i < parkings.size() -1; i++){
+			Parking minor = parkings.get(i);
+			int minorPos = i;
+			
+			for(int j = i + 1; j < parkings.size(); j++){
+				
+				Parking actual = parkings.get(j);
+				
+				if(actual.compare(actual, minor) < 0){
+					
+					minor = actual;					
+					minorPos = j;
+				}
+			}
+			
+			Parking tmp = parkings.get(i);
+			parkings.set(i, minor);
+			parkings.set(minorPos, tmp);
+		}
+		
+		return parkings;
+	}
+	
+	/**
+	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the price.<br>
+	 *<b>Post:</b> The parkings are sorted by price from minor to major.<br>
+	 */
+	
+	public ArrayList<Parking> sortParkingsByPrice() {//Bubble
+		ArrayList<Parking> parkings=getAllParkings();
+		
+		for(int i = parkings.size(); i > 0; i--){	
+			for(int j = 0; j < i - 1; j++){
+				if(parkings.get(j).compareByAverage(parkings.get(j+1)) > 0){
+					Parking tmp = parkings.get(j);
+					parkings.set(j, parkings.get(j+1));
+					parkings.set(j+1, tmp);
+				}
+			}
+		}
+		
+		return parkings;
+	}
+	
 	//Read
 	
 	/**
@@ -161,7 +246,7 @@ public class App implements FileLoader<User>{//[TEST]
 		
 		return text;
 	}
-
+	
 	//Load
 	
 	/**
@@ -173,7 +258,7 @@ public class App implements FileLoader<User>{//[TEST]
 	public boolean loadUsers() {//[FILE]
 		boolean possible=true;
 		try{
-			FileInputStream file=new FileInputStream(APP_PATH);
+			FileInputStream file=new FileInputStream(USERS_PATH);
 			ObjectInputStream creator=new ObjectInputStream(file);
 			this.rootUser=(User)creator.readObject();
 			creator.close();
@@ -211,7 +296,7 @@ public class App implements FileLoader<User>{//[TEST]
 		try {
 			File dir=new File("dat//");
 			dir.mkdir();
-			FileOutputStream file=new FileOutputStream(APP_PATH);
+			FileOutputStream file=new FileOutputStream(USERS_PATH);
 			ObjectOutputStream creator=new ObjectOutputStream(file);
 			creator.writeObject(rootUser);
 			creator.close();
@@ -242,6 +327,19 @@ public class App implements FileLoader<User>{//[TEST]
 	}
 	
 	//Get
+	
+	/**
+	 * <b>Description:</b> This method allows getting all the parkings in the app (The parking of each owner).<br>
+	 * @return An ArrayList with all the parkings.
+	 */
+	
+	public ArrayList<Parking> getAllParkings(){
+		ArrayList<Parking> parkings=new ArrayList<Parking>();
+		if(rootUser!=null){
+			rootUser.getAllParkings(parkings);
+		}
+		return parkings;
+	}
 	
 	/**
 	 * <b>Description:</b> Gets the value of the attribute rootUser.<br>

@@ -6,195 +6,124 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import exception.InvalidEmailException;
-import exception.InvalidPasswordException;
+import exception.AlreadyExistException;
 import model.Owner;
 import model.Parking;
 
 class TestOwner {
 	
+	//Tested Class
 	private Owner owner;
 	
-	private void setUpScenario1() throws InvalidEmailException, InvalidPasswordException {
-		
-		owner = new Owner("","","P2349kef230");
-		
-		ArrayList<Parking> parkings = new ArrayList<Parking>();
-		
-		parkings.add(new Parking("Im Na-yeon","","","","", "", "", null));
-		parkings.add(new Parking("Hirai Momo","","","","", "", "", null));
-		parkings.add(new Parking("Kim Da-hyun","","","","", "", "", null));
-		parkings.add(new Parking("Minatozaki Sana","","","","", "", "", null));
-		parkings.add(new Parking("Park Ji-hyo","","","","", "", "", null));
-		parkings.add(new Parking("Son Chae-young","","","","", "", "", null));
-		parkings.add(new Parking("Yoo Jeong-yeon","","","","", "", "", null));
-		parkings.add(new Parking("Chou Tzu-yu","","","","", "", "", null));
-		parkings.add(new Parking("Myoui Mina","","","","", "", "", null));
-		parkings.add(new Parking("Minatozaki Sana","","","","", "", "", null));
-		
-		owner.setParkings(parkings);
-	}
-	
-	public void setUpScenario2()throws InvalidEmailException, InvalidPasswordException {
-		
-		owner = new Owner("","","P2349kef230");
-		
-		ArrayList<Parking> parkings = new ArrayList<Parking>();
-		
-		parkings.add(new Parking("","","","","Chou Tzu-yu", "", "", null));
-		parkings.add(new Parking("","","","","Son Chae-young", "", "", null));
-		parkings.add(new Parking("","","","","Yoo Jeong-yeon", "", "", null));
-		parkings.add(new Parking("","","","","Kim Da-hyun", "", "", null));
-		parkings.add(new Parking("","","","","Im Na-yeon", "", "", null));
-		parkings.add(new Parking("","","","","Hirai Momo", "", "", null));
-		parkings.add(new Parking("","","","","Minatozaki Sana", "", "", null));
-		parkings.add(new Parking("","","","","Park Ji-hyo", "", "", null));
-		parkings.add(new Parking("","","","","Myoui Mina", "", "", null));
-		parkings.add(new Parking("","","","","Yoo Jeong-yeon", "", "", null));
-		
-		owner.setParkings(parkings);
-	}
-	
-	public void setUpScenario3() throws InvalidEmailException, InvalidPasswordException{
-		
-		owner = new Owner("","","P2349kef230");
-		
-		ArrayList<Parking> parkings = new ArrayList<Parking>();
-		
-		parkings.add(new Parking("","","","","", "", "", new double[] {1500, 800, 400}));
-		parkings.add(new Parking("","","","","", "", "", new double[] {3400, 2000, 1800}));
-		parkings.add(new Parking("","","","","", "", "", new double[] {400, 6000, 200}));
-		parkings.add(new Parking("","","","","", "", "", new double[] {1430, 200, 900}));
-		parkings.add(new Parking("","","","","", "", "", new double[] {1500, 800, 400}));
-		parkings.add(new Parking("","","","","", "", "", new double[] {4000, 5000, 6000}));
-		parkings.add(new Parking("","","","","", "", "", new double[] {143, 83, 2}));
-		
-		owner.setParkings(parkings);
-	}
-	
-	private void setUpScenario4() throws InvalidEmailException, InvalidPasswordException{
-		
-		owner = new Owner("","","P2349kef230");
-		
-		ArrayList<Parking> parkings = new ArrayList<Parking>();
-		
-		parkings.add(new Parking("Nayeon","","","","", "", "", null));
-		parkings.add(new Parking("Momo","","","","", "", "", null));
-		parkings.add(new Parking("Da-hyun","","","","", "", "", null));
-		parkings.add(new Parking("Minatozaki","","","","", "", "", null));
-		parkings.add(new Parking("Jihyo","","","","", "", "", null));
-		parkings.add(new Parking("Chae-young","","","","", "", "", null));
-		parkings.add(new Parking("Jeongyeon","","","","", "", "", null));
-		parkings.add(new Parking("Tzuyu","","","","", "", "", null));
-		parkings.add(new Parking("Mina","","","","", "", "", null));
-		parkings.add(new Parking("Minatozaki Sana","","","","", "", "", null));
-		
-		owner.setParkings(parkings);
+	//Scenes
+	private void setUpSceneEmptyOwner() throws Exception {
+		owner = new Owner("Sana","nosananolife@gmail.com","Password3");
 	}
 
+	private void setUpSceneNormalOwner() throws Exception {
+		owner = new Owner("Sana","nosananolife@gmail.com","Password3");
+		owner.addParking("mona","Calle 15 #121-25","Cali","Valle del Cauca","Colombia","minaballerina@gmail.com","NaN",new double[] {500,400,100});
+		owner.addParking("Momo","Calle 15 #121-25","Cali","Cauca","Colombia","","NaN",new double[] {2000,1000,400});
+		owner.addParking("Nayeon","Calle 15 #121-25","Cali","Antioquia","Colombia","bunny@gmail.com","NaN",new double[] {1000,500,200});
+	}
+	
+	//Tests
 	@Test
-	void testSortParkingsByName() throws InvalidEmailException, InvalidPasswordException{
+	void testAddParking() throws Exception{
+		setUpSceneEmptyOwner();
+		owner.addParking("Mina","Calle 15 #121-25","Cali","Valle del Cauca","Colombia","minaballerina@gmail.com","NaN",new double[] {1000,500,200});
+		owner.addParking("Momo","Calle 15 #121-25","Cali","Valle del Cauca","Colombia","","NaN",new double[] {1000,500,200});
 		
-		setUpScenario1();
+		assertThrows(AlreadyExistException.class,()->{
+			owner.addParking("Mina","Calle 15 #121-25","Cali","Valle del Cauca","Colombia","minaballerina@gmail.com","NaN",new double[] {1000,500,200});
+		});
 		
+		assertEquals(owner.getParkings().get(0).getName(), "Mina");
+		assertEquals(owner.getParkings().get(1).getEmail(), "nosananolife@gmail.com");
+	}
+	
+	@Test
+	void testAddParkingPath() throws Exception{
+		setUpSceneEmptyOwner();
+		assertTrue(owner.addParking("test/testFiles/Parking.txt"));
+		assertThrows(AlreadyExistException.class,()->{
+			owner.addParking("test/testFiles/Parking.txt");
+		});
+		assertFalse(owner.addParking("test/testFiles/ParkingError.txt"));
+		assertEquals(owner.getParkings().get(0).getName(), "Parqueadero Icesi");
+	}
+	
+	@Test
+	void testDeleteParking() throws Exception{
+		setUpSceneNormalOwner();
+		assertTrue(owner.deleteParking("Momo"));
+		assertFalse(owner.deleteParking("Sana"));
+		assertEquals(owner.getParkings().size(), 2);
+	}
+	
+	@Test
+	void testSearchParkings() throws Exception{
+		setUpSceneNormalOwner();
+		ArrayList<Parking> parkings=owner.searchParkings("Mo");
+		assertEquals(parkings.get(0).getName(), "mona");
+		assertEquals(parkings.get(1).getName(), "Momo");
+	}
+	
+	@Test
+	void testSearchRight() throws Exception{
+		setUpSceneNormalOwner();
+		ArrayList<Parking> parkings=new ArrayList<Parking>();
+		owner.searchRight(0,"Mo",parkings);
+		assertEquals(parkings.get(0).getName(), "Momo");
+	}
+	
+	@Test
+	void testSearchLeft() throws Exception{
+		setUpSceneNormalOwner();
+		ArrayList<Parking> parkings=new ArrayList<Parking>();
+		owner.searchLeft(1,"Mo",parkings);
+		assertEquals(parkings.get(0).getName(), "mona");
+	}
+	
+	@Test
+	void testCheckAlreadyExist() throws Exception{
+		setUpSceneNormalOwner();
+		assertTrue(owner.checkAlreadyExist("Momo"));
+		assertFalse(owner.checkAlreadyExist("Sana"));
+	}
+	
+	@Test
+	void testSortParkingsByName() throws Exception{
+		setUpSceneNormalOwner();
 		owner.sortParkingsByName();
-		
-		ArrayList<Parking> parkings = owner.getParkings();
-		
-		assertEquals("Chou Tzu-yu", parkings.get(0).getName());
-		assertEquals("Hirai Momo", parkings.get(1).getName());
-		assertEquals("Im Na-yeon", parkings.get(2).getName());
-		assertEquals("Kim Da-hyun", parkings.get(3).getName());
-		assertEquals("Minatozaki Sana", parkings.get(4).getName());
-		assertEquals("Minatozaki Sana", parkings.get(5).getName());
-		assertEquals("Myoui Mina", parkings.get(6).getName());
-		assertEquals("Park Ji-hyo", parkings.get(7).getName());
-		assertEquals("Son Chae-young", parkings.get(8).getName());
-		assertEquals("Yoo Jeong-yeon", parkings.get(9).getName());
+		assertEquals(owner.getParkings().get(0).getName(), "Momo");
+		assertEquals(owner.getParkings().get(1).getName(), "mona");
+		assertEquals(owner.getParkings().get(2).getName(), "Nayeon");
 	}
 	
 	@Test
-	void testSortParkingsByCountry() throws InvalidEmailException, InvalidPasswordException{
-		
-		setUpScenario2();
-		
-		owner.sortParkingsByCountry();
-		
-		ArrayList<Parking> parkings = owner.getParkings();
-		
-		assertEquals("Chou Tzu-yu", parkings.get(0).getCountry());
-		assertEquals("Hirai Momo", parkings.get(1).getCountry());
-		assertEquals("Im Na-yeon", parkings.get(2).getCountry());
-		assertEquals("Kim Da-hyun", parkings.get(3).getCountry());
-		assertEquals("Minatozaki Sana", parkings.get(4).getCountry());
-		assertEquals("Myoui Mina", parkings.get(5).getCountry());
-		assertEquals("Park Ji-hyo", parkings.get(6).getCountry());
-		assertEquals("Son Chae-young", parkings.get(7).getCountry());
-		assertEquals("Yoo Jeong-yeon", parkings.get(8).getCountry());
-		assertEquals("Yoo Jeong-yeon", parkings.get(9).getCountry());
+	void testSortParkingsByAddress() throws Exception{
+		setUpSceneNormalOwner();
+		owner.sortParkingsByAddress();
+		assertEquals(owner.getParkings().get(0).getName(), "Nayeon");
+		assertEquals(owner.getParkings().get(1).getName(), "Momo");
+		assertEquals(owner.getParkings().get(2).getName(), "mona");
 	}
 	
 	@Test
-	void testSortParkingsByPrice() throws InvalidEmailException, InvalidPasswordException{
-		
-		setUpScenario3();
-		
+	void testSortParkingsByPrice() throws Exception{
+		setUpSceneNormalOwner();
 		owner.sortParkingsByPrice();
-		
-		ArrayList<Parking> parkings = owner.getParkings();
-		
-		assertEquals(76, parkings.get(0).calculateAverage());
-		assertEquals(843.3333333333334, parkings.get(1).calculateAverage());
-		assertEquals(900, parkings.get(2).calculateAverage());
-		assertEquals(900, parkings.get(3).calculateAverage());
-		assertEquals(2200, parkings.get(4).calculateAverage());
-		assertEquals(2400, parkings.get(5).calculateAverage());
-		assertEquals(5000, parkings.get(6).calculateAverage());
+		assertEquals(owner.getParkings().get(0).getName(), "mona");
+		assertEquals(owner.getParkings().get(1).getName(), "Nayeon");
+		assertEquals(owner.getParkings().get(2).getName(), "Momo");
 	}
 	
 	@Test
-	void testSearchParking() throws InvalidEmailException, InvalidPasswordException{
-		
-		setUpScenario4();
-		
-		ArrayList<Parking> parkings = owner.searchParkings("Mina");
-		
-		assertEquals("Mina", parkings.get(0).getName());
-		assertEquals("Minatozaki", parkings.get(1).getName());
-		assertEquals("Minatozaki Sana", parkings.get(2).getName());
-		assertEquals(3, parkings.size());
-		
-		parkings = owner.searchParkings("M");
-		
-		assertEquals("Mina", parkings.get(0).getName());
-		assertEquals("Minatozaki", parkings.get(1).getName());
-		assertEquals("Minatozaki Sana", parkings.get(2).getName());
-		assertEquals("Momo", parkings.get(3).getName());
-		assertEquals(4, parkings.size());
-		
-		parkings = owner.searchParkings("J");
-		
-		assertEquals("Jeongyeon", parkings.get(0).getName());
-		assertEquals("Jihyo", parkings.get(1).getName());
-		assertEquals(2, parkings.size());
-		
-		parkings = owner.searchParkings("csdwdef");
-		
-		assertEquals(0, parkings.size());
-		
-		parkings = owner.searchParkings("mINa");
-		
-		assertEquals("Mina", parkings.get(0).getName());
-		assertEquals("Minatozaki", parkings.get(1).getName());
-		assertEquals("Minatozaki Sana", parkings.get(2).getName());
-		assertEquals(3, parkings.size());
-		
-		parkings = owner.searchParkings("j");
-		
-		assertEquals("Jeongyeon", parkings.get(0).getName());
-		assertEquals("Jihyo", parkings.get(1).getName());
-		assertEquals(2, parkings.size());
-		
+	void testLoad() throws Exception{
+		setUpSceneEmptyOwner();
+		assertNotNull(owner.load("test/testFiles/Parking.txt"));
+		assertNull(owner.load("test/testFiles/ParkingError.txt"));
 	}
-
+	
 }

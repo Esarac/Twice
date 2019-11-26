@@ -14,12 +14,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.App;
 
 public class ControlLogIn extends ControlGlobal implements Initializable, Generator {
 	
+	@FXML private ImageView twiceLogo;
 	@FXML private TextField email;
 	@FXML private PasswordField password;
 	@FXML private CheckBox logging;
@@ -29,6 +29,8 @@ public class ControlLogIn extends ControlGlobal implements Initializable, Genera
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
+		//Sets the image.
+		twiceLogo.setImage(new Image("file:themes/" + getTheme() + "/images/TWICE_LOGO.png"));
 	}
 	
 	public void logIn() {
@@ -44,7 +46,7 @@ public class ControlLogIn extends ControlGlobal implements Initializable, Genera
 			//Sets the alert style.
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(new Image("file:images/TWICE_LOGO.png"));
-			setCss(alert);
+			setStyle(alert);
 			
 			//Shows the alert.
 			alert.showAndWait();
@@ -67,7 +69,7 @@ public class ControlLogIn extends ControlGlobal implements Initializable, Genera
 				//Sets the alert style.
 				Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 				stage.getIcons().add(new Image("file:images/TWICE_LOGO.png"));
-				setCss(alert);
+				setStyle(alert);
 				
 				//Shows the alert.
 				alert.showAndWait();
@@ -76,14 +78,18 @@ public class ControlLogIn extends ControlGlobal implements Initializable, Genera
 				email.setText("");
 				password.setText("");
 			}
+			else {
+				
+				//Loads the Menu.fxml.
+				load("Menu");
+			}
 		}
 	}
 	
 	public void register() {
 		
+		//Loads the Register.fxml.
 		load("Register");
-		stage.setWidth(800);
-		stage.setHeight(600);
 	}
 
 	@Override

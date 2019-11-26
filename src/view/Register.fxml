@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,12 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="800.0" spacing="15.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControlRegister">
+<VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="800.0" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControlRegister">
    <children>
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" smooth="false">
-         <image>
-            <Image url="@../../images/TWICE_LOGO.png" />
-         </image>
+      <ImageView fx:id="twiceLogo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <VBox.margin>
             <Insets right="20.0" />
          </VBox.margin>
@@ -57,10 +53,10 @@
                   <Font name="Arial Bold" size="13.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="choice" focusTraversable="false" prefWidth="150.0" stylesheets="@View.css" GridPane.columnIndex="1" />
+            <ChoiceBox fx:id="choice" focusTraversable="false" prefWidth="150.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <Button fx:id="client" mnemonicParsing="false" onAction="#register" prefHeight="23.0" prefWidth="130.0" style="-fx-background-color: white; -fx-background-radius: 5;" text="Register ">
+      <Button fx:id="client" mnemonicParsing="false" onAction="#register" prefHeight="23.0" prefWidth="130.0" text="Register ">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>

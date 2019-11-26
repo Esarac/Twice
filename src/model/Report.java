@@ -122,21 +122,47 @@ public class Report extends Record implements Comparable<Report>{//[TEST]
 	}
 	
 	//Get
+	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute clientEmail.<br>
+	 * @return The attribute clientEmail.
+	 */
+	
 	public String getClientEmail() {
 		return clientEmail;
 	}
+	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute vehiclePlate.<br>
+	 * @return The attribute vehiclePlate.
+	 */
 	
 	public String getVehiclePlate() {
 		return vehiclePlate;
 	}
 	
+	/**
+	 * <b>Description:</b> Gets the value of left.<br>
+	 * @return The left.
+	 */
+	
 	public Report getLeft(){
 		return left;
 	}
 	
+	/**
+	 * <b>Description:</b> Gets the value of next.<br>
+	 * @return The next.
+	 */
+	
 	public Report getNext() {
 		return next;
 	}
+	
+	/**
+	 * <b>Description:</b> Gets the value of right.<br>
+	 * @return The right.
+	 */
 	
 	public Report getRight(){
 		return right;

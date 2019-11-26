@@ -1,0 +1,20 @@
+*Name
+Parqueadero Icesi
+*Address
+Calle 15 #121-25
+*City
+Cali
+*Department
+Valle del Cauca
+*Country
+Colombia
+*Email
+icesi@gmail.com
+*Information
+Only students
+*Price-Car
+1000
+*Price-Motorcycle
+500
+*Price-Bicycle
+200

@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import exception.AlreadyExistException;
 import exception.InvalidEmailException;
 import exception.InvalidPasswordException;
 
@@ -32,6 +33,7 @@ public class Owner extends User implements FileLoader<Parking>{
 		
 		super(name, email, password);
 		this.parkings = new ArrayList<Parking>();
+		
 	}
 	
 	//Methods
@@ -52,33 +54,17 @@ public class Owner extends User implements FileLoader<Parking>{
 	 * @param pricePerHour The parking price per hour.
 	 */
 	
-	public boolean addParking(String name, String address, String city, String department, String country, String email, String information, double[] pricePerHour) {
-		
-		boolean added = true;
+	public void addParking(String name, String address, String city, String department, String country, String email, String information, double[] pricePerHour) throws AlreadyExistException{
 		
 		if(!checkAlreadyExist(name)) {
-			
+			if(email.isEmpty())
+				email=getEmail();
 			parkings.add(new Parking(name, address, city, department, country, email, information, pricePerHour));
 		}
-		
-		return added;
-	}
-	
-	public boolean checkAlreadyExist(String name) {
-		
-		boolean running = true;
-		boolean exists = false;
-		
-		for(int i = 0; i < parkings.size() && running; i++) {
-			
-			if(parkings.get(i).getName().equals(name)) {
-				
-				exists = false;
-				running = false;
-			}
+		else{
+			throw new AlreadyExistException();
 		}
 		
-		return exists;
 	}
 	
 	/**
@@ -87,23 +73,34 @@ public class Owner extends User implements FileLoader<Parking>{
 	 * @return True if the parking could be added, false otherwise.
 	 */
 	
-	public boolean addParking(String path) {
+	public boolean addParking(String path) throws AlreadyExistException{
 		
-		boolean added = true;
+		boolean added = false;
 		Parking parking = load(path);
 		
 		if(parking != null) {
 			
 			if(!checkAlreadyExist(parking.getName())) {
-				
+				added=true;
 				parkings.add(parking);
 			}
+			else{
+				throw new AlreadyExistException();
+			}
+			
 		}
 		
 		return added;
 	}
 	
 	//Delete
+	
+	/**
+	 * <b>Description:</b> This method allows deleting a parking by the name.<br>
+	 * @param name The parking name.
+	 * @return True if the parking was deleted, false in otherwise.
+	 */
+	
 	public boolean deleteParking(String name){
 		sortParkingsByName();
 		boolean possible=false;
@@ -140,7 +137,6 @@ public class Owner extends User implements FileLoader<Parking>{
 	 */
 	
 	public ArrayList<Parking> searchParkings(String name) {
-		
 		sortParkingsByName();
 		boolean found = false;
 		int start = 0;
@@ -220,7 +216,7 @@ public class Owner extends User implements FileLoader<Parking>{
 		String value;
 		String shortName;
 		
-		for(int i = index - 1; i >= 0 && is; i--) {
+		for(int i = index-1; i >= 0 && is; i--) {
 			
 			value = parkings.get(i).getName();
 			shortName = (value.length() > name.length()) ? value.substring(0, name.length()) : value;
@@ -236,11 +232,34 @@ public class Owner extends User implements FileLoader<Parking>{
 		}
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows checking if already exists a parking with that name.<br>
+	 * @param name The parking name.
+	 * @return True if already exists a parking with that name, false in otherwise.
+	 */
+	
+	public boolean checkAlreadyExist(String name) {
+		
+		boolean running = true;
+		boolean exists = false;
+		
+		for(int i = 0; i < parkings.size() && running; i++) {
+			
+			if(parkings.get(i).getName().equals(name)) {
+				
+				exists = true;
+				running = false;
+			}
+		}
+		
+		return exists;
+	}
+	
 	//Sort
 	
 	/**
-	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the name.<br>
-	 *<b>Post:</b> The parkings are sorted by name from minor to major.<br>
+	 * <b>Description:</b> This method allows sorting the parkings from minor to major by the name.<br>
+	 * <b>Post:</b> The parkings are sorted by name from minor to major.<br>
 	 */
 	
 	public void sortParkingsByName() {//Insertion
@@ -258,11 +277,11 @@ public class Owner extends User implements FileLoader<Parking>{
 	}
 	
 	/**
-	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the country.<br>
-	 *<b>Post:</b> The parkings are sorted by country from minor to major.<br>
+	 * <b>Description:</b> This method allows sorting the parkings from minor to major by the country.<br>
+	 * <b>Post:</b> The parkings are sorted by country from minor to major.<br>
 	 */
 	
-	public void sortParkingsByCountry() {//Selection
+	public void sortParkingsByAddress() {//Selection
 		
 		for(int i = 0; i < parkings.size() -1; i++){
 			
@@ -287,8 +306,8 @@ public class Owner extends User implements FileLoader<Parking>{
 	}
 	
 	/**
-	 *<b>Description:</b> This method allows sorting the parkings from minor to major by the price.<br>
-	 *<b>Post:</b> The parkings are sorted by price from minor to major.<br>
+	 * <b>Description:</b> This method allows sorting the parkings from minor to major by the price.<br>
+	 * <b>Post:</b> The parkings are sorted by price from minor to major.<br>
 	 */
 	
 	public void sortParkingsByPrice() {//Bubble
@@ -306,6 +325,8 @@ public class Owner extends User implements FileLoader<Parking>{
 		}
 	}
 	
+	//File
+	
 	/**
 	 * <b>Description:</b> This method allows reading a file.<br>
 	 * @param path The file path.
@@ -316,7 +337,7 @@ public class Owner extends User implements FileLoader<Parking>{
 	@Override
 	public String read(String path) throws IOException {//[FILE]
 		
-		String data = null;
+		String data = "";
 		
 		File test = new File(path);
 		
@@ -381,14 +402,4 @@ public class Owner extends User implements FileLoader<Parking>{
 		return parkings;
 	}
 	
-	//Setters
-	
-	/**
-	 * <b>Description:</b> Sets the value of the attribute parkings.<br>
-	 * @param parking the owner parkings. 
-	 */
-	
-	public void setParkings(ArrayList<Parking> parkings) {
-		this.parkings = parkings;
-	}
 }

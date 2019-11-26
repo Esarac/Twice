@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.GregorianCalendar;
 
+import exception.FullSlotException;
 import exception.SlotMismatchException;
 
 /**
@@ -29,8 +30,9 @@ public class Slot implements Serializable {
 	 * @param actualVehicle The vehicle in the parking.
 	 */
 	public Slot(int id, Class<? extends Vehicle> type) {
-		
 		this.id = id;
+		this.initTime=0;
+		this.actualVehicle=null;
 		this.type = type;
 		
 	}
@@ -38,10 +40,17 @@ public class Slot implements Serializable {
 	//Methods
 	
 	//Add
-	public boolean insertVehicle(Vehicle vehicle, String parkingName, String parkingAddress) {
-		
-		boolean added = true;
-		
+	
+	/**
+	 * <b>Description:</b> This method allows inserting a vehicle in the slot.<br>
+	 * @param vehicle The vehicle who will be add.
+	 * @param client The client that try to add the vehicle.
+	 * @param slotId The slot id.
+	 * @throws SlotMismatchException If the vehicle does not match with the slot type.
+	 * @throws FullSlotException If the slot already have a vehicle.
+	 */
+	
+	public void insertVehicle(Vehicle vehicle, String parkingName, String parkingAddress) throws SlotMismatchException, FullSlotException{
 		if(actualVehicle == null) {
 			if(type.isAssignableFrom(vehicle.getClass())) {
 				actualVehicle =  vehicle;
@@ -49,34 +58,44 @@ public class Slot implements Serializable {
 				initTime = System.nanoTime();
 			}
 			else {
-				try {
-					
-					throw new SlotMismatchException();
-					
-				} catch (SlotMismatchException e) {
-					
-					added = false;
-				}
+				throw new SlotMismatchException();
 			}
 		}
-		
-		return added;
+		else{
+			throw new FullSlotException();
+		}
 	}
 	
 	//Delete
+	
+	/**
+	 * <b>Description:</b> This method allows deleting a vehicle.<br>
+	 * @param client The client who want to deleted a vehicle.
+	 * @return True if the vehicle could be deleted, false in otherwise.
+	 */
+	
 	public double removeVehicle(double[] pricePerHour) {
-		double price=calculatePrice(pricePerHour);
-		
-		actualVehicle.getFirstBill().setDepartureDate(new GregorianCalendar());
-		actualVehicle.getFirstBill().setPrice(price);
-		
-		this.initTime=0;
-		this.actualVehicle = null;
-		
+		double price=0;
+		if((actualVehicle!=null) && (initTime!=0)){
+			price=calculatePrice(pricePerHour);
+			
+			actualVehicle.getFirstBill().setDepartureDate(new GregorianCalendar());
+			actualVehicle.getFirstBill().setPrice(price);
+			
+			this.initTime=0;
+			this.actualVehicle = null;
+		}
 		return price;
 	}
 	
 	//Calculate
+	
+	/**
+	 * <b>Description:</b> This method allows calculating the price.<br>
+	 * @param pricePerHour The parking price per hour. 
+	 * @return the price.
+	 */
+	
 	public double calculatePrice(double[] pricePerHour){
 		long end = System.nanoTime();
 		double delta = (end - initTime) * 2.7778e-13;
@@ -99,7 +118,41 @@ public class Slot implements Serializable {
 		return price;
 	}
 	
+	//Setters
+	
+	/**
+	 * <b>Description:</b> Sets the value of the attribute initTime.<br>
+	 * @param slot the attribute initTime. 
+	 */
+	
+	public void setInitTime(long initTime) {
+		this.initTime=initTime;
+	}
+	
+	/**
+	 * <b>Description:</b> Sets the value of prev.<br>
+	 * @param slot the new prev. 
+	 */
+	
+	public void setPrev(Slot slot) {
+		
+		this.prev = slot;
+	}
+	
+	/**
+	 * <b>Description:</b> Sets the value of next.<br>
+	 * @param slot the new next. 
+	 */
+	
+	public void setNext(Slot next){
+		this.next=next;
+	}
+	
 	//Getters
+	
+	public long getInitTime(){
+		return initTime;
+	}
 	
 	/**
 	 * <b>Description:</b> Gets the value of the attribute actualVehicle.<br>
@@ -123,28 +176,22 @@ public class Slot implements Serializable {
 		return id;
 	}
 	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute type.<br>
+	 * @return The attribute type.
+	 */
+	
 	public Class<? extends Vehicle> getType(){
 		return type;
 	}
 	
-	public Slot getNext(){
-		return next;
-	}
-	
-	//Setters
-	
 	/**
-	 * <b>Description:</b> Sets the value of prev.<br>
-	 * @param slot the new prev. 
+	 * <b>Description:</b> Gets the value of net.<br>
+	 * @return next.
 	 */
 	
-	public void setPrev(Slot slot) {
-		
-		this.prev = slot;
-	}
-	
-	public void setNext(Slot next){
-		this.next=next;
+	public Slot getNext(){
+		return next;
 	}
 	
 }

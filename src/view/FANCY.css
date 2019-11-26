@@ -1,0 +1,94 @@
+.choice-box {
+	
+  -fx-background-color: skyblue;
+  -fx-mark-color: rgb(255,100,255);
+  
+}
+
+.choice-box > .label {
+	
+	-fx-text-fill: black;
+	-fx-font: bold 9pt "Arial";
+}
+
+.choice-box .context-menu { 
+	
+	-fx-background-color: skyblue;
+	-fx-font: bold 9pt "Arial";
+}
+
+.choice-box .menu-item:focused { 
+	
+	-fx-background-color: rgb(255,100,255);
+}
+
+.choice-box .menu-item > .label { 
+	
+	-fx-text-fill: black;
+	-fx-font: bold 9pt "Arial";
+}
+
+.choice-box .menu-item:focused > .label { 
+	
+	-fx-text-fill: skyblue;
+}
+
+.check-box .box {
+	
+	-fx-background-color: skyblue;
+}
+
+.check-box .box .mark {
+	
+	-fx-mark-color: rgb(255,100,255);
+}
+
+
+.dialog {
+	
+	-fx-background-color: skyblue;
+}
+
+.dialog > *.buttonbar > *.container {
+	
+	-fx-background-color: #dcdcdc;
+}
+
+.dialog > *.content.label {
+	
+	-fx-text-fill:black;
+	-fx-font: bold 9pt "Arial";
+}
+
+.dialog *.button {
+	
+	-fx-background-color: rgb(255,100,255);
+	-fx-font: bold 10pt "Arial";
+	-fx-border-radius: 5;
+	-fx-text-fill: black;
+
+}
+
+.dialog:header *.header-panel {
+	
+	-fx-background-color: #dcdcdc;
+}
+
+.text-field {
+	
+	-fx-focus-color: skyblue;
+	-fx-highlight-fill: rgb(255,100,255);
+}
+
+.pane {
+	
+	-fx-background-color: white;
+	-fx-background-image:url(../../themes/FANCY/images/BACKGROUND.jpg);
+	-fx-background-size:100% 100%;
+}
+
+.button {
+	
+	-fx-background-color: skyblue;
+	-fx-background-radius: 5;
+}

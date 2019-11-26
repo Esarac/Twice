@@ -27,9 +27,20 @@ public abstract class Record implements Serializable{
 	}
 	
 	//Setters
+	
+	/**
+	 * <b>Description:</b> Sets the value of the attribute departureDate.<br>
+	 * @param departureDate the departureDate. 
+	 */
+	
 	public void setDepartureDate(Calendar departureDate) {
 		this.departureDate=departureDate;
 	}
+	
+	/**
+	 * <b>Description:</b> Sets the value of the attribute price.<br>
+	 * @param price the price. 
+	 */
 	
 	public void setPrice(double price) {
 		this.price=price;
@@ -44,6 +55,15 @@ public abstract class Record implements Serializable{
 	
 	public Calendar getEntryDate() {
 		return entryDate;
+	}
+	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute departureDate.<br>
+	 * @return The attribute departureDate.
+	 */
+	
+	public Calendar getDepartureDate() {
+		return departureDate;
 	}
 	
 	/**
