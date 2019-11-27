@@ -1,36 +1,34 @@
 /*Colors*/
 *{
 	
-	base_color:skyblue;
-	special_color:rgb(255,100,255);
-	text_color:black;
+	base_color:midnightblue;
+	special_color:red;
+	text_color:white;
 	
 }
 
 /*Pane*/
 .pane {
-	-fx-background-color: white;
-	-fx-background-image:url(../../themes/FANCY/images/BACKGROUND.jpg);
-	-fx-background-size:100% 100%;
+	-fx-background-color: base_color;
 }
 
 /*Button*/
 .button {
 	
-	-fx-background-color: base_color;
+	-fx-background-color: special_color;
 	-fx-background-radius: 5;
 	-fx-font: bold 10pt "Arial";/*HFONT*/
 }
 
 .label {
-	
+	-fx-text-fill:text_color;
 	-fx-font: bold 10pt "Arial";
 }
 
 /*Text Field*/
 .text-field {
 	
-	-fx-focus-color: base_color;
+	-fx-focus-color: gold;
 	-fx-highlight-fill: special_color;
 	-fx-font: bold 9pt "Arial";/*TFONT*/
 }
@@ -38,7 +36,7 @@
 /*Choice Box*/
 .choice-box {
 	
-  -fx-background-color: base_color;
+  -fx-background-color: white;
   -fx-mark-color: special_color;
   
 }
@@ -73,7 +71,7 @@
 
 .check-box .box {
 	
-	-fx-background-color: base_color;
+	-fx-background-color: white;
 }
 
 .check-box .box .mark {
@@ -100,7 +98,7 @@
 
 .dialog *.button {
 	
-	-fx-background-color: special_color;
+	-fx-background-color: white;
 	-fx-font: bold 10pt "Arial";/*HFONT*/
 	-fx-border-radius: 5;
 	-fx-text-fill: text_color;
@@ -120,19 +118,20 @@
 
 .delete {
 	
-	-fx-text-fill: special_color;
+	-fx-text-fill: base_color;
+	-fx-background-color: special_color;
 }
 
 #logo {
 	
-	-fx-image: url(../../themes/FANCY/images/TWICE_LOGO.png);
+	-fx-image: url(../../themes/SIGNAL/images/TWICE_LOGO.png);
 	-fx-background-size:100% 100%;
 }
 
 /*Specials*/
 #log-out {
 	
-	-fx-background-color: special_color;
+	-fx-background-color: base_color;
 	-fx-background-radius: 5;
 	
 }

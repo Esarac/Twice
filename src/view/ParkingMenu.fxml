@@ -1,58 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="pane" alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="800.0" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControlMenu">
+<VBox fx:id="pane" alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="800.0" spacing="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControlParkingMenu">
    <children>
       <ImageView id="logo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <VBox.margin>
             <Insets right="20.0" />
          </VBox.margin>
       </ImageView>
-      <Button fx:id="vehicles" mnemonicParsing="false" prefHeight="23.0" prefWidth="130.0" text="Vehicles">
-         <font>
-            <Font name="Arial Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button layoutX="295.0" layoutY="351.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="130.0" text="Parkings">
-         <font>
-            <Font name="Arial Bold" size="12.0" />
-         </font>
-      </Button>
-      <GridPane prefHeight="25.0" prefWidth="200.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="88.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" prefWidth="112.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-         </rowConstraints>
+      <HBox fx:id="box1" alignment="CENTER" prefHeight="35.0" prefWidth="200.0" spacing="15.0">
          <children>
-            <Label text="Theme:">
-               <font>
-                  <Font name="Arial Bold" size="13.0" />
-               </font>
-               <padding>
-                  <Insets left="34.0" />
-               </padding>
-            </Label>
-            <ChoiceBox fx:id="themes" focusTraversable="false" prefHeight="25.0" prefWidth="78.0" GridPane.columnIndex="1" />
+            <TextField fx:id="search" focusTraversable="false" onKeyTyped="#generateParkingList" prefHeight="25.0" prefWidth="91.0" promptText="Search" />
+            <ChoiceBox fx:id="sort" focusTraversable="false" prefHeight="25.0" prefWidth="84.0" />
          </children>
-      </GridPane>
-      <Button id="log-out" layoutX="295.0" layoutY="370.0" mnemonicParsing="false" onAction="#logOut" prefHeight="23.0" prefWidth="130.0" text="Log out">
-         <font>
-            <Font name="Arial Bold" size="12.0" />
-         </font>
-      </Button>
+      </HBox>
+      <ListView fx:id="list" prefHeight="200.0" prefWidth="200.0" />
+      <HBox fx:id="box2" alignment="CENTER" prefHeight="25.0" prefWidth="200.0" spacing="15.0">
+         <children>
+            <Button fx:id="add" focusTraversable="false" mnemonicParsing="false" onAction="#createParking" prefHeight="23.0" prefWidth="101.0" text="Add parking">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#back" prefHeight="23.0" prefWidth="99.0" text="Back">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
    </children>
    <padding>
       <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />

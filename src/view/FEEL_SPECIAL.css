@@ -110,6 +110,18 @@
 	-fx-background-color: base_color;/*BAD*/
 }
 
+.vehicle {
+	
+	-fx-background-color: transparent;
+	-fx-font: bold 9pt "Arial";
+}
+
+.delete {
+	
+	-fx-text-fill: base_color;
+	-fx-background-color: special_color;
+}
+
 #logo {
 	
 	-fx-image: url(../../themes/FEEL_SPECIAL/images/TWICE_LOGO.png);

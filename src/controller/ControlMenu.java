@@ -8,6 +8,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import model.Owner;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.media.AudioClip;
 import javafx.scene.control.Button;
 
 public class ControlMenu extends ControlGlobal implements Generator {
@@ -32,6 +33,14 @@ public class ControlMenu extends ControlGlobal implements Generator {
 		
 	}
 	
+	public void showParkings() {
+		load("ParkingMenu");
+	}
+	
+	public void showVehicles() {
+		load("VehicleMenu");
+	}
+	
 		//Select Theme
 	public void pickTheme() {
 		
@@ -39,7 +48,8 @@ public class ControlMenu extends ControlGlobal implements Generator {
 		setTheme(themes.getValue());
 		updateStyle();
 		saveStyle();
-		
+		AudioClip audio = new AudioClip("file:themes/" + getThemeName() + "/sounds/" + getThemeName() + ".wav" );
+		audio.play();
 	}
 	
 		//LogOut
@@ -59,7 +69,7 @@ public class ControlMenu extends ControlGlobal implements Generator {
 		Optional <ButtonType> action = alert.showAndWait();
 		
 		if(action.get() == accept) {
-			
+			setActualUser(null);
 			getApp().logOut();
 			load("LogIn");
 		}

@@ -1,17 +1,15 @@
 /*Colors*/
 *{
 	
-	base_color:skyblue;
-	special_color:rgb(255,100,255);
+	base_color:white;
+	special_color:red;
 	text_color:black;
 	
 }
 
 /*Pane*/
 .pane {
-	-fx-background-color: white;
-	-fx-background-image:url(../../themes/FANCY/images/BACKGROUND.jpg);
-	-fx-background-size:100% 100%;
+	-fx-background-color: black;
 }
 
 /*Button*/
@@ -120,12 +118,13 @@
 
 .delete {
 	
+	-fx-background-color: black;
 	-fx-text-fill: special_color;
 }
 
 #logo {
 	
-	-fx-image: url(../../themes/FANCY/images/TWICE_LOGO.png);
+	-fx-image: url(../../themes/YES_OR_YES/images/TWICE_LOGO.png);
 	-fx-background-size:100% 100%;
 }
 

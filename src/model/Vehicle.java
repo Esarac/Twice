@@ -120,4 +120,8 @@ public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle
 		return firstBill;
 	}
 	
+	public String toString() {
+		return name;
+	}
+	
 }

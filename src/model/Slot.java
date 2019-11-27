@@ -194,4 +194,13 @@ public class Slot implements Serializable {
 		return next;
 	}
 	
+	public String toString() {
+		String letter="V";
+		if(type.equals(MotorVehicle.class))letter="MV";
+		if(type.equals(Car.class))letter="C";
+		if(type.equals(Motorcycle.class))letter="M";
+		if(type.equals(Bicycle.class))letter="B";
+		return letter+id;
+	}
+	
 }

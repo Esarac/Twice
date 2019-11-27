@@ -401,6 +401,10 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return email;
 	}
 	
+	public String getInformation() {
+		return information;
+	}
+	
 	/**
 	 * <b>Description:</b> Gets the value of the attribute pricePerHour.<br>
 	 * @return The attribute pricePerHour.
@@ -419,7 +423,7 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 	}
 	
 	public String toString() {
-		return name;
+		return name+"-"+getCompleteAddress();
 	}
 	
 }

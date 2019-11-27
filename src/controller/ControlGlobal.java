@@ -93,7 +93,7 @@ public abstract class ControlGlobal implements Initializable{
 			//Next Controller
 			nextController=loader.getController();
 			nextController.setActualUser(actualUser);nextController.setApp(app); nextController.setStage(stage); nextController.setTheme(theme);//Set All Attributes
-			if(nextController instanceof Generator){
+			if(nextController instanceof Generator){//Pos
 				Generator generatorController=(Generator)nextController;
 				generatorController.generate();
 			}
@@ -183,6 +183,10 @@ public abstract class ControlGlobal implements Initializable{
 	}
 	
 	//Get
+	public Stage getStage() {
+		return stage;
+	}
+	
 	public String getThemeName() {
 		return theme.name();
 	}

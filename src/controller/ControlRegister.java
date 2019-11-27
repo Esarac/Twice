@@ -135,6 +135,7 @@ public class ControlRegister extends ControlGlobal implements Generator {
 		}
 		
 		getApp().saveUsers();
+		load("LogIn");
 	}
 	
 	public void cancel() {
