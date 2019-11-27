@@ -1,12 +1,16 @@
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import controller.ControlGlobal.Theme;
+import exception.AlreadyExistException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -17,11 +21,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.Client;
 import model.Owner;
 import model.Parking;
 
-public class ControlParkingMenu extends ControlGlobal implements Generator, Searchable{
+public class ControlParkingMenu extends ControlGlobal implements Generator{
 
 	//Nodes
 	@FXML HBox box1;
@@ -30,6 +38,7 @@ public class ControlParkingMenu extends ControlGlobal implements Generator, Sear
 	@FXML ChoiceBox<String> sort;
 	@FXML ListView<HBox> list;
 	@FXML Button add;
+	@FXML Button addFile;
 	
 	//Methods
 	public void generate() {
@@ -40,6 +49,7 @@ public class ControlParkingMenu extends ControlGlobal implements Generator, Sear
 		if(getActualUser() instanceof Client){
 			box1.getChildren().remove(search);
 			box2.getChildren().remove(add);
+			box2.getChildren().remove(addFile);
 		}
 		
 		generateParkingList();
@@ -114,25 +124,27 @@ public class ControlParkingMenu extends ControlGlobal implements Generator, Sear
 			});
 			box.getChildren().add(parking);
 			
-			Button delete=new Button("X");
-			int index=i;
-			delete.setOnAction((event)->{
-				ButtonType accept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
-				ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.OK_DONE);
-				Alert alert = new Alert(AlertType.NONE, "Are you sure?", accept, cancel);
-				alert.setHeaderText(null);
-				alert.setTitle(null);
-				setStyle(alert);
-				Optional <ButtonType> action = alert.showAndWait();
-				
-				if(action.get() == accept) {
-					((Owner)getActualUser()).deleteParking(parkings.get(index).getName());
-					generateParkingList();
-					getApp().saveUsers();
-				}
-			});
-			delete.getStyleClass().add("delete");
-			box.getChildren().add(delete);
+			if(parkings.get(i).isEmpty()){
+				Button delete=new Button("X");
+				int index=i;
+				delete.setOnAction((event)->{
+					ButtonType accept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
+					ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.OK_DONE);
+					Alert alert = new Alert(AlertType.NONE, "Are you sure?", accept, cancel);
+					alert.setHeaderText(null);
+					alert.setTitle(null);
+					setStyle(alert);
+					Optional <ButtonType> action = alert.showAndWait();
+					
+					if(action.get() == accept) {
+						((Owner)getActualUser()).deleteParking(parkings.get(index).getName());
+						generateParkingList();
+						getApp().saveUsers();
+					}
+				});
+				delete.getStyleClass().add("delete");
+				box.getChildren().add(delete);
+			}
 			
 			list.getItems().add(box);
 		}
@@ -140,6 +152,58 @@ public class ControlParkingMenu extends ControlGlobal implements Generator, Sear
 	
 	public void createParking() {
 		load("ParkingCreator");
+	}
+	
+	public void createParkingFile() {
+		try{
+			//ChooseFile
+			Stage stage = (Stage) pane.getScene().getWindow();
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Game Selector");
+			fileChooser.getExtensionFilters().add(new ExtensionFilter("TWC", "*.twc"));
+			fileChooser.getExtensionFilters().add(new ExtensionFilter("TXT", "*.txt"));
+			File file=fileChooser.showOpenDialog(stage);
+			//...
+			try {
+				if(((Owner)getActualUser()).addParking(file.toString())){
+					ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+					Alert alert = new Alert(AlertType.NONE, "The parking was added!", ok);
+					alert.setHeaderText(null);
+					alert.setTitle(null);
+					setStyle(alert);
+					alert.showAndWait();
+					
+					getApp().saveUsers();
+					generateParkingList();
+				}
+				else{
+					//Not Created
+					ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+					Alert alert = new Alert(AlertType.NONE, "Impossible to create this parking!", ok);
+					alert.setHeaderText(null);
+					alert.setTitle(null);
+					setStyle(alert);
+					alert.showAndWait();
+				}
+			} catch (AlreadyExistException e) {
+				//Already Exist
+				ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+				Alert alert = new Alert(AlertType.NONE, "This parking already exist!", ok);
+				alert.setHeaderText(null);
+				alert.setTitle(null);
+				setStyle(alert);
+				alert.showAndWait();
+			}
+		}
+		catch(NullPointerException e){
+			//File Not Selected
+			ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+			Alert alert = new Alert(AlertType.NONE, "You didnt select a file!", ok);
+			alert.setHeaderText(null);
+			alert.setTitle(null);
+			setStyle(alert);
+			alert.showAndWait();
+		}
 	}
 	
 	public void back(){
@@ -170,12 +234,6 @@ public class ControlParkingMenu extends ControlGlobal implements Generator, Sear
 			ex.printStackTrace();
 		}
 		return nextController;
-	}
-
-	@Override
-	public void actualizeSearch() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

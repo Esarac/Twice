@@ -112,9 +112,6 @@ public class ControlVehicleCreator extends ControlGlobal implements Generator {
 			
 			addMotorcycle();
 		}
-		
-		getApp().saveUsers();
-		load("VehicleMenu");
 	}
 	
 	public void addBicycle() {
@@ -124,6 +121,8 @@ public class ControlVehicleCreator extends ControlGlobal implements Generator {
 			try {
 				
 				client.addBicycle(name.getText(), plate.getText());
+				getApp().saveUsers();
+				load("VehicleMenu");
 				
 			} catch (AlreadyExistException e) {
 				
@@ -169,9 +168,11 @@ public class ControlVehicleCreator extends ControlGlobal implements Generator {
 				CarType carType = CarType.valueOf(type.getValue());
 				int polarizedLevel = Integer.parseInt(polarized.getText());
 				
-				if(!(polarizedLevel < 0)) {
+				if(polarizedLevel > 0) {
 					
 					client.addCar(name.getText(), plate.getText(), fuel.getValue(), carType, polarizedLevel);
+					getApp().saveUsers();
+					load("VehicleMenu");
 					
 				}
 				else {
@@ -206,7 +207,7 @@ public class ControlVehicleCreator extends ControlGlobal implements Generator {
 				alert.showAndWait();
 				
 				polarized.setText("");
-			} 
+			}
 			catch (InvalidPlateException e) {
 				
 				ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
@@ -266,6 +267,8 @@ public class ControlVehicleCreator extends ControlGlobal implements Generator {
 				if(!(cylindered < 0)) {
 					
 					client.addMotorcycle(name.getText(), plate.getText(), fuel.getValue(), motorType, cylindered);
+					getApp().saveUsers();
+					load("VehicleMenu");
 
 				}
 				else {

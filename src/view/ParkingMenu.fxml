@@ -33,9 +33,14 @@
          </children>
       </HBox>
       <ListView fx:id="list" prefHeight="200.0" prefWidth="200.0" />
-      <HBox fx:id="box2" alignment="CENTER" prefHeight="25.0" prefWidth="200.0" spacing="15.0">
+      <HBox fx:id="box2" alignment="CENTER" prefHeight="25.0" prefWidth="348.0" spacing="15.0">
          <children>
-            <Button fx:id="add" focusTraversable="false" mnemonicParsing="false" onAction="#createParking" prefHeight="23.0" prefWidth="101.0" text="Add parking">
+            <Button fx:id="addFile" focusTraversable="false" mnemonicParsing="false" onAction="#createParkingFile" prefHeight="23.0" prefWidth="141.0" text="Add file parking">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="add" focusTraversable="false" mnemonicParsing="false" onAction="#createParking" prefHeight="23.0" prefWidth="119.0" text="Add parking">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font>

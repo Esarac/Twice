@@ -86,6 +86,7 @@ public class ControlParkingView extends ControlGlobal implements Generator{
 				Slot actual=parking.getFirstSlot();
 				while(actual!=null){
 					Button slot=new Button(actual.toString());
+					if(!actual.isEmpty()) slot.getStyleClass().add("delete");
 					int id=actual.getId();
 					slot.setOnAction((event)->{
 						insertVehicle(id);
@@ -102,7 +103,7 @@ public class ControlParkingView extends ControlGlobal implements Generator{
 		}
 		else if(getActualUser() instanceof Owner) {
 			pane.getChildren().remove(clientBox);
-			pane.getChildren().remove(remove);
+			box.getChildren().remove(remove);
 			
 			type.getItems().addAll("Vehicle", "Car", "Motorcycle", "Bicycle", "MotorVehicle");
 			type.getSelectionModel().select("Vehicle");

@@ -11,6 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 import model.App;
 import model.Client;
 import model.User;
+import thread.ThreadSave;
 
 public class ControlLogIn extends ControlGlobal implements Generator {
 	
@@ -26,6 +27,7 @@ public class ControlLogIn extends ControlGlobal implements Generator {
 		//Init
 		setApp(new App("TWICE"));
 		loadStyle();
+		new ThreadSave(getApp());
 		
 		//LogIn
 		User user=getApp().automaticLogIn();

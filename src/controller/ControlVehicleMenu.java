@@ -17,7 +17,7 @@ import javafx.scene.layout.RowConstraints;
 import model.Client;
 import model.Vehicle;
 
-public class ControlVehicleMenu extends ControlGlobal implements Generator, Searchable {
+public class ControlVehicleMenu extends ControlGlobal implements Generator{
 
 	
 	@FXML ListView<GridPane> list;
@@ -51,14 +51,19 @@ public class ControlVehicleMenu extends ControlGlobal implements Generator, Sear
 			grid.getColumnConstraints().add(new ColumnConstraints());
 			grid.getRowConstraints().add(new RowConstraints());
 			
-			Button vehicle = new Button(vehicles.get(i).getName());
+			Button vehicle = new Button(vehicles.get(i) + " Bills: " + vehicles.get(i).unpaidBills().size());
 			vehicle.getStyleClass().add("vehicle");
-			vehicle.setOnAction(event -> enterVehicle(vehicle.getText()));
+			int index = i;
+			vehicle.setOnAction(event -> enterVehicle(vehicle.getText(), vehicles.get(index)));
 			grid.add(vehicle, 0, 0);
-			Button delete = new Button("X");
-			delete.getStyleClass().add("delete");
-			delete.setOnAction(event -> deleteVehicle(vehicle.getText(), grid));
-			grid.add(delete, 1, 0);
+			
+			if(vehicles.get(i).unpaidBills().size() == 0) {
+				
+				Button delete = new Button("X");
+				delete.getStyleClass().add("delete");
+				delete.setOnAction(event -> deleteVehicle(vehicle.getText(), grid));
+				grid.add(delete, 1, 0);
+			}
 			
 			list.getItems().add(grid);
 		}
@@ -74,8 +79,10 @@ public class ControlVehicleMenu extends ControlGlobal implements Generator, Sear
 		load("VehicleCreator");
 	}
 	
-	public void enterVehicle(String name) {
+	public void enterVehicle(String name, Vehicle vehicle) {
 		
+		ControlBillView controller = (ControlBillView) load("BillView");
+		controller.setVehicle(vehicle);
 	}
 	
 	public void search(String search) {
@@ -131,9 +138,4 @@ public class ControlVehicleMenu extends ControlGlobal implements Generator, Sear
 		}	
 	}
 
-	@Override
-	public void actualizeSearch() {
-		// TODO Auto-generated method stub
-		
-	}
 }
