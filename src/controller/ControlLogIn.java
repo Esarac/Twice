@@ -1,40 +1,43 @@
 package controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import model.App;
+import model.Client;
+import model.User;
 
-public class ControlLogIn extends ControlGlobal implements Initializable, Generator {
+public class ControlLogIn extends ControlGlobal implements Generator {
 	
-	@FXML private ImageView twiceLogo;
+	//Nodes
 	@FXML private TextField email;
 	@FXML private PasswordField password;
 	@FXML private CheckBox logging;
-	@FXML private Button logIn;
-	@FXML private Button register;
-
+	
+	//Methods
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void generate() {
 		
-		//Sets the image.
-		twiceLogo.setImage(new Image("file:themes/" + getTheme() + "/images/TWICE_LOGO.png"));
+		//Init
+		setApp(new App("TWICE"));
+		loadStyle();
+		
+		//LogIn
+		User user=getApp().automaticLogIn();
+		if(user != null) {
+			setActualUser(user);
+			load("Menu");
+		}
+		
 	}
 	
+		//LogIn
 	public void logIn() {
-		
 		if(email.getText().isEmpty() || password.getText().isEmpty()) {
 			
 			//Creates an alert if any field is empty.
@@ -44,21 +47,14 @@ public class ControlLogIn extends ControlGlobal implements Initializable, Genera
 			alert.setTitle(null);
 			
 			//Sets the alert style.
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("file:images/TWICE_LOGO.png"));
 			setStyle(alert);
 			
 			//Shows the alert.
 			alert.showAndWait();
 		}
 		else {
-			
-			boolean keep = false;
-			
-			if(logging.isSelected())
-				keep = true;
-			
-			if(app.logIn(email.getText(), password.getText(), keep) == null) {
+			User user=getApp().logIn(email.getText(), password.getText(), logging.isSelected());
+			if( user == null) {
 				
 				//Creates an alert if the email or password is incorrect.
 				ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
@@ -67,8 +63,6 @@ public class ControlLogIn extends ControlGlobal implements Initializable, Genera
 				alert.setTitle(null);
 				
 				//Sets the alert style.
-				Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-				stage.getIcons().add(new Image("file:images/TWICE_LOGO.png"));
 				setStyle(alert);
 				
 				//Shows the alert.
@@ -79,24 +73,17 @@ public class ControlLogIn extends ControlGlobal implements Initializable, Genera
 				password.setText("");
 			}
 			else {
-				
 				//Loads the Menu.fxml.
+				setActualUser(user);
 				load("Menu");
 			}
 		}
 	}
 	
+		//Register
 	public void register() {
-		
 		//Loads the Register.fxml.
 		load("Register");
-	}
-
-	@Override
-	public void generate() {
-		
-		app = new App("TWICE");
-		
 	}
 	
 }

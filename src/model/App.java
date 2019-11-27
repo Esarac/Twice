@@ -125,6 +125,10 @@ public class App implements FileLoader<User>{//[TEST]
 		return actualUser;
 	}
 	
+	public void logOut() {
+		saveActualUser(null);
+	}
+	
 	//Search
 	
 	/**
@@ -317,7 +321,10 @@ public class App implements FileLoader<User>{//[TEST]
 			File dir=new File("dat//");
 			dir.mkdir();
 			File actual=new File(ACTUAL_USER_PATH);
-			String text=actualUser.getEmail()+"\n"+actualUser.getPassword();
+			String text="";
+			if(actualUser!=null) {
+				text=actualUser.getEmail()+"\n"+actualUser.getPassword();
+			}
 			PrintWriter writer=new PrintWriter(actual);
 			writer.append(text);
 			writer.close();

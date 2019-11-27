@@ -19,21 +19,21 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		
 		try {
-			
+			//Load FXML
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn.fxml"));
 			Parent root = (Parent) loader.load();
+			//Next Controller
 			ControlLogIn nextController = loader.getController();
-			nextController.setStage(primaryStage);
-			nextController.generate();
-			root.getStylesheets().add("/view/" + nextController.getTheme() + ".css");
-			root.getStyleClass().add("pane");
+			//Window Pref
 			primaryStage.setScene(new Scene(root));
 			primaryStage.setTitle("TWICE");
-			primaryStage.getIcons().add(new Image("file:themes/" + nextController.getTheme() + "/images/TWICE_LOGO.png"));
 			primaryStage.setMinHeight(600);
 			primaryStage.setMinWidth(800);
+			//Show
 			primaryStage.show();
-			
+			//Controller Init
+			nextController.setStage(primaryStage);
+			nextController.generate();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -1,12 +1,9 @@
 package controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import exception.AlreadyExistException;
 import exception.InvalidEmailException;
 import exception.InvalidPasswordException;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -14,24 +11,15 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
-public class ControlRegister extends ControlGlobal implements Initializable, Generator {
+
+public class ControlRegister extends ControlGlobal implements Generator {
 	
-	@FXML private ImageView twiceLogo;
 	@FXML TextField name;
 	@FXML TextField email;
 	@FXML PasswordField password;
 	@FXML PasswordField confirmPassword;
 	@FXML ChoiceBox<String> choice;
-	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		
-		twiceLogo.setImage(new Image("file:themes/" + getTheme() + "/images/TWICE_LOGO.png"));
-	}
 	
 	public void register() {
 		
@@ -44,8 +32,6 @@ public class ControlRegister extends ControlGlobal implements Initializable, Gen
 			alert.setTitle(null);
 			
 			//Sets the alert style.
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("file:images/TWICE_LOGO.png"));
 			setStyle(alert);
 			
 			//Shows the alert.
@@ -62,8 +48,6 @@ public class ControlRegister extends ControlGlobal implements Initializable, Gen
 				alert.setTitle(null);
 				
 				//Sets the alert style.
-				Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-				stage.getIcons().add(new Image("file:images/TWICE_LOGO.png"));
 				setStyle(alert);
 				
 				//Shows the alert.
@@ -86,11 +70,11 @@ public class ControlRegister extends ControlGlobal implements Initializable, Gen
 			
 			if(choice.getValue().equals("Client")) {
 				
-				app.addClient(name.getText(), email.getText(), password.getText());
+				getApp().addClient(name.getText(), email.getText(), password.getText());
 			}
 			else {
 				
-				app.addOwner(name.getText(), email.getText(), password.getText());
+				getApp().addOwner(name.getText(), email.getText(), password.getText());
 			}
 		}
 		catch(InvalidEmailException e) {
@@ -102,8 +86,6 @@ public class ControlRegister extends ControlGlobal implements Initializable, Gen
 			alert.setTitle(null);
 			
 			//Sets the alert style.
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("file:images/TWICE_LOGO.png"));
 			setStyle(alert);
 			
 			//Shows the alert.
@@ -122,8 +104,6 @@ public class ControlRegister extends ControlGlobal implements Initializable, Gen
 			alert.setTitle(null);
 			
 			//Sets the alert style.
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("file:images/TWICE_LOGO.png"));
 			setStyle(alert);
 			
 			//Shows the alert.
@@ -142,8 +122,6 @@ public class ControlRegister extends ControlGlobal implements Initializable, Gen
 			alert.setTitle(null);
 			
 			//Sets the alert style.
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("file:images/TWICE_LOGO.png"));
 			setStyle(alert);
 			
 			//Shows the alert.
@@ -156,7 +134,12 @@ public class ControlRegister extends ControlGlobal implements Initializable, Gen
 			confirmPassword.setText("");
 		}
 		
-		app.saveUsers();
+		getApp().saveUsers();
+	}
+	
+	public void cancel() {
+		
+		load("LogIn");
 	}
 
 	@Override
