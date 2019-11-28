@@ -118,7 +118,7 @@ class TestApp {
 	}
 	
 	@Test
-	void getAllParkings() throws Exception{
+	void testGetAllParkings() throws Exception{
 		setUpSceneEmptyApp();
 		assertEquals(app.getAllParkings().size(), 0);
 		

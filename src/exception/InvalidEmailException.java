@@ -4,7 +4,7 @@ public class InvalidEmailException extends Exception{
 
 	//Constructor
 	public InvalidEmailException(){
-		super("");
+		super("The email is not valid");
 	}
 	
 	public InvalidEmailException(String message){

@@ -4,7 +4,7 @@ public class InvalidPasswordException extends Exception{
 
 	//Constructor
 	public InvalidPasswordException(){
-		super("");
+		super("The password is not valid");
 	}
 	
 	public InvalidPasswordException(String message){

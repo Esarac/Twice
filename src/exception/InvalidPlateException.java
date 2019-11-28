@@ -4,7 +4,7 @@ public class InvalidPlateException extends Exception{
 
 	//Constructor
 	public InvalidPlateException(){
-		super("");
+		super("The plate is not valid");
 	}
 	
 	public InvalidPlateException(String message){

@@ -4,7 +4,7 @@ public class SlotMismatchException extends Exception{
 
 	//Constructor
 	public SlotMismatchException(){
-		super("");
+		super("The vehicle is not the slot type");
 	}
 	
 	public SlotMismatchException(String message){

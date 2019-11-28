@@ -157,7 +157,7 @@ public abstract class ControlGlobal implements Initializable{
 			updateStyle();
 		}
 		catch(IOException | IllegalArgumentException e) {
-			e.printStackTrace();
+			updateStyle();
 			saveStyle();
 		}
 	}
