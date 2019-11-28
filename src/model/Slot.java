@@ -150,6 +150,11 @@ public class Slot implements Serializable {
 	
 	//Getters
 	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute initTime.<br>
+	 * @return The attribute initTime.
+	 */
+	
 	public long getInitTime(){
 		return initTime;
 	}
@@ -162,6 +167,11 @@ public class Slot implements Serializable {
 	public Vehicle getActualVehicle() {
 		return actualVehicle;
 	}
+	
+	/**
+	 * <b>Description:</b> This method allows checking if the actual user is null.<br>
+	 * @return True if is empty, false in otherwise.
+	 */
 	
 	public boolean isEmpty(){
 		return actualVehicle==null;
@@ -193,6 +203,11 @@ public class Slot implements Serializable {
 	public Slot getNext(){
 		return next;
 	}
+	
+	/**
+	 * <b>Description:</b> This method allows converting a object in string.<br>
+	 * @return The object as String.
+	 */
 	
 	public String toString() {
 		String letter="V";

@@ -34,8 +34,8 @@ public class ControlParkingCreator extends ControlGlobal{
 				if(possibleNumber(new double[] {priceCar, priceMotorcycle, priceBicycle})){
 					try {
 						((Owner) getActualUser()).addParking(name.getText(), address.getText(), city.getText(),department.getText(),country.getText(),email.getText(),information.getText(),new double[] {priceCar, priceMotorcycle, priceBicycle});
-						getApp().saveUsers();
 						load("ParkingMenu");
+						getApp().saveUsers();
 					} catch (AlreadyExistException e) {
 						//AlreadyExist
 						ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);

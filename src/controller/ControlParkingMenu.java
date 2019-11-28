@@ -32,13 +32,13 @@ import model.Parking;
 public class ControlParkingMenu extends ControlGlobal implements Generator{
 
 	//Nodes
-	@FXML HBox box1;
-	@FXML HBox box2;
-	@FXML TextField search;
-	@FXML ChoiceBox<String> sort;
-	@FXML ListView<HBox> list;
-	@FXML Button add;
-	@FXML Button addFile;
+	@FXML private HBox box1;
+	@FXML private HBox box2;
+	@FXML private TextField search;
+	@FXML private ChoiceBox<String> sort;
+	@FXML private ListView<HBox> list;
+	@FXML private Button add;
+	@FXML private Button addFile;
 	
 	//Methods
 	public void generate() {

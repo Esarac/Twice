@@ -2,26 +2,30 @@ package controller;
 
 import java.util.Optional;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import model.Owner;
+import thread.ThreadStringAnimator;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
 
 public class ControlMenu extends ControlGlobal implements Generator {
 	
 	//Nodes
-	@FXML ChoiceBox<Theme> themes;
-	@FXML Button vehicles;
+	@FXML private ChoiceBox<Theme> themes;
+	@FXML private Button vehicles;
 
 	//Methods
 	@Override
 	public void generate() {
 		
-		themes.getItems().addAll(Theme.FEEL_SPECIAL, Theme.FANCY, Theme.SIGNAL, Theme.TT, Theme.YES_OR_YES, Theme.LIKEY, Theme.WHAT_IS_LOVE);
+		themes.getItems().addAll(Theme.FEEL_SPECIAL, Theme.FANCY, Theme.SIGNAL, Theme.TT, Theme.YES_OR_YES, Theme.KNOCK_KNOCK, Theme.CHEER_UP);
 		themes.getSelectionModel().select(getTheme());
 		themes.setOnAction(event -> pickTheme());
 		

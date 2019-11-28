@@ -120,6 +120,11 @@ public abstract class Vehicle implements Comparable<Vehicle>, Comparator<Vehicle
 		return firstBill;
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows converting the object in String.<br>
+	 * @return The object as String.
+	 */
+	
 	public String toString() {
 		return name;
 	}

@@ -63,6 +63,11 @@ public class Bill extends Record{
 		return parkingName;
 	}
 	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute parkingAddress.<br>
+	 * @return The attribute parkingAddress.
+	 */
+	
 	public String getParkingAddress() {
 		return parkingAddress;
 	}

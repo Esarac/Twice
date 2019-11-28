@@ -27,7 +27,7 @@ public abstract class ControlGlobal implements Initializable{
 	public static final String THEME_PATH="dat/Theme.twc";
 	
 	public enum Theme {
-		FEEL_SPECIAL, FANCY, SIGNAL, TT, YES_OR_YES, LIKEY, WHAT_IS_LOVE;
+		FEEL_SPECIAL, FANCY, SIGNAL, TT, YES_OR_YES, KNOCK_KNOCK, CHEER_UP;
 		
 		public String toString() {
 			String text="";
@@ -51,9 +51,6 @@ public abstract class ControlGlobal implements Initializable{
 			//Special Cases
 			if(this==TT){
 				text=name();
-			}
-			else if(this==WHAT_IS_LOVE){
-				text+="?";
 			}
 			//...
 			

@@ -15,11 +15,11 @@ import javafx.scene.control.Alert.AlertType;
 
 public class ControlRegister extends ControlGlobal implements Generator {
 	
-	@FXML TextField name;
-	@FXML TextField email;
-	@FXML PasswordField password;
-	@FXML PasswordField confirmPassword;
-	@FXML ChoiceBox<String> choice;
+	@FXML private TextField name;
+	@FXML private TextField email;
+	@FXML private PasswordField password;
+	@FXML private PasswordField confirmPassword;
+	@FXML private ChoiceBox<String> choice;
 	
 	public void register() {
 		
@@ -71,10 +71,16 @@ public class ControlRegister extends ControlGlobal implements Generator {
 			if(choice.getValue().equals("Client")) {
 				
 				getApp().addClient(name.getText(), email.getText(), password.getText());
+				
+				getApp().saveUsers();
+				load("LogIn");
 			}
 			else {
 				
 				getApp().addOwner(name.getText(), email.getText(), password.getText());
+				
+				getApp().saveUsers();
+				load("LogIn");
 			}
 		}
 		catch(InvalidEmailException e) {
@@ -133,9 +139,6 @@ public class ControlRegister extends ControlGlobal implements Generator {
 			password.setText("");
 			confirmPassword.setText("");
 		}
-		
-		getApp().saveUsers();
-		load("LogIn");
 	}
 	
 	public void cancel() {

@@ -14,14 +14,14 @@
 
 /*Button*/
 .button {
-	
+	-fx-text-fill: text_color;
 	-fx-background-color: base_color;
 	-fx-background-radius: 5;
 	-fx-font: bold 10pt "Arial";/*HFONT*/
 }
 
 .label {
-	
+	-fx-text-fill: base_color;
 	-fx-font: bold 10pt "Arial";
 }
 
@@ -32,6 +32,23 @@
 	-fx-highlight-fill: special_color;
 	-fx-font: bold 9pt "Arial";/*TFONT*/
 }
+
+/*Check Box*/
+.check-box{
+	
+	-fx-text-fill: base_color;
+}
+
+.check-box .box {
+	
+	-fx-background-color: base_color;
+}
+
+.check-box .box .mark {
+	
+	-fx-mark-color: special_color;
+}
+
 
 /*Choice Box*/
 .choice-box {
@@ -67,16 +84,6 @@
 .choice-box .menu-item:focused > .label { 
 	
 	-fx-text-fill: base_color;
-}
-
-.check-box .box {
-	
-	-fx-background-color: base_color;
-}
-
-.check-box .box .mark {
-	
-	-fx-mark-color: special_color;
 }
 
 /*Dialog Pane*/
@@ -119,6 +126,10 @@
 .delete {
 	
 	-fx-background-color: black;
+	-fx-text-fill: special_color;
+}
+
+.register{
 	-fx-text-fill: special_color;
 }
 

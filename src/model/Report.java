@@ -116,6 +116,12 @@ public class Report extends Record implements Comparable<Report>{//[TEST]
 	}
 	
 	//Compare
+	
+	/**
+	 * <b>Description:</b> This method allows comparing a report with other.<br>
+	 * @return The difference.
+	 */
+	
 	public int compareTo(Report report){
 		int delta=clientEmail.compareTo(report.clientEmail);
 		return delta;

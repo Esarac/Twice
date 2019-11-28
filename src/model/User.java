@@ -160,6 +160,7 @@ public abstract class User implements Encryptor, Comparable<User>, Serializable{
 	
 	/**
 	 * <b>Description:</b> This method allows encrypting a password.<br>
+	 * @return The password encrypted.
 	 */
 	
 	public String encrypt(String text){
@@ -177,6 +178,7 @@ public abstract class User implements Encryptor, Comparable<User>, Serializable{
 	
 	/**
 	 * <b>Description:</b> This method allows decrypting a password.<br>
+	 * @return The password decrypted.
 	 */
 	
 	public String decrypt(String text){

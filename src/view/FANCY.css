@@ -9,8 +9,7 @@
 
 /*Pane*/
 .pane {
-	-fx-background-color: white;
-	-fx-background-image:url(../../themes/FANCY/images/BACKGROUND.jpg);
+	-fx-background-color: linear-gradient(to bottom right, 	white, FD6DDE, white, lightBlue);
 	-fx-background-size:100% 100%;
 }
 

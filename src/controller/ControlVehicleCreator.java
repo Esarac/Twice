@@ -18,15 +18,15 @@ import model.Motorcycle.MotorcycleType;
 public class ControlVehicleCreator extends ControlGlobal implements Generator {
 
 	
-	@FXML ChoiceBox<String> vehicleType;
-	@FXML TextField name;
-	@FXML TextField plate;
-	@FXML ChoiceBox<VehicleFuel> fuel;
-	@FXML ChoiceBox<String> type;
-	@FXML TextField polarized;
-	@FXML GridPane fuelField;
-	@FXML GridPane typeField;
-	@FXML GridPane buttonsField;
+	@FXML private ChoiceBox<String> vehicleType;
+	@FXML private TextField name;
+	@FXML private TextField plate;
+	@FXML private ChoiceBox<VehicleFuel> fuel;
+	@FXML private ChoiceBox<String> type;
+	@FXML private TextField polarized;
+	@FXML private GridPane fuelField;
+	@FXML private GridPane typeField;
+	@FXML private GridPane buttonsField;
 	private Client client;
 	
 	@Override
@@ -40,7 +40,7 @@ public class ControlVehicleCreator extends ControlGlobal implements Generator {
 		type.getItems().addAll(CarType.STANDARD.name(), CarType.MICRO.name(), CarType.SUV.name(), CarType.TRUCK.name(), CarType.VAN.name());
 		type.getSelectionModel().selectFirst();
 		
-		fuel.getItems().addAll(VehicleFuel.DIESEL, VehicleFuel.ELECTRIC, VehicleFuel.EXTRA, VehicleFuel.GAS, VehicleFuel.GASOLINE, VehicleFuel.HYBRID);
+		fuel.getItems().addAll(VehicleFuel.GASOLINE, VehicleFuel.ELECTRIC, VehicleFuel.EXTRA, VehicleFuel.GAS, VehicleFuel.DIESEL, VehicleFuel.HYBRID);
 		fuel.getSelectionModel().selectFirst();
 	}
 	

@@ -401,6 +401,12 @@ public class Client extends User implements FileLoader<Vehicle>{//[TEST]
 	}
 	
 	//Get
+	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute vehicles.<br>
+	 * @return The attribute vehicles.
+	 */
+	
 	public ArrayList<Vehicle> getVehicles(){
 		return vehicles;
 	}

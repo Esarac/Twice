@@ -2,7 +2,7 @@
 *{
 	
 	base_color:midnightblue;
-	special_color:red;
+	special_color:FF0070;
 	text_color:white;
 	
 }
@@ -28,7 +28,7 @@
 /*Text Field*/
 .text-field {
 	
-	-fx-focus-color: gold;
+	-fx-focus-color: special_color;
 	-fx-highlight-fill: special_color;
 	-fx-font: bold 9pt "Arial";/*TFONT*/
 }
@@ -43,7 +43,7 @@
 
 .choice-box > .label {
 	
-	-fx-text-fill: text_color;
+	-fx-text-fill: FF0070;
 	-fx-font: bold 9pt "Arial";/*TFONT*/
 }
 
@@ -60,13 +60,18 @@
 
 .choice-box .menu-item > .label { 
 	
-	-fx-text-fill: text_color;
+	-fx-text-fill: FF0070;
 	-fx-font: bold 9pt "Arial";/*TFONT*/
 }
 
 .choice-box .menu-item:focused > .label { 
 	
 	-fx-text-fill: base_color;
+}
+
+.check-box{
+	
+	-fx-text-fill: special_color;
 }
 
 .check-box .box {
@@ -101,7 +106,7 @@
 	-fx-background-color: white;
 	-fx-font: bold 10pt "Arial";/*HFONT*/
 	-fx-border-radius: 5;
-	-fx-text-fill: text_color;
+	-fx-text-fill: special_color;
 
 }
 
@@ -122,6 +127,10 @@
 	-fx-background-color: special_color;
 }
 
+.register{
+	-fx-text-fill: special_color;
+}
+
 #logo {
 	
 	-fx-image: url(../../themes/SIGNAL/images/TWICE_LOGO.png);
@@ -130,7 +139,7 @@
 
 /*Specials*/
 #log-out {
-	
+	-fx-text-fill: special_color;
 	-fx-background-color: base_color;
 	-fx-background-radius: 5;
 	

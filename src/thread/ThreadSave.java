@@ -30,7 +30,8 @@ public class ThreadSave extends Thread{
 		
 		while(true) {
 			Platform.runLater(save);
-			try {sleep(60000);}
+			System.out.println("Saved...");
+			try {sleep(20000);}
 			catch (InterruptedException e) {e.printStackTrace();}
 		}
 	}

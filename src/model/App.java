@@ -125,6 +125,11 @@ public class App implements FileLoader<User>{//[TEST]
 		return actualUser;
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows log out of the app.<br>
+	 * <b>Post:</b> The actual user is null.<br>
+	 */
+	
 	public void logOut() {
 		saveActualUser(null);
 	}

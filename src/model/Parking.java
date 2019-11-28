@@ -393,13 +393,28 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return country;
 	}
 	
+	/**
+	 * <b>Description:</b> This method allows getting the full address.<br>
+	 * @return The full address.
+	 */
+	
 	public String getCompleteAddress() {
 		return address+", "+city+", "+department+", "+country;
 	}
 	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute email.<br>
+	 * @return The attribute email.
+	 */
+	
 	public String getEmail() {
 		return email;
 	}
+	
+	/**
+	 * <b>Description:</b> Gets the value of the attribute information.<br>
+	 * @return The attribute information.
+	 */
 	
 	public String getInformation() {
 		return information;
@@ -414,13 +429,28 @@ public class Parking implements Comparable<Parking>, Comparator<Parking>, Serial
 		return pricePerHour;
 	}
 	
+	/**
+	 * <b>Description:</b> Gets the value of first slot.<br>
+	 * @return The attribute firstSlot.
+	 */
+	
 	public Slot getFirstSlot() {
 		return firstSlot;
 	}
 	
+	/**
+	 * <b>Description:</b> Gets the value of rootReport.<br>
+	 * @return The attribute rootReport.
+	 */
+	
 	public Report getRootReport() {
 		return rootReport;
 	}
+	
+	/**
+	 * <b>Description:</b> Convert the object in a String.<br>
+	 * @return The object as String.
+	 */
 	
 	public String toString() {
 		return name+"-"+getCompleteAddress();

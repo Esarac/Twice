@@ -21,7 +21,7 @@
 }
 
 .label {
-	
+	-fx-text-fill: base_color;
 	-fx-font: bold 10pt "Arial";
 }
 
@@ -65,6 +65,11 @@
 }
 
 .choice-box .menu-item:focused > .label { 
+	
+	-fx-text-fill: base_color;
+}
+
+.check-box{
 	
 	-fx-text-fill: base_color;
 }
@@ -120,6 +125,10 @@
 	
 	-fx-text-fill: base_color;
 	-fx-background-color: special_color;
+}
+
+.register{
+	-fx-text-fill: base_color;
 }
 
 #logo {
